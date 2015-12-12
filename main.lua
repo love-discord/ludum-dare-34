@@ -4,19 +4,19 @@ local class = require("lib.class")
 hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
 
+stats = {unitsAlive = {}}
 require("src.entities.immuneSystem")
 require("src.entities.virus")
 
 require("src.interactives.camera")
 require("src.interactives.shop")
 
---[[ functions ]]--
-	hexMap = hex:new(12, 32, 10)
-	immuneSystem:loadUnits()
-	immuneSystem:addUnit("Cell Damage Booster", 5, 0, 5)
 
+--[[ functions ]]--
 function love.load()
-	shop:load(immuneSystem.unitList)
+	hexMap = hex:new(12, 32, 10)
+	shop:load(immuneSystem:loadUnits())
+	immuneSystem:addUnit("Cell Damage Booster", 5, 0, 5)
 end
 
 local timeSinceLastTick = 0

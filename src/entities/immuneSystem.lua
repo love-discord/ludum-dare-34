@@ -18,12 +18,20 @@ immuneSystem = {
 }
 
 function immuneSystem:loadUnits()
-	immuneSystem:newUnit("Cell Healer", 50, 2, 32, 48, false, cellHealer, 2)
-	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, cellDamageBooster, 2)
+	local sampleImg = love.graphics.newImage("res/sample.png")
+	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, cellHealer, 			2, 50,  sampleImg, "Nothing", 			function() return true end)
+	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end)
+	immuneSystem:newUnit("Smth else", 			50, 2, 32, 48, false, function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
+	immuneSystem:newUnit("Smth else2", 			50, 2, 32, 48, false, function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==0  end)
+	return immuneSystem.unitList
 end
 
-function immuneSystem:newUnit(name, hp, range, w, h, movable, effect, amount, cost, img)
-	immuneSystem.unitList[name] = {hp = hp, range = range, w = w, h = h, movable = movable, effect = effect, amount = amount, cost = cost, img = img}
+-- creates a new unit __TYPE__
+function immuneSystem:newUnit(name, hp, range, w, h, movable, effect, amount, cost, img, requireText, requireFunc)
+	immuneSystem.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, movable = movable,
+									effect = effect, amount = amount, cost = cost, img = img,
+									requireText = requireText, requireFunc = requireFunc}
+	stats.unitsAlive[name] = 0
 end
 
 function immuneSystem:find(x, y, z)
@@ -41,6 +49,8 @@ function immuneSystem:find(x, y, z)
 	return occupied, id
 end
 
+
+-- spawns a new unit
 function immuneSystem:addUnit(name, x, y, z)
 	if not immuneSystem:find(x, y, z) then
 		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect, amount = immuneSystem.unitList[name].amount}

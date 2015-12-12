@@ -1,7 +1,10 @@
 shop = {}
 
-function shop:load(unitList)
-	self.unitList = unitList
+function shop:load(a)
+	self.unitList = {}
+	for _, u in pairs(a) do
+		table.insert(self.unitList, u)
+	end
 end
 
 function shop:update()
@@ -26,10 +29,21 @@ function shop:draw()
 	local moneyTextWidth = love.graphics:getFont():getWidth(self.money or "0" .. " <<CURRENCY>>")
 	local spacing = (1280 - moneyTextWidth - 20) / unitTypeCount
 	for i = 1, unitTypeCount do
-		local x = (20 + moneyTextWidth) + spacing * (i - 1)
-		local centerX = x + spacing / 2
-		local img = self.unitList[i].img
-		love.graphics.draw(img, centerX - shopHeight - 40, 720 - shopHeight + 20, 0, img:getHeight()/(shopHeight-20))
+		local unit = self.unitList[i]	-- the unit type
+		local x = (20 + moneyTextWidth) + spacing * (i - 1) -- draw x coordinate
+		local img = unit.img -- unit image
+		local imgw = img:getWidth() -- unit image size (w=h because it's a square)
+		local drawHeight = shopHeight - 40
+		love.graphics.setColor(100, 100, 100) -- grey
+		if unit.requireFunc() then love.graphics.setColor(200, 255, 200) end -- pale green if you can buy it
+		love.graphics.draw(img, x + 10, 720 - shopHeight + 20, 0, drawHeight/imgw)
+
+		love.graphics.setColor(0, 0, 0)
+		love.graphics.rectangle("line", x+10, 720-shopHeight+20, drawHeight, drawHeight)
+		love.graphics.print(unit.name or 0, x + drawHeight + 20, 720 - shopHeight + 20)
+		love.graphics.print("Cost: ".. unit.cost or 0, x + drawHeight + 20, 720 - shopHeight + 35)
+		love.graphics.print("Alive: ".. stats.unitsAlive[unit.name] or 0, x + drawHeight + 20, 720 - shopHeight + 50)
+		love.graphics.print("Requires: ".. unit.requireText or 0, x + drawHeight + 20, 720 - shopHeight + 65)
 	end
 end
 
