@@ -10,24 +10,19 @@ local hex = class:subclass()
 local teams = {"neutral", "virus", "immune"}
 
 function hex:init(radius, cell_size, default_hp)
-	print("HEX INIT")
 	self.cells = {}
 	self.radius = radius
-	print("cells = ",self.cells)
-	print("radius = ",self.radius)
-	CELL_SIZE = cell_size
+	self.cell_size = cell_size
 	for x = -radius, radius do
 		self.cells[x] = {}
-		print("self.cells["..x.."]")
 		for z = -radius, radius do
 			local team = teams[math.floor(math.random(3))]
-			self.cells[x][z] = cell:new(self, x, -x-z, z, cell_size, default_hp, team)
+			self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, team)
 		end
 	end
 end
 
 function hex:draw()
-	print(self)
 	for x = -self.radius, self.radius do
 		for z = -self.radius, self.radius do
 			self.cells[x][z]:draw("fill")
@@ -42,24 +37,24 @@ function hex:getCell(x, y, z)
 end
 
 function hex:hexToPixel(x, y, z)
-	local xP = CELL_SIZE * math.sqrt(3) * (x + z/2)
-	local yP = CELL_SIZE * 3/2 * z
+	local xP = self.cell_size * math.sqrt(3) * (x + z/2)
+	local yP = self.cell_size * 3/2 * z
 	return xP, yP
 end
 
 function hex:pixelToHex(x, y)
-	local q = (x * math.sqrt(3)/3 - y / 3) / CELL_SIZE
-	local r = y * 2/3 / CELL_SIZE
+	local q = (x * math.sqrt(3)/3 - y / 3) / self.cell_size
+	local r = y * 2/3 / self.cell_size
 	return self:round(q, -q-r, r)
 end
 
 function hex:inRange(x, y, z, range)
 	local results = {}
-	for i = -range + x, range + x do
-		for v = math.max(-range + y, -range - x + y), math.min(range + y, range - x + y) do
-			z = -x-y
-			results[#results + 1] = {x = x, y = y, z = z}
-		end
+	for dx = -range, range do
+    	for dy = math.max(-range, -dx-range), math.min(range, -dx+range) do
+        	local dz = -dx-dy
+        	table.insert(results, {x=x+dx, y=y+dy, z=z+dz})
+    	end
 	end
 	return results
 end
