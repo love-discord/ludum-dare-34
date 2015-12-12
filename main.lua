@@ -12,8 +12,6 @@ require("src.interactives.camera")
 --[[ functions ]]--
 	hexMap = hex:new(12, 32, 10)
 
-	immuneSystem:addUnit("Cell Healer", 0, 0, 0)
-
 function love.update(dt)
 	immuneSystem:update()
 	camera:update(dt)

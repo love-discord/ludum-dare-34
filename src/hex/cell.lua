@@ -7,7 +7,7 @@ local colors = {
 	virus = {200, 20, 20}
 }
 
-function cell:init(map, x, y, z, size, hp, team)
+function cell:init(map, x, y, z, size, hp, damage, regen, defense, team)
 	self.map = map
 	
 	self.x = x
@@ -19,6 +19,9 @@ function cell:init(map, x, y, z, size, hp, team)
 	self.color = colors[team]
 
 	self.hp = hp
+	self.dmg = damage
+	self.regen = regen
+	self.def = defense
 end
 
 --[[
@@ -49,7 +52,6 @@ function cell:neighbors()
 		end
 	end)
 end
-
 
 -- Draws the cell on the screen
 function cell:draw(mode)
@@ -87,6 +89,25 @@ function cell:getCorner(i)
 
 	return cx + math.cos(angle_rad) * self.size,
 			cy + math.sin(angle_rad) * self.size
+end
+
+function cell:update(dt)
+	-- loops through every cell
+	for x = 1, #hexMap.cells do
+		for z = 1, #hexMap.cells[x] do
+
+			-- loops through every neighbor
+			for neighbor in cell:neighbors() do
+
+				if hexMap.cells[x][z].team ~= neighbor.team then
+					neighbor.hp = neighbor.hp - hexMap.cells[x][z].dmg + neighbor.def
+					if neighbor.hp <= 0 then
+						neighbor.team = hexMap.cells[x][z].team
+					end
+				end
+			end
+		end
+	end
 end
 
 return cell
