@@ -6,6 +6,10 @@ function love.load()
 	hexMap = hex:new(5, 32, 10)
 end
 
+--[[ functions ]]--
+	immuneSystem:addUnit("Cell Healer", 3, 1)
+	virus:addUnit("Cell Damager", 1, 3)
+
 function love.update(dt)
 
 end

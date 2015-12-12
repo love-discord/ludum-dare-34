@@ -44,7 +44,7 @@ end
 
 function virus:draw()
 	for i = 1, #virus.unit do
-		love.graphics.setColor(255, 100, 100)
-		love.graphics.rectangle("fill", virus.unit[i].x, virus.unit[i].y, virus.unit[i].w, virus.unit[i].h)
+		love.graphics.setColor(200, 0, 0)
+		love.graphics.rectangle("fill", virus.unit[i].x * 32, virus.unit[i].y * 32, virus.unit[i].w, virus.unit[i].h)
 	end
 end

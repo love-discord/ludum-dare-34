@@ -49,7 +49,7 @@ end
 function immuneSystem:draw()
 	for i = 1, #immuneSystem.unit do
 		love.graphics.setColor(0, 100, 255)
-		love.graphics.rectangle("fill", immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].w, immuneSystem.unit[i].h)
+		love.graphics.rectangle("fill", immuneSystem.unit[i].x * 32, immuneSystem.unit[i].y * 32, immuneSystem.unit[i].w, immuneSystem.unit[i].h)
 	end
 end
 
