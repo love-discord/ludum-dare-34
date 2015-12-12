@@ -19,6 +19,7 @@ function cell:init(map, x, y, z, size, hp, damage, regen, defense, team)
 	self.color = colors[team] or {0, 0, 0}
 
 	self.hp = hp
+	self.maxHP = hp
 	self.dmg = damage
 	self.regen = regen
 	self.def = defense
@@ -100,7 +101,9 @@ function cell:update(dt)
 			for neighbor in cell:neighbors() do
 
 				if hexMap.cells[x][z].team ~= neighbor.team then
-					neighbor.hp = neighbor.hp - hexMap.cells[x][z].dmg + neighbor.def
+					if hexMap.cells[x][z].team ~= "neutral" then
+						neighbor.hp = neighbor.hp - hexMap.cells[x][z].dmg + neighbor.def
+					end
 					if neighbor.hp <= 0 then
 						neighbor.team = hexMap.cells[x][z].team
 					end

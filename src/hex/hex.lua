@@ -10,9 +10,10 @@ local hex = class:subclass()
 local teams = {"neutral", "virus", "immune"}
 
 function hex:init(radius, cell_size, default_hp)
-	local default_dmg = 1
-	local default_regen = 1
-	local default_def = 0
+	default_dmg = 1
+	default_regen = 1
+	default_def = 0
+
 	self.cells = {}
 	self.radius = radius
 	self.cell_size = cell_size

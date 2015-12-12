@@ -11,6 +11,7 @@ require("src.interactives.camera")
 
 --[[ functions ]]--
 	hexMap = hex:new(12, 32, 10)
+	immuneSystem:addUnit("Cell Damage Booster", 5, 0, 5)
 
 function love.load()
 end
@@ -18,6 +19,7 @@ end
 local timeSinceLastTick = 0
 function love.update(dt)
 	immuneSystem:update()
+	cell:update()
 	camera:update(dt)
 
 	local TICK_SPEED = 1 -- 1/number

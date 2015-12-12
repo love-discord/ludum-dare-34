@@ -1,12 +1,22 @@
 
 --[[ effects ]]--
 function cellHealer(x, y, z, amount)
-	hexMap:getCell(x, y, z).color = {0, 255, 0}
+	if hexMap:getCell(x, y, z).team == "immune" then
+		hexMap:getCell(x, y, z).color = {0, 255, 0}
+	end
+end
+
+function cellDamageBooster(x, y, z, amount)
+	if hexMap:getCell(x, y, z).team == "immune" then
+		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
+		hexMap:getCell(x, y, z).color = {0, 255, 0}
+	end
 end
 
 immuneSystem = {
 	unitList = {
-		["Cell Healer"] = {hp = 50, range = 2, w = 32, h = 48, movable = false, effect = cellHealer, amount = 1}
+		["Cell Healer"] = {hp = 50, range = 2, w = 32, h = 48, movable = false, effect = cellHealer, amount = 1},
+		["Cell Damage Booster"] = {hp = 50, range = 2, w = 32, h = 48, movable = false, effect = cellDamageBooster, amount = 2}
 	},
 	unit = {}
 }
@@ -28,7 +38,7 @@ end
 
 function immuneSystem:addUnit(name, x, y, z)
 	if not immuneSystem:find(x, y, z) then
-		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect}
+		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect, amount = immuneSystem.unitList[name].amount}
 	end
 end
 
@@ -52,7 +62,7 @@ function immuneSystem:update(dt)
 	for i = 1, #immuneSystem.unit do
 		local inRange = hexMap:inRange(immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].z, immuneSystem.unit[i].range)
 		for v = 1, #inRange do
-			immuneSystem.unit[i].effect(inRange[v].x, inRange[v].y, inRange[v].z)
+			immuneSystem.unit[i].effect(inRange[v].x, inRange[v].y, inRange[v].z, immuneSystem.unit[i].amount)
 		end
 	end
 end
