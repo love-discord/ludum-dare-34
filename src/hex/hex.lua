@@ -16,8 +16,12 @@ function hex:init(radius, cell_size, default_hp)
 	for x = -radius, radius do
 		self.cells[x] = {}
 		for z = -radius, radius do
-			local team = teams[math.floor(math.random(3))]
-			self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, team)
+			if hexagonal(x, -x-z, z, radius) then
+				local team = "neutral"
+				if -x-z > radius/2 then team = "immune" end
+				if -x-z < -radius/2 then team = "virus" end
+				self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, team)
+			end
 		end
 	end
 end
@@ -25,7 +29,9 @@ end
 function hex:draw()
 	for x = -self.radius, self.radius do
 		for z = -self.radius, self.radius do
-			self.cells[x][z]:draw("fill")
+			if self.cells[x][z] then
+				self.cells[x][z]:draw("fill")
+			end
 		end
 	end
 end
@@ -79,8 +85,8 @@ function hex:round(x, y, z)
 	return rx, ry, rz
 end
 
-function compute_hack_color(x, y, z)	-- transforms numbers from -120 -> 120 to 0 -> 240
-	return {x+120, y+120, z+120}
+function hexagonal(x, y, z, r)	-- transforms numbers from -120 -> 120 to 0 -> 240
+	return (math.abs(x) + math.abs(y) + math.abs(z))/2 <= r
 end
 
 return hex
