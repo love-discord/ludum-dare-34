@@ -1,12 +1,10 @@
 --[[ requirements ]]--
-	require("lib.class")
-
 	require("src.hex.hex")
 
 	require("src.entities.immuneSystem")
 	require("src.entities.virus")
 
-	require("src.interactives.camera.lua")
+	require("src.interactives.camera")
 
 function love.update(dt)
 	camera:update(dt)

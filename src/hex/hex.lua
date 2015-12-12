@@ -1,4 +1,4 @@
-local class = require 'class'
+local class = require 'lib.class'
 local hex = class:subclass()
 local cell = class:subclass()
 

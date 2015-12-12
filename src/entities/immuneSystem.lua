@@ -1,7 +1,7 @@
 immuneSystem = {
 	unitList = {
 		["Cell Healer"] = {hp = 50, range = 2, w = 32, h = 48, effect = ""}
-	}
+	},
 	unit = {}
 }
 

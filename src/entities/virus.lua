@@ -1,7 +1,7 @@
 virus = {
 	unitList = {
 		["Cell Damager"] = {hp = 50, range = 2, w = 32, h = 48, effect = ""}
-	}
+	},
 	unit = {}
 }
 
