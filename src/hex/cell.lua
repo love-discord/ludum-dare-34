@@ -83,6 +83,4 @@ function cell:position()
     return x, y
 end
 
-
-
 return cell
