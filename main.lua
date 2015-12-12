@@ -12,9 +12,23 @@ require("src.interactives.camera")
 --[[ functions ]]--
 	hexMap = hex:new(12, 32, 10)
 
+function love.load()
+end
+
+local timeSinceLastTick = 0
 function love.update(dt)
 	immuneSystem:update()
 	camera:update(dt)
+
+	local TICK_SPEED = 1 -- 1/number
+	timeSinceLastTick = timeSinceLastTick + dt
+	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
+		regulatedTick()
+	end
+end
+
+function regulatedTick()
+	
 end
 
 function love.draw()
