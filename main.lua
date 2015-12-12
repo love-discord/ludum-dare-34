@@ -33,7 +33,7 @@ function love.update(dt)
 end
 
 function regulatedTick()
-	-- cell:update()
+	cell:update()
 end
 
 function love.draw()

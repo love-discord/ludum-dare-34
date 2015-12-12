@@ -8,7 +8,6 @@ end
 function cellDamageBooster(x, y, z, amount)
 	if hexMap:getCell(x, y, z).team == "immune" then
 		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
-		hexMap:getCell(x, y, z).color = {0, 255, 0}
 	end
 end
 
