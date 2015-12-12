@@ -20,8 +20,9 @@ function hex:init(radius, cell_size, default_hp)
 		self.cells[x] = {}
 		print("self.cells["..x.."]")
 		for z = -radius, radius do
-			local team = teams[math.floor(math.random(3))]
-			self.cells[x][z] = cell:new(self, x, -x-z, z, cell_size, default_hp, team)
+			if hexagonal(x, -x-z, z, radius) then
+				self.cells[x][z] = cell:new(self, x, -x-z, z, cell_size, default_hp, "neutral")
+			end
 		end
 	end
 end
@@ -30,7 +31,9 @@ function hex:draw()
 	print(self)
 	for x = -self.radius, self.radius do
 		for z = -self.radius, self.radius do
-			self.cells[x][z]:draw("fill")
+			if self.cells[x][z] then
+				self.cells[x][z]:draw("fill")
+			end
 		end
 	end
 end
@@ -84,8 +87,8 @@ function hex:round(x, y, z)
 	return rx, ry, rz
 end
 
-function compute_hack_color(x, y, z)	-- transforms numbers from -120 -> 120 to 0 -> 240
-	return {x+120, y+120, z+120}
+function hexagonal(x, y, z, size)
+	return (math.abs(x) + math.abs(y) + math.abs(z)) / 2 < size
 end
 
 return hex

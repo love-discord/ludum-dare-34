@@ -17,7 +17,6 @@ require("src.interactives.camera")
 function love.update(dt)
 	-- immuneSystem:update()
 	camera:update(dt)
-	--print(hex:getCell(1, 1, 1))
 end
 
 function love.draw()
@@ -26,7 +25,10 @@ function love.draw()
 
 	hexMap:draw()
 
-	local x, y, z = hexMap:pixelToHex(love.mouse.getPosition())
+	local mx, my = love.mouse.getPosition()
+	mx = mx - camera.x
+	my = my - camera.y
+	local x, y, z = hexMap:pixelToHex(mx, my)
 	local magicCell = cell:new(hexMap, x, y, z, 32, 10, "immune")
 	magicCell:draw("line")
 
