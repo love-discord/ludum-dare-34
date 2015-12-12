@@ -1,0 +1,7 @@
+luac.out
+.DS_Store
+*.o
+*.lo
+*.dll
+*.exe
+*.love
