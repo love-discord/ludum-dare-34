@@ -16,7 +16,7 @@ require("src.interactives.camera")
 	virus:addUnit("Cell Damager", 1, 3)
 
 function love.update(dt)
-
+	camera:update(dt)
 end
 
 function love.draw()

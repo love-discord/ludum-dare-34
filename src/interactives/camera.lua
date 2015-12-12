@@ -16,7 +16,7 @@ function camera:update(dt)
 		camera.y = camera.y - camera.speed * dt
 	end
 	if love.keyboard.isDown("d") then
-		camera.y = camera.y - camera.speed * dt
+		camera.x = camera.x - camera.speed * dt
 	end
 end
 
