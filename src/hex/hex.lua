@@ -45,8 +45,18 @@ end
 function hex:pixelToHex(x, y)
 	local q = (x * math.sqrt(3)/3 - y / 3) / CELL_SIZE
 	local r = y * 2/3 / CELL_SIZE
-	print(CELL_SIZE)
 	return self:round(q, -q-r, r)
+end
+
+function hex:inRange(x, y, z, range)
+	local results = {}
+	for i = -range + x, range + x do
+		for v = math.max(-range + y, -range - x + y), math.min(range + y, range - x + y) do
+			z = -x-y
+			results[#results + 1] = {x = x, y = y, z = z}
+		end
+	end
+	return results
 end
 
 function hex:round(x, y, z)

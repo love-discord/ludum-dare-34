@@ -1,6 +1,6 @@
 immuneSystem = {
 	unitList = {
-		["Cell Healer"] = {hp = 50, range = 2, w = 32, h = 48, movable = false, effect = ""}
+		["Cell Healer"] = {hp = 50, range = 2, w = 32, h = 48, movable = false, effect = "hex:getCell(x, y, z).color = {0, 255, 0}"}
 	},
 	unit = {}
 }
@@ -22,7 +22,7 @@ end
 
 function immuneSystem:addUnit(name, x, y, z)
 	if not immuneSystem:find(x, y, z) then
-		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h}
+		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect}
 	end
 end
 
@@ -43,7 +43,13 @@ function immuneSystem:remove(x, y, z)
 end
 
 function immuneSystem:update(dt)
-
+	for i = 1, #immuneSystem.unit do
+		local inRange = hex:inRange(immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].z, immuneSystem.unit[i].range)
+		for v = 1, #inRange do
+			local x, y, z = unpack(inRange[v])
+			loadstring(immuneSystem.unitList[immuneSystem.unit[i].name].effect)()
+		end
+	end
 end
 
 function immuneSystem:draw()

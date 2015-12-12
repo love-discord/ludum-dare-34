@@ -15,7 +15,9 @@ require("src.interactives.camera")
 	immuneSystem:addUnit("Cell Healer", 1, 1, 1)
 
 function love.update(dt)
+	-- immuneSystem:update()
 	camera:update(dt)
+	print(hex:getCell(1, 1, 1))
 end
 
 function love.draw()
