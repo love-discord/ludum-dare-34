@@ -22,19 +22,24 @@ end
 
 function love.draw()
 	love.graphics.push()
-	love.graphics.translate(camera.x, camera.y)
+	love.graphics.translate(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 	love.graphics.scale(camera.scale)
+	love.graphics.translate(-love.graphics.getWidth()/2, -love.graphics.getHeight()/2)
 
-	hexMap:draw()
-	local mx, my = love.mouse.getPosition()
-	mx = mx - camera.x
-	my = my - camera.y
-	local x, y, z = hexMap:pixelToHex(mx, my)
+	love.graphics.translate(camera.x, camera.y)
+
+	local HACK = hexMap:draw()
+	local x = HACK.x
+	local y = HACK.y
+	local z = HACK.z
 	local magicCell = cell:new(hexMap, x, y, z, 32, 10, "immune")
 	magicCell:draw("line")
+
 	immuneSystem:draw()
 	
 	love.graphics.pop()
+
+	love.graphics.print(camera.scale, 100, 100)
 end
 
 function love.mousepressed(x, y, key)
