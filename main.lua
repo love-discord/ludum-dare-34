@@ -21,16 +21,29 @@ end
 
 function love.draw()
 	love.graphics.push()
-	love.graphics.translate(camera.x, camera.y)
+	love.graphics.translate(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 	love.graphics.scale(camera.scale)
+	love.graphics.translate(-love.graphics.getWidth()/2, -love.graphics.getHeight()/2)
+
+	love.graphics.translate(camera.x, camera.y)
+
+	local viewportWidth = love.graphics.getWidth() * camera.scale
+	local viewportHeight = love.graphics.getHeight() * camera.scale
+
+	local viewportX = -camera.x - love.graphics.getWidth() / camera.scale
+	local viewportY = -camera.y - love.graphics.getHeight() / camera.scale
+
+
 
 	hexMap:draw()
 	local mx, my = love.mouse.getPosition()
-	mx = mx - camera.x
-	my = my - camera.y
-	local x, y, z = hexMap:pixelToHex(mx, my)
+	local xx = math.floor((mx - (camera.x * camera.scale)) / camera.scale) + love.graphics.getWidth() * camera.scale
+	local yy = math.floor((my - (camera.y * camera.scale)) / camera.scale) + love.graphics.getHeight() * camera.scale
+	local x, y, z = hexMap:pixelToHex(xx, yy)
 	local magicCell = cell:new(hexMap, x, y, z, 32, 10, "immune")
 	magicCell:draw("line")
-	
+
 	love.graphics.pop()
 end
+
+function love.mousepressed(x, y, b) camera:mousepressed(b) end

@@ -13,6 +13,7 @@ function hex:init(radius, cell_size, default_hp)
 	self.cells = {}
 	self.radius = radius
 	self.cell_size = cell_size
+	
 	for x = -radius, radius do
 		self.cells[x] = {}
 		for z = -radius, radius do

@@ -22,8 +22,8 @@ end
 
 function camera:mousepressed(key)
 	if key == "wu" then
-		camera.scale = camera.scale + 0.1
+		camera.scale = camera.scale * 1.1
 	elseif key == "wd" then
-		camera.scale = camera.scale - 0.1
+		camera.scale = camera.scale / 1.1
 	end
 end
