@@ -1,9 +1,11 @@
 local class = require 'lib.class'
 local cell = class:subclass()
 
-local colors = {neutral = {200, 200, 200},
-				immune = {50, 50, 200},
-				virus = {200, 20, 20}}
+local colors = {
+	neutral = {200, 200, 200},
+	immune = {50, 100, 200},
+	virus = {200, 20, 20}
+}
 
 function cell:init(map, x, y, z, size, hp, team)
 	self.map = map
@@ -51,6 +53,7 @@ end
 
 -- Draws the cell on the screen
 function cell:draw(mode)
+	self.color[4] = nil
 	love.graphics.setColor(self.color)
 
 	local vertices = {}
@@ -60,7 +63,20 @@ function cell:draw(mode)
 		vertices[#vertices + 1] = y
 	end
 
-	love.graphics.polygon(mode, vertices)
+	love.graphics.setLineWidth(2)
+	love.graphics.polygon("line", vertices)
+
+	self.color[4] = 200
+	love.graphics.setColor(self.color)
+
+	local vertices = {}
+	for i = 0, 5 do
+		local x, y = self:getCorner(i)
+		vertices[#vertices + 1] = x
+		vertices[#vertices + 1] = y
+	end
+
+	love.graphics.polygon("fill", vertices)
 end
 
 function cell:getCorner(i)
