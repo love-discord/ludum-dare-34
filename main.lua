@@ -16,6 +16,6 @@ function love.draw()
 	hexMap:draw()
 	local x, y, z = hexMap:pixelToHex(love.mouse.getPosition())
 	local cell = hexMap:getCell(x, y, z)
-	if cell then cell:draw("line") end
+	if cell ~= {} then cell:draw("line") end
 	--love.graphics.pop()
 end

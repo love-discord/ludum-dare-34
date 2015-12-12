@@ -33,7 +33,7 @@ end
 
 function hex:getCell(x, y, z)
 	if self.cells[x] then
-		return self.cells[x][z]
+		return self.cells[x][z] or {}
 	else return {} end
 end
 
