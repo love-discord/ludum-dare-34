@@ -14,6 +14,7 @@ function hex:init(radius)
 end
 
 function cell:init(map, x, y, z)
+	self.map = map
 	self.x = x
 	self.y = y
 	self.z = z
