@@ -23,7 +23,6 @@ function hex:init(radius, cell_size, default_hp)
 end
 
 function hex:draw()
-	print("a")
 	for x = -self.radius, self.radius do
 		for z = -self.radius, self.radius do
 			self.cells[x][z]:draw("fill")

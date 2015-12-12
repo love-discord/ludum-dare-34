@@ -34,3 +34,7 @@ function love.draw()
 	
 	love.graphics.pop()
 end
+
+function love.mousepressed(x, y, key)
+	camera:mousepressed(key)
+end
