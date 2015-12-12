@@ -18,8 +18,8 @@ function hex:init(radius, cell_size, default_hp)
 		for z = -radius, radius do
 			if hexagonal(x, -x-z, z, radius) then
 				local team = "neutral"
-				if -x-z > radius/2 then team = "immune" end
-				if -x-z < -radius/2 then team = "virus" end
+				if x+z/2 > radius/2 then team = "immune" end
+				if x+z/2 < -radius/2 then team = "virus" end
 				self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, team)
 			end
 		end
