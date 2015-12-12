@@ -8,12 +8,14 @@ require("src.entities.immuneSystem")
 require("src.entities.virus")
 
 require("src.interactives.camera")
+require("src.interactives.shop")
 
 --[[ functions ]]--
 	hexMap = hex:new(12, 32, 10)
 	immuneSystem:addUnit("Cell Damage Booster", 5, 0, 5)
 
 function love.load()
+	shop:load(immuneSystem.unitList)
 end
 
 local timeSinceLastTick = 0
@@ -44,7 +46,7 @@ function love.draw()
 	mx = mx - camera.x
 	my = my - camera.y
 	local x, y, z = hexMap:pixelToHex(mx, my)
-	if hexMap:getCell(x, y, z) then
+	if hexMap:getCell(x, y, z) ~= {} then
 		local magicCell = cell:new(hexMap, x, y, z, 32, 10, 1, 1, 1, "immune")
 		magicCell:draw("line")
 	end
@@ -52,8 +54,11 @@ function love.draw()
 	immuneSystem:draw()
 	
 	love.graphics.pop()
+
+	-- UI BEGGINS HERE
+	shop:draw()
 end
 
-function love.mousepressed(x, y, key)
-	camera:mousepressed(key)
+function love.mousepressed(x, y, b)
+	camera:mousepressed(x, y, b)
 end
