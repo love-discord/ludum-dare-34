@@ -23,7 +23,7 @@ function hex:init(radius, cell_size, default_hp)
 				local team = "neutral"
 				if x+z/2 > 7 then team = "immune" end
 				if x+z/2 < -7 then team = "virus" end
-				self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, default_dmg, team)
+				self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, default_dmg, default_regen, default_def, team)
 			end
 		end
 	end

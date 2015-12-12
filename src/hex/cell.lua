@@ -2,9 +2,9 @@ local class = require 'lib.class'
 local cell = class:subclass()
 
 local colors = {
-	neutral = {200, 200, 200},
-	immune = {50, 100, 200},
-	virus = {200, 20, 20}
+	["neutral"] = {200, 200, 200},
+	["immune"] = {50, 100, 200},
+	["virus"] = {200, 20, 20}
 }
 
 function cell:init(map, x, y, z, size, hp, damage, regen, defense, team)
