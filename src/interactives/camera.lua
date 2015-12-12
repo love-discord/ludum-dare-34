@@ -1,6 +1,6 @@
 camera = {
-	x = 0,
-	y = 0,
+	x = 650,
+	y = 380,
 	scale = 1,
 	speed = 400
 }
