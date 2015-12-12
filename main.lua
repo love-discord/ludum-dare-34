@@ -1,5 +1,4 @@
-io.stdout:setvbuf("no")
-
+local class = require 'lib.class'
 local hex = require 'src.hex.hex'
 
 print("HELLO")
