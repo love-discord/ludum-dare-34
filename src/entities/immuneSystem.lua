@@ -42,9 +42,17 @@ function immuneSystem:remove(x, y)
 	end
 end
 
+function immuneSystem:update(dt)
+
+end
+
 function immuneSystem:draw()
 	for i = 1, #immuneSystem.unit do
 		love.graphics.setColor(0, 100, 255)
 		love.graphics.rectangle("fill", immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].w, immuneSystem.unit[i].h)
 	end
+end
+
+function immuneSystem:mousepressed(key)
+
 end
