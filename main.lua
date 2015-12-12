@@ -2,7 +2,7 @@
 local class = require("lib.class")
 
 local hex = require("src.hex.hex")
-require("src.hex.cell")
+local cell = require("src.hex.cell")
 
 require("src.entities.immuneSystem")
 require("src.entities.virus")
@@ -25,9 +25,12 @@ function love.draw()
 	love.graphics.scale(camera.scale)
 
 	hexMap:draw()
-	local x, y, z = hexMap:pixelToHex(love.mouse.getPosition())
-	local cell = hexMap:getCell(x, y, z)
-	if cell ~= {} then cell:draw("line") end
+	local mx, my = love.mouse.getPosition()
+	mx = mx - camera.x
+	my = my - camera.y
+	local x, y, z = hexMap:pixelToHex(mx, my)
+	local magicCell = cell:new(hexMap, x, y, z, 32, 10, "immune")
+	magicCell:draw("line")
 	
 	love.graphics.pop()
 end
