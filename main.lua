@@ -24,11 +24,12 @@ function love.update(dt)
 	timeSinceLastTick = timeSinceLastTick + dt
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 		regulatedTick()
+		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end
 end
 
 function regulatedTick()
-	
+
 end
 
 function love.draw()
