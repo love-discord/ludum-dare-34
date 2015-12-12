@@ -27,8 +27,10 @@ function love.draw()
 	mx = mx - camera.x
 	my = my - camera.y
 	local x, y, z = hexMap:pixelToHex(mx, my)
-	local magicCell = cell:new(hexMap, x, y, z, 32, 10, "immune")
-	magicCell:draw("line")
+	if hexMap:getCell(x, y, z) then
+		local magicCell = cell:new(hexMap, x, y, z, 32, 10, "immune")
+		magicCell:draw("line")
+	end
 
 	immuneSystem:draw()
 	

@@ -16,7 +16,7 @@ function cell:init(map, x, y, z, size, hp, damage, regen, defense, team)
 	self.size = size
 
 	self.team = team
-	self.color = colors[team]
+	self.color = colors[team] or {0, 0, 0}
 
 	self.hp = hp
 	self.dmg = damage
