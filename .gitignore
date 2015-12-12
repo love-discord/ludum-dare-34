@@ -5,3 +5,4 @@ luac.out
 *.dll
 *.exe
 *.love
+Makefile
