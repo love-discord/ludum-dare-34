@@ -10,7 +10,7 @@ require("src.entities.virus")
 require("src.interactives.camera")
 
 --[[ functions ]]--
-	hexMap = hex:new(5, 32, 10)
+	hexMap = hex:new(10, 32, 10)
 
 	immuneSystem:addUnit("Cell Healer", 3, 1)
 	virus:addUnit("Cell Damager", 1, 3)
