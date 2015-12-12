@@ -39,10 +39,10 @@ function hex:draw()
 	end
 end
 
-function hex:update()
+function hex:update(dt)
 	for _, col in pairs(self.cells) do
 		for _, cell in pairs(col) do
-			cell:update()
+			cell:update(dt)
 		end
 	end
 end

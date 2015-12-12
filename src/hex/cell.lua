@@ -13,7 +13,8 @@ function cell:init(map, x, y, z, size, hp, damage, regen, defense, team)
 	self.x = x
 	self.y = y
 	self.z = z
-	self.size = size
+	self.size = 0
+  self.tSize = size
 
 	self.team = team
 	self.color = colors[team] or {0, 0, 0}
@@ -96,6 +97,8 @@ function cell:getCorner(i)
 end
 
 function cell:update(dt)
+  self.size = self.size + 1*dt*100
+  if self.size > self.tSize then self.size = self.size - 1*dt*100 end
 	self.hp = self.hp + self.regen
 	for neighbor in self:neighbors() do
 		if neighbor.team ~= self.team and neighbor.team ~= 'neutral' then
