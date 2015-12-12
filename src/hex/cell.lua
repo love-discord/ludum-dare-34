@@ -117,7 +117,7 @@ function cell:update(dt)
 	end
 
 
-	for x, row in pairs(hexGrid.cells) do
+	for x, row in pairs(hexMap.cells) do
 		for z, cell in pairs(row) do
 			local cellList = hexMap:inRange(cell.x, cell.y, cell.z, 1)
 			for i = 1, #cellList do

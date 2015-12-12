@@ -16,7 +16,10 @@ require("src.interactives.shop")
 function love.load()
 	hexMap = hex:new(12, 32, 10)
 	shop:load(immuneSystem:loadUnits())
+	virus:loadUnits()
+	virus:loadTroops()
 	immuneSystem:addUnit("Cell Damage Booster", 5, 0, 5)
+	virus:addUnit("Protein factory", -5, 0, -5)
 end
 
 local timeSinceLastTick = 0
@@ -53,6 +56,7 @@ function love.draw()
 	end
 
 	immuneSystem:draw()
+	virus:draw()
 	
 	love.graphics.pop()
 
