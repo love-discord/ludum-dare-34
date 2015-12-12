@@ -14,9 +14,8 @@ require("src.interactives.shop")
 
 --[[ functions ]]--
 function love.load()
-	hexMap = hex:new(12, 32, 10)
+	hexMap = hex:new(12, 32, 100)
 	shop:load(immuneSystem:loadUnits())
-	immuneSystem:addUnit("Cell Damage Booster", 5, 0, 5)
 end
 
 local timeSinceLastTick = 0
@@ -24,7 +23,7 @@ function love.update(dt)
 	immuneSystem:update()
 	camera:update(dt)
 
-	local TICK_SPEED = 1 -- 1/number
+	local TICK_SPEED = 0.5 -- 1/number
 	timeSinceLastTick = timeSinceLastTick + dt
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 		regulatedTick()
@@ -32,8 +31,11 @@ function love.update(dt)
 	end
 end
 
+updating = true
 function regulatedTick()
-	cell:update()
+	if updating then
+		cell:update()
+	end
 end
 
 function love.draw()
@@ -57,8 +59,15 @@ function love.draw()
 
 	-- UI BEGGINS HERE
 	shop:draw()
+	love.graphics.print(love.timer.getFPS(), 10, 10)
 end
 
 function love.mousepressed(x, y, b)
 	camera:mousepressed(x, y, b)
+end
+
+function love.keypressed(key)
+	if key == "q" then
+		updating = not updating
+	end
 end

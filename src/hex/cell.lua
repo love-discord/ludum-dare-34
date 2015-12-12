@@ -80,6 +80,9 @@ function cell:draw(mode)
 	end
 
 	love.graphics.polygon("fill", vertices)
+	love.graphics.setColor(255, 255, 255)
+	local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
+	love.graphics.print(self.hp, x, y)
 end
 
 function cell:getCorner(i)
@@ -112,10 +115,13 @@ function cell:update(dt)
 					end
 					if tempCell.hp > tempCell.maxHP then
 						tempCell.hp = tempCell.maxHP
-					elseif tempCell.hp < 0 then
+					elseif tempCell.hp <= 0 then
 						tempCell.team = cell.team
 						tempCell.hp = cell.hp / 2
 						tempCell.color = colors[cell.team]
+						tempCell.dmg = 10
+						tempCell.mapHP = 100
+						tempCell.def = 0
 					end
 				end
 			end
