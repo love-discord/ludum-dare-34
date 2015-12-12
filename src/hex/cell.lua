@@ -104,7 +104,7 @@ function cell:update(dt)
   if self.size > self.tSize then self.size = self.size - 1*dt*100 end
 	self.hp = self.hp + self.regen
 	for neighbor in self:neighbors() do
-		if neighbor.team ~= self.team and neighbor.team ~= 'neutral' then
+		if neighbor.team ~= self.team then
 			neighbor.hp = neighbor.hp - self.dmg + neighbor.def
 		end
 		if neighbor.hp > neighbor.maxHP then

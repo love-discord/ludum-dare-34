@@ -10,7 +10,7 @@ local hex = class:subclass()
 local teams = {"neutral", "virus", "immune"}
 
 function hex:init(radius, cell_size)
-	local default_dmg = 1
+	local default_dmg = 10
 	local default_regen = 1
 	local default_def = 0
 	local default_hp = 100
@@ -29,6 +29,10 @@ function hex:init(radius, cell_size)
 			end
 		end
 	end
+  
+  if self.team == "neutral" then
+    self.dmg = 0
+  end
 end
 
 function hex:draw()
