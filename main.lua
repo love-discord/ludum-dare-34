@@ -2,6 +2,8 @@ io.stdout:setvbuf("no")
 
 local hex = require 'src.hex.hex'
 
+print("HELLO")
+
 function love.load()
 	print("Hex")
 	hexMap = hex:new(5, 32, 10)
