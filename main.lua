@@ -18,6 +18,7 @@ function love.load()
 	shop:load(immuneSystem:loadUnits())
 end
 
+updating = true
 local timeSinceLastTick = 0
 function love.update(dt)
 	immuneSystem:update()
@@ -26,15 +27,10 @@ function love.update(dt)
 	local TICK_SPEED = 0.5 -- 1/number
 	timeSinceLastTick = timeSinceLastTick + dt
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
-		regulatedTick()
+		if updating then
+			hexMap:update()
+		end
 		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
-	end
-end
-
-updating = true
-function regulatedTick()
-	if updating then
-		cell:update()
 	end
 end
 
@@ -54,7 +50,7 @@ function love.draw()
 	end
 
 	immuneSystem:draw()
-	
+
 	love.graphics.pop()
 
 	-- UI BEGGINS HERE

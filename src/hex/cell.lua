@@ -2,14 +2,14 @@ local class = require 'lib.class'
 local cell = class:subclass()
 
 local colors = {
-	["neutral"] = {200, 200, 200},
-	["immune"] = {50, 100, 200},
-	["virus"] = {200, 20, 20}
+	neutral = {200, 200, 200},
+	immune = {50, 100, 200},
+	virus = {200, 20, 20}
 }
 
 function cell:init(map, x, y, z, size, hp, damage, regen, defense, team)
 	self.map = map
-	
+
 	self.x = x
 	self.y = y
 	self.z = z
@@ -45,11 +45,11 @@ function cell:neighbors()
 		if self.z > -self.map.radius then
 			coroutine.yield(self.map.cells[self.x][self.z - 1])
 		end
-		if self.y < self.map.radius then
-			coroutine.yield(self.map.cells[self.x - 1][self.z + 1])
-		end
-		if self.y > -self.map.radius then
+		if self.x < self.map.radius and self.z > -self.map.radius then
 			coroutine.yield(self.map.cells[self.x + 1][self.z - 1])
+		end
+		if self.x > -self.map.radius and self.z < self.map.radius then
+			coroutine.yield(self.map.cells[self.x - 1][self.z + 1])
 		end
 	end)
 end
@@ -96,35 +96,20 @@ function cell:getCorner(i)
 end
 
 function cell:update(dt)
-	-- loops through every cell
-	for x, row in pairs(hexMap.cells) do
-		for z, cell in pairs(row) do
-
-			-- gets every neighbor
-			local cellList = hexMap:inRange(cell.x, cell.y, cell.z, 1)
-			-- regenerates health
-			cell.hp = cell.hp + cell.regen
-
-			for i = 1, #cellList do
-				local tempCell = hexMap:getCell(cellList[i].x, cellList[i].y, cellList[i].z)
-				-- if the cell exists
-				if tempCell.team ~= nil then
-					--if the neighbor cell is in another team
-					if tempCell.team ~= cell.team and cell.team ~= "neutral" then
-						tempCell.hp = tempCell.hp - cell.dmg + tempCell.def
-					end
-					if tempCell.hp > tempCell.maxHP then
-						tempCell.hp = tempCell.maxHP
-					elseif tempCell.hp <= 0 then
-						tempCell.team = cell.team
-						tempCell.hp = cell.hp / 2
-						tempCell.color = colors[cell.team]
-						tempCell.dmg = 10
-						tempCell.mapHP = 100
-						tempCell.def = 0
-					end
-				end
-			end
+	self.hp = self.hp + self.regen
+	for neighbor in self:neighbors() do
+		if neighbor.team ~= self.team and neighbor.team ~= 'neutral' then
+			neighbor.hp = neighbor.hp - self.dmg + neighbor.def
+		end
+		if neighbor.hp > neighbor.maxHP then
+			neighbor.hp = neighbor.maxHP
+		elseif neighbor.hp <= 0 then
+			neighbor.team = self.team
+			neighbor.hp = self.hp / 2
+			neighbor.color = colors[self.team]
+			neighbor.dmg = 10
+			neighbor.mapHP = 100
+			neighbor.def = 0
 		end
 	end
 end

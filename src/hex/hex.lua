@@ -9,10 +9,11 @@ local hex = class:subclass()
 
 local teams = {"neutral", "virus", "immune"}
 
-function hex:init(radius, cell_size, default_hp)
-	default_dmg = 1
-	default_regen = 1
-	default_def = 0
+function hex:init(radius, cell_size)
+	local default_dmg = 1
+	local default_regen = 1
+	local default_def = 0
+	local default_hp = 100
 
 	self.cells = {}
 	self.radius = radius
@@ -31,19 +32,25 @@ function hex:init(radius, cell_size, default_hp)
 end
 
 function hex:draw()
-	for x = -self.radius, self.radius do
-		for z = -self.radius, self.radius do
-			if self.cells[x][z] then
-				self.cells[x][z]:draw("fill")
-			end
+	for _, col in pairs(self.cells) do
+		for _, cell in pairs(col) do
+			cell:draw 'fill'
+		end
+	end
+end
+
+function hex:update()
+	for _, col in pairs(self.cells) do
+		for _, cell in pairs(col) do
+			cell:update()
 		end
 	end
 end
 
 function hex:getCell(x, y, z)
 	if self.cells[x] then
-		return self.cells[x][z] or {}
-	else return {} end
+		return self.cells[x][z]
+	end
 end
 
 function hex:hexToPixel(x, y, z)
@@ -61,10 +68,10 @@ end
 function hex:inRange(x, y, z, range)
 	local results = {}
 	for dx = -range, range do
-    	for dy = math.max(-range, -dx-range), math.min(range, -dx+range) do
-        	local dz = -dx-dy
-        	table.insert(results, {x=x+dx, y=y+dy, z=z+dz})
-    	end
+		for dy = math.max(-range, -dx-range), math.min(range, -dx+range) do
+			local dz = -dx-dy
+			table.insert(results, {x=x+dx, y=y+dy, z=z+dz})
+		end
 	end
 	return results
 end
