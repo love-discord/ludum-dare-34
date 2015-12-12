@@ -1,7 +1,7 @@
 --[[ requirements ]]--
 local class = require("lib.class")
 
-local hex = require("src.hex.hex")
+hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
 
 require("src.entities.immuneSystem")
@@ -10,10 +10,9 @@ require("src.entities.virus")
 require("src.interactives.camera")
 
 --[[ functions ]]--
-	hexMap = hex:new(5, 32, 10)
+	hexMap = hex:new(10, 32, 10)
 
-	immuneSystem:addUnit("Cell Healer", 3, 1)
-	virus:addUnit("Cell Damager", 1, 3)
+	immuneSystem:addUnit("Cell Healer", 1, 1, 1)
 
 function love.update(dt)
 	camera:update(dt)
@@ -43,7 +42,11 @@ function love.draw()
 	local magicCell = cell:new(hexMap, x, y, z, 32, 10, "immune")
 	magicCell:draw("line")
 
+	immuneSystem:draw()
+	
 	love.graphics.pop()
 end
 
-function love.mousepressed(x, y, b) camera:mousepressed(b) end
+function love.mousepressed(x, y, key)
+	camera:mousepressed(key)
+end

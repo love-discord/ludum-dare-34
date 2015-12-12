@@ -12,8 +12,7 @@ local teams = {"neutral", "virus", "immune"}
 function hex:init(radius, cell_size, default_hp)
 	self.cells = {}
 	self.radius = radius
-	self.cell_size = cell_size
-	
+	CELL_SIZE = cell_size
 	for x = -radius, radius do
 		self.cells[x] = {}
 		for z = -radius, radius do
@@ -24,7 +23,6 @@ function hex:init(radius, cell_size, default_hp)
 end
 
 function hex:draw()
-	print("a")
 	for x = -self.radius, self.radius do
 		for z = -self.radius, self.radius do
 			self.cells[x][z]:draw("fill")
@@ -39,14 +37,15 @@ function hex:getCell(x, y, z)
 end
 
 function hex:hexToPixel(x, y, z)
-	local xP = self.cell_size * math.sqrt(3) * (x + z/2)
-    local yP = self.cell_size * 3/2 * z
-    return xP, yP
+	local xP = CELL_SIZE * math.sqrt(3) * (x + z/2)
+	local yP = CELL_SIZE * 3/2 * z
+	return xP, yP
 end
 
 function hex:pixelToHex(x, y)
-	local q = (x * math.sqrt(3)/3 - y / 3) / self.cell_size
-	local r = y * 2/3 / self.cell_size
+	local q = (x * math.sqrt(3)/3 - y / 3) / CELL_SIZE
+	local r = y * 2/3 / CELL_SIZE
+	print(CELL_SIZE)
 	return self:round(q, -q-r, r)
 end
 
