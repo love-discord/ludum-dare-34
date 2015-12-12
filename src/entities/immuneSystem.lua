@@ -1,4 +1,3 @@
-
 --[[ effects ]]--
 function cellHealer(x, y, z, amount)
 	if hexMap:getCell(x, y, z).team == "immune" then
@@ -14,12 +13,18 @@ function cellDamageBooster(x, y, z, amount)
 end
 
 immuneSystem = {
-	unitList = {
-		["Cell Healer"] = {hp = 50, range = 2, w = 32, h = 48, movable = false, effect = cellHealer, amount = 1},
-		["Cell Damage Booster"] = {hp = 50, range = 2, w = 32, h = 48, movable = false, effect = cellDamageBooster, amount = 2}
-	},
+	unitList = {},
 	unit = {}
 }
+
+function immuneSystem:loadUnits()
+	immuneSystem:newUnit("Cell Healer", 50, 2, 32, 48, false, cellHealer, 2)
+	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, cellDamageBooster, 2)
+end
+
+function immuneSystem:newUnit(name, hp, range, w, h, movable, effect, amount, cost, img)
+	immuneSystem.unitList[name] = {hp = hp, range = range, w = w, h = h, movable = movable, effect = effect, amount = amount, cost = cost, img = img}
+end
 
 function immuneSystem:find(x, y, z)
 	local occupied = false

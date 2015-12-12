@@ -12,6 +12,7 @@ require("src.interactives.shop")
 
 --[[ functions ]]--
 	hexMap = hex:new(12, 32, 10)
+	immuneSystem:loadUnits()
 	immuneSystem:addUnit("Cell Damage Booster", 5, 0, 5)
 
 function love.load()
@@ -21,7 +22,6 @@ end
 local timeSinceLastTick = 0
 function love.update(dt)
 	immuneSystem:update()
-	cell:update()
 	camera:update(dt)
 
 	local TICK_SPEED = 1 -- 1/number
@@ -33,7 +33,7 @@ function love.update(dt)
 end
 
 function regulatedTick()
-
+	-- cell:update()
 end
 
 function love.draw()

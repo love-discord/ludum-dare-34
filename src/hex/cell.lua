@@ -98,14 +98,38 @@ function cell:update(dt)
 		for z = 1, #hexMap.cells[x] do
 
 			-- loops through every neighbor
-			for neighbor in cell:neighbors() do
-
-				if hexMap.cells[x][z].team ~= neighbor.team then
+			print(x, z)
+			local neighbor = hexMap:inRange(hexMap.cells[x][z].x, hexMap.cells[x][z].y, hexMap.cells[x][z].z, 1)
+			for i = 1, #neighbor do
+				local target = hexMap:getCell(neighbor[i].x, neighbor[i].y, neighbor[i].z)
+				if hexMap.cells[x][z].team ~= target.team then
 					if hexMap.cells[x][z].team ~= "neutral" then
-						neighbor.hp = neighbor.hp - hexMap.cells[x][z].dmg + neighbor.def
+						print("hi")
+						target.hp = target.hp - hexMap.cells[x][z].dmg + target.def
 					end
-					if neighbor.hp <= 0 then
-						neighbor.team = hexMap.cells[x][z].team
+					if target.hp <= 0 then
+						target.team = hexMap.cells[x][z].team
+					end
+				end
+			end
+			hexMap.cells = neighbor
+		end
+	end
+
+
+	for x, row in pairs(hexGrid.cells) do
+		for z, cell in pairs(row) do
+			local cellList = hexMap:inRange(cell.x, cell.y, cell.z, 1)
+			for i = 1, #cellList do
+				local target = hexMap:getCell(cellList[i].x, cellList[i].y, cellList[i].z)
+				print(x, z)
+				print(cell.team, target.team)
+				if cell.team ~= target.team then
+					if cell.team ~= "neutral" then
+						target.hp = target.hp - cell.dmg + target.def
+					end
+					if target.hp <= 0 then
+						target.team = cell.team
 					end
 				end
 			end
