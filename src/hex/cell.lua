@@ -57,6 +57,9 @@ end
 
 -- Draws the cell on the screen
 function cell:draw(mode)
+  self.size = self.size + 1
+  if self.size > self.tSize then self.size = self.size - 1 end
+  
 	self.color[4] = nil
 	love.graphics.setColor(self.color)
 
