@@ -23,11 +23,9 @@ end
 
 --[[
 Use example:
-
 	for neighbor in cell:neighbors() do
 		--blah
 	end
-
 --]]
 function cell:neighbors()
 	return coroutine.wrap(function()
@@ -71,16 +69,10 @@ function cell:getCorner(i)
 	local angle_deg = 60 * i + 30
 	local angle_rad = math.pi / 180 * angle_deg
 
-	local cx, cy = self:position(self.x, self.y, self.z)
+	local cx, cy = self.map:hexToPixel(self.x, self.y, self.z)
 
 	return cx + math.cos(angle_rad) * self.size,
 			cy + math.sin(angle_rad) * self.size
-end
-
-function cell:position()
-	local x = self.size * math.sqrt(3) * (self.x + self.z/2)
-    local y = self.size * 3/2 * self.z
-    return x, y
 end
 
 return cell
