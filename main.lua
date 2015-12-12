@@ -4,7 +4,7 @@ local cell = require 'src.hex.cell'
 require 'src.interactives.camera'
 
 function love.load()
-	hexMap = hex:new(5, 32, 10, camera)
+	hexMap = hex:new(5, 32, 10)
 end
 
 function love.update(dt)
