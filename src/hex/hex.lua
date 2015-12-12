@@ -9,10 +9,11 @@ local hex = class:subclass()
 
 local teams = {"neutral", "virus", "immune"}
 
-function hex:init(radius, cell_size, default_hp)
+function hex:init(radius, cell_size, default_hp, camera)
 	self.cells = {}
 	self.radius = radius
 	self.cell_size = cell_size
+	self.camera = camera
 	for x = -radius, radius do
 		self.cells[x] = {}
 		for z = -radius, radius do
@@ -23,7 +24,6 @@ function hex:init(radius, cell_size, default_hp)
 end
 
 function hex:draw()
-	print("a")
 	for x = -self.radius, self.radius do
 		for z = -self.radius, self.radius do
 			self.cells[x][z]:draw("fill")
