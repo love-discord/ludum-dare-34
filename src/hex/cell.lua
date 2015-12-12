@@ -50,9 +50,8 @@ end
 
 
 -- Draws the cell on the screen
-function cell:draw(mode, colorOverride)
+function cell:draw(mode)
 	love.graphics.setColor(self.color)
-	if colorOverride then love.graphics.setColor(colorOverride) end
 
 	local vertices = {}
 	for i = 0, 5 do
