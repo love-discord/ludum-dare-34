@@ -15,7 +15,7 @@ function cell:init(map, x, y, z, size, hp, team)
 	self.size = size
 
 	self.team = team
-	self.color = colors.neutral
+	self.color = colors[team]
 
 	self.hp = hp
 	--self.building = building:new()
