@@ -36,8 +36,9 @@ function love.update(dt)
 end
 
 function regulatedTick()
-	immuneSystem:update()
 	virus:update()
+	immuneSystem:update()
+	cell:update()
 end
 
 function love.draw()
