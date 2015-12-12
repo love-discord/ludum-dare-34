@@ -1,4 +1,3 @@
---local building = require 'src.entities.building'
 local class = require 'lib.class'
 local cell = class:subclass()
 
@@ -18,7 +17,6 @@ function cell:init(map, x, y, z, size, hp, team)
 	self.color = colors[team]
 
 	self.hp = hp
-	--self.building = building:new()
 end
 
 --[[
