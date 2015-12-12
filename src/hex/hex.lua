@@ -13,12 +13,9 @@ function hex:init(radius, cell_size, default_hp)
 	print("HEX INIT")
 	self.cells = {}
 	self.radius = radius
-	print("cells = ",self.cells)
-	print("radius = ",self.radius)
 	CELL_SIZE = cell_size
 	for x = -radius, radius do
 		self.cells[x] = {}
-		print("self.cells["..x.."]")
 		for z = -radius, radius do
 			if hexagonal(x, -x-z, z, radius) then
 				self.cells[x][z] = cell:new(self, x, -x-z, z, cell_size, default_hp, "neutral")
@@ -28,7 +25,6 @@ function hex:init(radius, cell_size, default_hp)
 end
 
 function hex:draw()
-	print(self)
 	for x = -self.radius, self.radius do
 		for z = -self.radius, self.radius do
 			if self.cells[x][z] then
