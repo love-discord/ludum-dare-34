@@ -50,7 +50,6 @@ end
 
 function immuneSystem:update(dt)
 	for i = 1, #immuneSystem.unit do
-		print(immuneSystem.unit[i].x)
 		local inRange = hexMap:inRange(immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].z, immuneSystem.unit[i].range)
 		for v = 1, #inRange do
 			immuneSystem.unit[i].effect(inRange[v].x, inRange[v].y, inRange[v].z)

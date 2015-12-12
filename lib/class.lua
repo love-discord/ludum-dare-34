@@ -8,7 +8,6 @@ function class:subclass()
 end
 
 function class:new(...)
-	--print("CLASS NEW")
 	local obj = setmetatable({}, self)
 	if obj.init then obj:init(...) end
 	return obj
