@@ -73,7 +73,7 @@ function immuneSystem:remove(x, y, z)
 	end
 end
 
-function immuneSystem:update(dt)
+function immuneSystem:update()
 	for i = 1, #immuneSystem.unit do
 		local inRange = hexMap:inRange(immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].z, immuneSystem.unit[i].range)
 		for v = 1, #inRange do
