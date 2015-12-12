@@ -16,7 +16,8 @@ function hex:init(radius, cell_size, default_hp)
 
 	self.cells = {}
 	self.radius = radius
-	self.cell_size = cell_size
+	self.cell_size = 0
+  self.tcell_size = cell_size
 	for x = -radius, radius do
 		self.cells[x] = {}
 		for z = -radius, radius do
@@ -91,6 +92,13 @@ end
 
 function hexagonal(x, y, z, r)	-- transforms numbers from -120 -> 120 to 0 -> 240
 	return (math.abs(x) + math.abs(y) + math.abs(z))/2 <= r
+end
+
+function hex:update(dt)
+  self.cell_size = self.cell_size + 1*dt*10
+  if self.cell_size > self.tcell_size then
+    self.cell_size = self.cell_size-1*dt*10
+  end
 end
 
 return hex

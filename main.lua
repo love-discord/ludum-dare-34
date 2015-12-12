@@ -71,3 +71,7 @@ function love.keypressed(key)
 		updating = not updating
 	end
 end
+
+function love.update(dt)
+  hexMap:update(dt)
+end
