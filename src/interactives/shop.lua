@@ -20,7 +20,7 @@ subDistance = 20
 function shop:load()
 	local i = 1
 	for k, v in pairs(immuneSystem.unitList) do
-		shop.items[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText, float = false}
+		shop.items[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText, float = false, info = v.info}
 		print("Added "..shop.items[#shop.items].name)
 		i = i + 1
 	end
@@ -262,15 +262,41 @@ function shop:drawFloating()
 		for i = 1, #shop.items do
 			if shop.items[i].float and shop.items[i].floatNum > 0.5 then
 				love.graphics.setColor(40, 40, 35)
-				local w = 150
+				local w = math.max(150, font.prototype[15]:getWidth(shop.items[i].name) + 20)
 				local h = 225
 				local y = love.window.getHeight() - shop.y + 40 - 11 - h
+				local x = love.mouse.getX()
 				local polygon = rounded_rectangle(love.mouse.getX(), y, w, h, 8, 8, 8, 8, 8)
+
+				-- main shape
 				love.graphics.polygon("fill", polygon)
 				love.graphics.setColor(0, 255, 255)
 				love.graphics.setLineWidth(1)
-				local polygon = rounded_rectangle(love.mouse.getX() + 5, y + 5, w - 10, h - 10, 8, 8, 8, 8, 8)
+				local polygon = rounded_rectangle(x + 5, y + 5, w - 10, h - 10, 8, 8, 8, 8, 8)
 				love.graphics.polygon("line", polygon)
+
+				-- text
+				love.graphics.line(x + 5, y + 30, x + 5 + w - 10, y + 30)
+				love.graphics.setColor(255, 255, 255)
+				love.graphics.setFont(font.prototype[15])
+				love.graphics.print(shop.items[i].name, x + 10, y + 30 - font.prototype[15]:getHeight(shop.items[i].name) - 3)
+				love.graphics.setFont(font.roboto.bold[13])
+				love.graphics.print("HP: "..shop.items[i].hp, x + 10, y + 35)
+				love.graphics.print("Range: "..shop.items[i].range, x + w - 10 - font.roboto.bold[13]:getWidth(shop.items[i].range.." :Range"), y + 35)
+				love.graphics.print(shop.items[i].effectText, x + 10, y + 55)
+				love.graphics.setFont(font.roboto.italic[12])
+
+				-- gets how many lines the text has
+				local lines = 1
+				local text = shop.items[i].info
+
+				for i = 1, text:len() do
+					if text:sub(i, i) == "\n" then
+						lines = lines + 1
+					end
+				end
+				-- end
+				love.graphics.print(shop.items[i].info, x + 15, y + h - lines * font.roboto.italic[12]:getHeight(shop.items[i].info) - 15)
 			end
 		end
 	end

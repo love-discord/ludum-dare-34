@@ -29,18 +29,18 @@ immuneSystem = {
 
 function immuneSystem:loadUnits()
 	local sampleImg = love.graphics.newImage("res/sample.png")
-	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, "Heals friendly cells with 5HP every tick." ,cellHealer, 			2, 50,  love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 			function() return true end)
-	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly cells."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end)
-	immuneSystem:newUnit("Debugger Spawn", 		50, 1, 32, 48, false, "Spawns a bugfixer"						  ,bugfixerSpawn,	 1/12, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
+	immuneSystem:newUnit("Chip Healer", 		50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick." ,cellHealer, 			2, 50,  love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 			function() return true end, "Those under my\nprotection will live. \nOthers'll have to\npush their luck.")
+	immuneSystem:newUnit("Chip Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly\nchips."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end, "Warning:// malware\ndetected.\nUpgrading hardware..")
+	immuneSystem:newUnit("Debugger Spawn", 		50, 1, 32, 48, false, "Spawns a debugger."						  ,bugfixerSpawn,	 1/12, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end, "The dream of\nall programmers.\nAn automatic\ndebugger.")
 
 	return immuneSystem.unitList
 end
 
 -- creates a new unit __TYPE__
-function immuneSystem:newUnit(name, hp, range, w, h, movable, effectText, effect, amount, cost, img, requireText, requireFunc)
+function immuneSystem:newUnit(name, hp, range, w, h, movable, effectText, effect, amount, cost, img, requireText, requireFunc, info)
 	immuneSystem.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, movable = movable,
 									effectText = effectText, effect = effect, amount = amount, cost = cost, img = img,
-									requireText = requireText, requireFunc = requireFunc}
+									requireText = requireText, requireFunc = requireFunc, info = info or "Unit"}
 	stats.unitsAlive[name] = 0
 end
 
@@ -63,7 +63,7 @@ end
 -- spawns a new unit
 function immuneSystem:addUnit(name, x, y, z)
 	if not immuneSystem:find(x, y, z) then
-		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect, amount = immuneSystem.unitList[name].amount, img = immuneSystem.unitList[name].img}
+		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect, amount = immuneSystem.unitList[name].amount, img = immuneSystem.unitList[name].img, info = immuneSystem.unitList[name].info}
 	end
 end
 

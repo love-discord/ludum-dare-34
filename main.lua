@@ -20,7 +20,16 @@ require("src.interactives.mouse")
 --[[ variables ]]--
 font = {
 	prototype = {
+		[15] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 15),
 		[20] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 20)
+	},
+	roboto = {
+		italic = {
+			[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 14)
+		},
+		bold = {
+			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 13)
+		}
 	}
 }
 
@@ -30,13 +39,13 @@ function love.load()
 
 	immuneSystem:loadUnits()
 	immuneSystem:loadTroops()
-	immuneSystem:addUnit("Cell Damage Booster", 7, -9, 2)
-	immuneSystem:addUnit("Cell Healer", 8, -10, 2)
+	immuneSystem:addUnit("Chip Damage Booster", 7, -9, 2)
+	immuneSystem:addUnit("Chip Healer", 8, -10, 2)
 	immuneSystem:addUnit("Debugger Spawn", 6, -8, 2)
-	immuneSystem:addUnit("Cell Healer", 7, -9, 2)
-	immuneSystem:addUnit("Cell Damage Booster", 7, -10, 3)
+	immuneSystem:addUnit("Chip Healer", 7, -9, 2)
+	immuneSystem:addUnit("Chip Damage Booster", 7, -10, 3)
 	immuneSystem:addUnit("Debugger Spawn", 8, -11, 3)
-	immuneSystem:addUnit("Cell Damage Booster", 6, -9, 3)
+	immuneSystem:addUnit("Chip Damage Booster", 6, -9, 3)
 	immuneSystem:addUnit("Debugger Spawn", 7, -10, 3)
 
 	virus:loadUnits()
