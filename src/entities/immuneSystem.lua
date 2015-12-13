@@ -21,8 +21,8 @@ immuneSystem = {
 
 function immuneSystem:loadUnits()
 	local sampleImg = love.graphics.newImage("res/sample.png")
-	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, "Heals friendly cells with 5HP every tick." ,cellHealer, 			2, 50,  sampleImg, "Nothing", 			function() return true end)
-	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly cells."		  ,cellDamageBooster, 	2, 150, love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "2 Cell Healers", 	function() return false end)
+	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, "Heals friendly cells with 5HP every tick." ,cellHealer, 			2, 50,  love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 			function() return true end)
+	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly cells."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end)
 	immuneSystem:newUnit("Smth else", 			50, 2, 32, 48, false, "Does something."							  ,function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
 	immuneSystem:newUnit("Smth else2", 			50, 2, 32, 48, false, "Does something different."				  ,function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==0  end)
 	return immuneSystem.unitList

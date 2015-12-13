@@ -141,9 +141,17 @@ function shop:draw()
 end
 
 function shop:drawProducts()
-	for i = 1, #shop do
+	for i = 1, #shop do		
 		love.graphics.setLineWidth(3)
 		love.graphics.setColor(0, 255, 255, 150)
+		love.graphics.polygon("fill",
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad + 20 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance + 20 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
+		)
+
+		love.graphics.setColor(0, 255, 255)
 		love.graphics.polygon("line",
 			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - 33, love.window.getHeight() - shop.y + 40 - 1,
 			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad + 20 - 33, love.window.getHeight() - shop.y + 40 - 1,
@@ -151,8 +159,11 @@ function shop:drawProducts()
 			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
 		)
 
+		local sX = 100 / immuneSystem.unit[i].img:getWidth()
+		local sY = 40 / immuneSystem.unit[i].img:getHeight()
+
 		love.graphics.setColor(255, 255, 255)
-		love.graphics.draw(shop[i].img, love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - subDistance - 33, love.window.getHeight() - shop.y + 40 - 1)
+		love.graphics.draw(shop[i].img, love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - subDistance - 33, love.window.getHeight() - shop.y + 40 - 1, 0 ,sX, sY)
 	end
 end
 
