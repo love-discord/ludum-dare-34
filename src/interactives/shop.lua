@@ -37,7 +37,7 @@ function shop:update(dt)
 
 	if shop.active then
 		if shop.x <= shop.targetX - 1 then
-			shop.x = shop.x + ((shop.targetX - shop.x) * 8) * dt
+			shop.x = shop.x + ((shop.targetX - shop.x) * 12) * dt
 			shop.finised = false
 		else
 			shop.x = shop.targetX
@@ -45,7 +45,7 @@ function shop:update(dt)
 		end
 
 		if shop.y <= shop.targetY - 1 then
-			shop.y = shop.y + ((shop.targetY - shop.y) * 8) * dt
+			shop.y = shop.y + ((shop.targetY - shop.y) * 12) * dt
 		else
 			shop.y = shop.targetY
 		end
@@ -209,7 +209,7 @@ function shop:mousefloating()		-- checks whether the mouse is floating over a pr
 	end
 end
 
-function shop:mousepressed(key)
+function shop:mousepressed(x, y, key)
 	if shop.selected == nil then
 		for i = 1, #shop.items do
 			if shop.items[i].float and key == "l" then
@@ -217,8 +217,11 @@ function shop:mousepressed(key)
 			end
 		end
 	else
-		immuneSystem:addUnit(shop.selected, mouse:getHexCoords())
-		shop.selected = nil
+		local cell = hexMap:getCell(mouse:getHexCoords())
+		if cell and cell.team == "immune" then
+			immuneSystem:addUnit(shop.selected, mouse:getHexCoords())
+			shop.selected = nil
+		end
 	end
 end
 
@@ -229,10 +232,13 @@ function shop:drawSelected()
 		local sX = hexMap.cell_size / immuneSystem.unitList[shop.selected].img:getWidth() 
 		local sY = (hexMap.cell_size + hexMap.cell_size / 2) / immuneSystem.unitList[shop.selected].img:getHeight()
 
-		if hexMap:getCell(mouse:getHexCoords()).team ~= "immune" then
+		local cell = hexMap:getCell(mouse:getHexCoords())
 
+		if not cell or cell.team ~= "immune" then
+			love.graphics.setColor(255, 0, 0, 150)
+		else
+			love.graphics.setColor(0, 255, 0, 150)
 		end
-		love.graphics.setColor(255, 255, 255, 150)
 		love.graphics.draw(img, x + camera.x - (img:getWidth() * sX) / 2, y + camera.y - (img:getHeight() * sY) / 2 - 10, 0, sX, sY)
 		shop.active = false
 	end
