@@ -14,7 +14,7 @@ return function(self)	-- fighter behaviour
 		pT[#pT].o = b --the actual object
 	end
 
-	local minDist = 100000000
+	local minDist = 4000000
 	local idx
 	for _, p in pairs(pT) do -- loop through all possible targets in order to decide on one
 		local dx, dy = (self.x - p.x), (self.y - p.y)
