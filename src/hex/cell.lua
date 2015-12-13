@@ -12,20 +12,20 @@ local colors = {
 	virus = {200, 20, 20}
 }
 
-function cell:init(map, x, y, z, size, hp, damage, regen, defense, team)
+function cell:init(map, x, y, z, size, hp, maxHP, damage, regen, defense, team)
 	self.map = map
 
 	self.x = x
 	self.y = y
 	self.z = z
 	self.size = 0
-  self.tSize = size
+	self.tSize = size
 
 	self.team = team
 	self.color = colors[team] or {0, 0, 0}
 
 	self.hp = hp
-	self.maxHP = hp
+	self.maxHP = maxHP
 	self.dmg = damage
 	self.regen = regen
 	self.def = defense
@@ -105,26 +105,41 @@ function cell:getCorner(i)
 end
 
 function cell:update(dt)
-	self.hp = self.hp + self.regen
-	for neighbor in self:neighbors() do
-		if neighbor.team ~= self.team then
-			neighbor.hp = neighbor.hp - self.dmg + neighbor.def
-		end
-		if neighbor.hp > neighbor.maxHP then
-			neighbor.hp = neighbor.maxHP
-		elseif neighbor.hp <= 0 then
-			neighbor.team = self.team
-			neighbor.hp = self.hp / 2
-			neighbor.color = colors[self.team]
-			neighbor.dmg = 10
-			neighbor.mapHP = 100
-			neighbor.def = 0
+	local actions = {}
+	
+	for _, col in pairs(hexMap.cells) do
+		for _, cell in pairs(col) do
+			cell.hp = cell.hp + cell.regen
+			if cell.hp > cell.maxHP then
+				cell.hp = cell.maxHP
+			end
+
+			for neighbor in cell:neighbors() do
+				if neighbor.team ~= cell.team then
+					actions[#actions + 1] = {{x = cell.x, y = cell.y, z = cell.z}, {x = neighbor.x, y =  neighbor.y, z = neighbor.z}}
+				end
+			end
 		end
 	end
-  if self.hp < 100 then
-    self.hp = math.round(self.hp, 0)
-  end
-  if self.hp > self.maxHP then self.hp = self.maxHP end
+
+	for i = 1, #actions do
+		local mainCell = hexMap:getCell(actions[i][1].x, actions[i][1].y, actions[i][1].z)
+		local otherCell = hexMap:getCell(actions[i][2].x, actions[i][2].y, actions[i][2].z)
+		if mainCell.team ~= otherCell.team then
+			otherCell.hp = otherCell.hp - mainCell.dmg + otherCell.def
+			print("hello")
+		end
+
+		if otherCell.hp < otherCell.maxHP then
+			otherCell.hp = math.round(otherCell.hp)
+		end
+		-- dying
+		if otherCell.hp <= 0 then
+			local x = otherCell.x
+			local z = otherCell.z
+			hexMap.cells[x][z] = cell:new(hexMap, x, -x-z, z, hexMap.cell_size, mainCell.hp / 2, default_hp, default_dmg, default_regen, default_def, mainCell.team)
+		end
+	end
 end
 
 return cell

@@ -28,7 +28,7 @@ function love.update(dt)
 	timeSinceLastTick = timeSinceLastTick + dt
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 		if updating then
-			hexMap:update(dt)
+			cell:update(dt)
 		end
 		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end

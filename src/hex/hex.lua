@@ -10,11 +10,13 @@ local hex = class:subclass()
 
 local teams = {"neutral", "virus", "immune"}
 
+-- these variables are used in cell.lua(cell:update) DONT LOCALIZE DON'T MOVE
+default_dmg = 10
+default_regen = 1
+default_def = 0
+default_hp = 100
+
 function hex:init(radius, cell_size)
-	local default_dmg = 10
-	local default_regen = 1
-	local default_def = 0
-	local default_hp = 100
 
 	self.cells = {}
 	self.radius = radius
@@ -28,7 +30,7 @@ function hex:init(radius, cell_size)
 				if x+z/2 < -7 then team = "virus" end
         if team == "neutral" then default_dmg = 0 
         elseif team == "immune" or team == "virus" then default_dmg = 10 end
-				self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, default_dmg, default_regen, default_def, team)
+				self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, default_hp, default_dmg, default_regen, default_def, team)
 			end
 		end
 	end
@@ -38,14 +40,6 @@ function hex:draw()
 	for _, col in pairs(self.cells) do
 		for _, cell in pairs(col) do
 			cell:draw 'fill'
-		end
-	end
-end
-
-function hex:update(dt)
-	for _, col in pairs(self.cells) do
-		for _, cell in pairs(col) do
-			cell:update(dt)
 		end
 	end
 end
