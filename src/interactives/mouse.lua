@@ -37,10 +37,16 @@ function mouse:scaledY()
 	return sy
 end
 
-function mouse:getHex()
-	return hexMap:pixelToHex(self:scaledX(), self:scaledY())
+function mouse:getHexCoords()
+	return hexMap:pixelToHex(self:scaledX() - camera.x, self:scaledY() - camera.y)
 end
 
+function mouse:getHex()
+	local x, y, z = self:getHexCoords()
+	local SIZE = 100
+	local tile = cell:new(hexMap, x, y, z, 20, SIZE, SIZE, SIZE, SIZE, SIZE, "other")
+	return tile
+end
 -- colors the hexagon under the mouse
 function mouse:draw()
 	local x, y, z = hexMap:pixelToHex(mouse.screenX, mouse.screenY)
