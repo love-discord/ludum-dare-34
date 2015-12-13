@@ -17,7 +17,7 @@ require("src.interactives.shop")
 --[[ functions ]]--
 function love.load()
 	hexMap = hex:new(12, 48, 100)
-	
+
 	immuneSystem:loadUnits()
 	immuneSystem:loadTroops()
 	immuneSystem:addUnit("Cell Damage Booster", 7, -9, 2)
@@ -72,8 +72,8 @@ function love.draw()
 	my = my - camera.y
 	local x, y, z = hexMap:pixelToHex(mx, my)
 	if hexMap:getCell(x, y, z) ~= {} then
-		local magicCell = cell:new(hexMap, x, y, z, 32, 10, 1, 1, 1, "immune")
-		magicCell:draw("line")
+		local bestCellEverTenOutOfTenSelection = cell:new(hexMap, x, y, z, 32, 10, 1, 1, 1, "immune")
+		bestCellEverTenOutOfTenSelection:draw("line")
 	end
 
 	immuneSystem:draw()

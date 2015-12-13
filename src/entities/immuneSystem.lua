@@ -105,13 +105,17 @@ end
 function immuneSystem:update(dt)
 	for i, unit in pairs(immuneSystem.unit) do
 		if unit.hp <= 0 then
-			immuneSystem.unit[i] = nil
+			immuneSystem:remove(unit.x, unit.y, unit.z)
 		else
 			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
 			for v = 1, #inRange do
 				unit.effect(inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
 			end
 		end
+	end
+	for i, troop in pairs(immuneSystem.troop) do
+		if troop.hp <= 0 then immuneSystem.troop[i] = nil
+		else troop:effect() end
 	end
 end
 

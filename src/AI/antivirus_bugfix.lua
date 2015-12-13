@@ -20,8 +20,10 @@ return function(self)	-- fighter behaviour
 		local dx, dy = (self.x - p.x), (self.y - p.y)
 		local distSq = dx*dx + dy*dy
 		if distSq < minDist then -- if we have found a closer target
+			print("Found target")
 			minDist = distSq
 			self.target = p
+			print(self.target)
 		end
 	end
 
