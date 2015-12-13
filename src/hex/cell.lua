@@ -1,7 +1,6 @@
 local class = require 'lib.class'
 local cell = class:subclass()
 
-renderCanvas = love.graphics.newCanvas(love.window.getWidth(), love.window.getHeight())
 
 function round(num, idp)
   local mult = 10^(idp or 0)
