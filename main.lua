@@ -64,10 +64,10 @@ timeSinceLastTick = 0
 	virus:loadUnits()
 	virus:loadTroops()
 
-	virus:addUnit("Bug factory", -8, 10, -2)
-	virus:addUnit("Bug factory", -9, 11, -2)
-	virus:addUnit("Bug factory", -8, 11, -3)
-	virus:addUnit("Bug factory", -9, 12, -3)
+	virus:addUnit("Bug Factory", -8, 10, -2)
+	virus:addUnit("Bug Factory", -9, 11, -2)
+	virus:addUnit("Bug Factory", -8, 11, -3)
+	virus:addUnit("Bug Factory", -9, 12, -3)
 
 	shop:load()
 

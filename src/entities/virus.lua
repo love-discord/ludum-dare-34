@@ -5,8 +5,24 @@ virus = {
 	troop = {}
 }
 
-local function proteinFactory(self, x, y, z, amt)	-- effect is the spawn chance the bigger, the more fighters spawn
-	if math.random() < amt and self.troopsAlive < self.maxTroops then
+
+function cellHealer(self, x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
+	if hexMap:getCell(x, y, z).team == "virus" then
+		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + amount
+	end
+end
+
+function cellDamageBooster(self, x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
+	if hexMap:getCell(x, y, z).team == "virus" then
+		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
+	end
+end
+
+function bugSpawn(self, x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
+	if math.random() < amount and self.troopsAlive < self.maxTroops then
 		local hexPixel = {hexMap:hexToPixel(x, y, z)}
 		virus:addTroop("Fighter", hexPixel[1], hexPixel[2], self.id)
 		self.troopsAlive = self.troopsAlive + 1
@@ -14,20 +30,22 @@ local function proteinFactory(self, x, y, z, amt)	-- effect is the spawn chance 
 end
 
 local function cellDamager(self, x, y, z, amt)
-	if hexMap:getCell(x, y, z).team == "immune" then
+	if hexMap:getCell(x, y, z).team == "virus" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp - amt
-		hexMap:getCell(x, y, z).color = {255, 255, 0}
+		--hexMap:getCell(x, y, z).color = {255, 255, 0}
 	end
 end
 
 function virus:loadUnits()
-	virus:newUnit("Bug factory", 50, 0, 32, 48, 1/12, proteinFactory, 10) -- should spawn a fighter every 5s on average
-	virus:newUnit("Cell Damager", 50, 2, 32, 48, 1, cellDamager)
+	virus:newUnit("Bug Factory", 		50, 0, 32, 48, 1/12, bugSpawn, 10,			love.graphics.newImage("gfx/units/virus/bugSpawn.png"))
+	virus:newUnit("Bug Activator", 		50, 2, 32, 48, 1,	 cellDamager, nil, 		love.graphics.newImage("gfx/units/virus/cellDamager.png"))
+	virus:newUnit("Bug Cascade maker",	50, 2, 32, 48, 1, 	 cellDamageBooster, nil,love.graphics.newImage("gfx/units/virus/cellDamageBooster.png"))
+	virus:newUnit("Bug Obfuscator", 	50, 2, 32, 48, 1, 	 cellHealer, nil,		love.graphics.newImage("gfx/units/virus/cellHealer.png"))
 end
 
 -- creates a new unit __TYPE__
-function virus:newUnit(name, hp, range, w, h, amount, effect, maxTroops)
-	virus.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, maxTroops = maxTroops}
+function virus:newUnit(name, hp, range, w, h, amount, effect, maxTroops, img)
+	virus.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, maxTroops = maxTroops, img = img}
 end
 
 function virus:find(x, y)
@@ -52,6 +70,7 @@ function virus:addUnit(name, x, y, z)
 										range = self.unitList[name].range,
 										w = self.unitList[name].w,
 										h = self.unitList[name].h,
+										img = self.unitList[name].img,
 										effect = self.unitList[name].effect,
 										amount = self.unitList[name].amount,
 										troopsAlive = 0,
@@ -141,8 +160,10 @@ end
 function virus:draw()
 	for i, unit in pairs(self.unit) do
 		local x, y = hexMap:hexToPixel(unit.x, unit.y, unit.z)
+		local sX = hexMap.cell_size / unit.img:getWidth() 
+		local sY = (hexMap.cell_size + hexMap.cell_size / 2) / unit.img:getHeight()
 		love.graphics.setColor(255, 255, 255)
-		love.graphics.rectangle("fill", x - unit.w / 2, y - unit.h / 2 - 10, unit.w, unit.h)
+		love.graphics.draw(unit.img, x - hexMap.cell_size / 2, y - (hexMap.cell_size + hexMap.cell_size / 2) / 2 - 10, 0, sX, sY)
 	end
 
 	for i, t in pairs(self.troop) do
