@@ -51,21 +51,14 @@ local timeSinceLastTick = 0
 
 	immuneSystem:loadUnits()
 	immuneSystem:loadTroops()
-	immuneSystem:addUnit("Chip Damage Booster", 7, -9, 2)
-	immuneSystem:addUnit("Chip Healer", 8, -10, 2)
-	immuneSystem:addUnit("Debugger Spawn", 6, -8, 2)
-	immuneSystem:addUnit("Chip Healer", 7, -9, 2)
-	immuneSystem:addUnit("Chip Damage Booster", 7, -10, 3)
-	immuneSystem:addUnit("Debugger Spawn", 8, -11, 3)
-	immuneSystem:addUnit("Chip Damage Booster", 6, -9, 3)
-	immuneSystem:addUnit("Debugger Spawn", 7, -10, 3)
 
 	virus:loadUnits()
 	virus:loadTroops()
 
 	virus:addUnit("Bug factory", -8, 10, -2)
-	virus:addUnit("Bug factory", -10, 2, -8)
-	virus:addUnit("Bug factory", -2, 8, 10)
+	virus:addUnit("Bug factory", -9, 11, -2)
+	virus:addUnit("Bug factory", -8, 11, -3)
+	virus:addUnit("Bug factory", -9, 12, -3)
 
 	shop:load()
 

@@ -141,11 +141,10 @@ function cell:update(dt)
 		if otherCell.hp <= 0 then
 			local x = otherCell.x
 			local z = otherCell.z
-			if hexMap.cells[x][z].team == "immune" then
-				immuneSystem:remove(x, -x-z, z)
-			elseif hexMap.cells[x][z] == "virus" then
-				virus:remove(x, -x-z, z)
-			end
+			
+			immuneSystem:remove(x, -x-z, z) -- i do both virus and immuneSystem because only one
+			virus:remove(x, -x-z, z)		-- would actually do something
+
 			hexMap.cells[x][z] = cell:new(hexMap, x, -x-z, z, hexMap.cell_size, math.max(mainCell.hp / 2, default_hp / 2), default_hp, default_dmg, default_regen, default_def, mainCell.team)
 		end
 	end

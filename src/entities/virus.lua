@@ -21,7 +21,7 @@ local function cellDamager(self, x, y, z, amt)
 end
 
 function virus:loadUnits()
-	virus:newUnit("Bug factory", 50, 1/12, 32, 48, 1, proteinFactory, 10) -- should spawn a fighter every 5s on average
+	virus:newUnit("Bug factory", 50, 0, 32, 48, 1/12, proteinFactory, 10) -- should spawn a fighter every 5s on average
 	virus:newUnit("Cell Damager", 50, 2, 32, 48, 1, cellDamager)
 end
 
