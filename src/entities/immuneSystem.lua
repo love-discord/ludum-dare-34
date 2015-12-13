@@ -13,6 +13,7 @@ function cellDamageBooster(x, y, z, amount)
 end
 
 function bugfixerSpawn(x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
 	if math.random() < amount then
 		immuneSystem:addTroop("Bugfixer", hexMap:hexToPixel(x, y, z))
 	end
@@ -115,8 +116,8 @@ function immuneSystem:update(dt)
 			end
 		end
 	end
-	for i, troop in pairs(immuneSystem.troop) do
-		if troop.hp <= 0 then immuneSystem.troop[i] = nil
+	for i, troop in pairs(self.troop) do
+		if troop.hp <= 0 then self.troop[i] = nil
 		else
 			troop:effect()
 		end

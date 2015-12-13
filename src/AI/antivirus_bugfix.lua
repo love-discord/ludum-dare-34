@@ -9,9 +9,11 @@ return function(self)	-- fighter behaviour
 	end
 
 	for _, b in pairs(virus.unit) do	-- loop through enemy buildings
-		pT[#pT + 1] = {}
-		pT[#pT].x, pT[#pT].y = hexMap:hexToPixel(b.x, b.y, b.z)
-		pT[#pT].o = b --the actual object
+		if hexMap:getCell(b.x, b.y, b.z) ~= nil then
+			pT[#pT + 1] = {}
+			pT[#pT].x, pT[#pT].y = hexMap:hexToPixel(b.x, b.y, b.z)
+			pT[#pT].o = b --the actual object
+		end
 	end
 
 	local minDist = 4000000
@@ -29,5 +31,4 @@ return function(self)	-- fighter behaviour
 		self.target.o.hp = self.target.o.hp - self.amount
 	end
 
-	--print("Bugfix Target set: "..self.target.o.name)
 end

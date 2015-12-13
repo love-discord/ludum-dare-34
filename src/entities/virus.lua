@@ -103,8 +103,11 @@ function virus:update()
 			end
 		end
 	end
-	for i, t in pairs(self.troop) do
-		t:effect()
+	for i, troop in pairs(self.troop) do
+		if troop.hp <= 0 then self.troop[i] = nil
+		else
+			troop:effect()
+		end
 	end
 end
 
