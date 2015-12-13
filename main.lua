@@ -22,6 +22,8 @@ require("src.interactives.input")
 require("src.UI.shop")
 require("src.ui.scorebar")
 
+timeScale = 1
+
 --[[ variables ]]--
 font = {
 	prototype = {
@@ -78,10 +80,10 @@ timeSinceLastTick = 0
 
 function love.update(dt)
 	if state.updating then
-		TICK_SPEED = 3 -- 1/number
+		TICK_SPEED = 3 / timeScale -- 1/number
 		timeSinceLastTick = timeSinceLastTick + dt
 		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
-			shop.bits = shop.bits + 10 + math.floor(time.seconds / 60) / 2
+			shop.bits = shop.bits + 10 + math.floor(time.seconds / 60) / 2 -- every minute this increases by 0.5
 				cell:update(dt)
 				virus:update()
 				immuneSystem:update()

@@ -5,6 +5,8 @@ input = {
 function input:load()
 	input:add("state.updating = not state.updating", " ")
 	input:add("state.drawHP = not state.drawHP", "z")
+	input:add("timeScale = timeScale * 1.1", ".")
+	input:add("timeScale = timeScale / 1.1", ",")
 end
 
 function input:add(code, key, ctrl)

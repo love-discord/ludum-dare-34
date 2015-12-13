@@ -134,6 +134,8 @@ function virus:update()
 			end
 			dyingTroop:died(troop)
 			self.troop[i] = nil
+
+			shop.bits = shop.bits + 10
 		else
 			troop:effect()
 		end

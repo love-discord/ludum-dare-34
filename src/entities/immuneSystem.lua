@@ -36,10 +36,10 @@ function bugfixerSpawn(self, x, y, z, amount)
 end
 
 function immuneSystem:loadUnits()
-	immuneSystem:newUnit("Chip Healer", 		50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick."	,cellHealer, 		10, 50,	 	love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 					function() return true end, "Those under my\nprotection will live.\nOthers'll have to push\ntheir luck.")
-	immuneSystem:newUnit("Chip Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly\nchips."		  	,cellDamageBooster, 2, 50,	 	love.graphics.newImage("gfx/units/antivirus/cellDamageBooster.png"), "2 Chip Healers", 		function() return immuneSystem:getNumber("Chip Healer") > 1 end, "Warning:// malware\ndetected.\nUpgrading hardware..")
+	immuneSystem:newUnit("Chip Healer", 		50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick."	,cellHealer, 		10, 50,	 	love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "50 Bits", 					function() return shop.bits > 50 end, "Those under my\nprotection will live.\nOthers'll have to push\ntheir luck.")
+	immuneSystem:newUnit("Chip Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly\nchips."		  	,cellDamageBooster, 2, 75,	 	love.graphics.newImage("gfx/units/antivirus/cellDamageBooster.png"), "2 Chip Healers", 		function() return immuneSystem:getNumber("Chip Healer") > 1 end, "Warning:// malware\ndetected.\nUpgrading hardware..")
 	immuneSystem:newUnit("Bug Fixing Tower",	50, 1, 32, 48, false, "Damages enemy chips."		  				,cellDamager,		10, 150, 	love.graphics.newImage("gfx/units/antivirus/cellDamager.png"),		 "2 Chip Healers", 		function() return immuneSystem:getNumber("Chip Healer") > 1 end, "Full-on offensive")
-	immuneSystem:newUnit("Debugger Spawn", 		50, 0, 32, 48, false, "Spawns a debugger."							,bugfixerSpawn,		1/12, 10, 	love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png"), "10 Bits", 				function() return shop.bits > 10 end, "The dream of all\nprogrammers. An\nautomatic debugger.", 10)
+	immuneSystem:newUnit("Debugger Spawn", 		50, 0, 32, 48, false, "Spawns a debugger."							,bugfixerSpawn,		1/12, 100, 	love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png"), "75 Bits", 				function() return shop.bits > 75 end, "The dream of all\nprogrammers. An\nautomatic debugger.", 10)
 end
 
 -- creates a new unit __TYPE__

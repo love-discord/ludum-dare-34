@@ -10,7 +10,7 @@ end
 
 function time:update(dt)
 	if time.count then
-		time.temp = time.temp + dt
+		time.temp = time.temp + dt * timeScale
 		if time.temp > 1 then
 			time.temp = time.temp - 1
 			time.seconds = time.seconds + 1
