@@ -1,6 +1,18 @@
 -- src/interactives/mouse.lua
 
-local mouse = {}
+local function getCorner(i, x, y, z)
+	local angle_deg = 60 * i + 30
+	local angle_rad = math.pi / 180 * angle_deg
+
+	local cx, cy = hexMap:hexToPixel(x, y, z)
+
+	return cx + math.cos(angle_rad) * hexMap.cell_size,
+			cy + math.sin(angle_rad) * hexMap.cell_size
+end
+
+local mouse = {
+	color = {0, 255, 0}
+}
 
 function mouse:update()
 	self.screenX = love.mouse.getX()
@@ -27,6 +39,21 @@ end
 
 function mouse:getHex()
 	return hexMap:pixelToHex(self:scaledX(), self:scaledY())
+end
+
+-- colors the hexagon under the mouse
+function mouse:draw()
+	local x, y, z = hexMap:pixelToHex(mouse.screenX, mouse.screenY)
+
+	local vertices = {}
+	for i = 0, 5 do
+		getCorner(i, x, y, z)
+		vertices[#vertices + 1] = x
+		vertices[#vertices + 1] = y
+	end
+
+	love.graphics.setColor(unpack(mouse.color))
+	love.graphics.polygon("line", vertices)
 end
 
 return mouse

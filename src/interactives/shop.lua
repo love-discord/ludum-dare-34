@@ -1,7 +1,7 @@
 shop = {
 	backgroundImg = love.graphics.newImage("gfx/shop/background.png"),
 	active = false,
-	selected = nil
+	selected = nil,
 	y = 0,
 	x = 0,
 
