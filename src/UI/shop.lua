@@ -20,7 +20,7 @@ subDistance = 20
 function shop:load()
 	local i = 1
 	for k, v in pairs(immuneSystem.unitList) do
-		shop.items[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText, float = false, info = v.info}
+		shop.items[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText, requireFunc = v.requireFunc, float = false, info = v.info}
 		print("Added "..shop.items[#shop.items].name)
 		i = i + 1
 	end
@@ -220,15 +220,20 @@ function shop:mousepressed(x, y, key)
 	if shop.selected == nil then
 		for i = 1, #shop.items do
 			if shop.items[i].float and key == "l" then
-				shop.selected = shop.items[i].name
+				if shop.bits >= shop.items[i].cost and shop.items[i].requireFunc() then
+					shop.selected = shop.items[i].name
+					shop.bits = shop.bits - shop.items[i].cost
+				end
 			end
 		end
 	else
 		local cell = hexMap:getCell(mouse:getHexCoords())
-		if cell and cell.team == "immune" then
+		if cell and cell.team == "immune" and not shop.active then
 			immuneSystem:addUnit(shop.selected, mouse:getHexCoords())
-			shop.selected = nil
+		else
+			shop.bits = shop.bits + immuneSystem.unitList[shop.selected].cost
 		end
+		shop.selected = nil
 	end
 end
 
@@ -283,7 +288,18 @@ function shop:drawFloating()
 				love.graphics.setFont(font.roboto.bold[13])
 				love.graphics.print("HP: "..shop.items[i].hp, x + 10, y + 35)
 				love.graphics.print("Range: "..shop.items[i].range, x + w - 10 - font.roboto.bold[13]:getWidth(shop.items[i].range.." :Range"), y + 35)
-				love.graphics.print(shop.items[i].effectText, x + 10, y + 55)
+				love.graphics.print("Cost: "..shop.items[i].cost, x + 10, y + 50)
+
+				if shop.items[i].requireFunc() then
+					love.graphics.setColor(0, 255, 0)
+				else
+					love.graphics.setColor(255, 0, 0)
+				end
+				love.graphics.print(shop.items[i].requireText, x + 10, y + 120)
+
+				love.graphics.setColor(255, 255, 255)
+				love.graphics.setFont(font.roboto.regular[13])
+				love.graphics.print(shop.items[i].effectText, x + 10, y + 65)
 				love.graphics.setFont(font.roboto.italic[12])
 
 				-- gets how many lines the text has
@@ -296,7 +312,7 @@ function shop:drawFloating()
 					end
 				end
 				-- end
-				love.graphics.print(shop.items[i].info, x + 15, y + h - lines * font.roboto.italic[12]:getHeight(shop.items[i].info) - 15)
+				love.graphics.print(shop.items[i].info, x + 10, y + h - lines * font.roboto.italic[12]:getHeight(shop.items[i].info) - 10)
 			end
 		end
 	end
@@ -317,7 +333,6 @@ function shop:drawSelected()
 			love.graphics.setColor(0, 255, 0, 150)
 		end
 		love.graphics.draw(img, x + camera.x - (img:getWidth() * sX) / 2, y + camera.y - (img:getHeight() * sY) / 2 - 10, 0, sX, sY)
-		shop.active = false
 	end
 end
 
