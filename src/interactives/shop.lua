@@ -224,9 +224,11 @@ function shop:drawSelected()
 		local sX = hexMap.cell_size / immuneSystem.unitList[shop.selected].img:getWidth() 
 		local sY = (hexMap.cell_size + hexMap.cell_size / 2) / immuneSystem.unitList[shop.selected].img:getHeight()
 
-		hexMap:getCell()
+		-- if hexMap:getCell(mouse:getHexCoords()).team ~=  then
+
+		-- end
 		love.graphics.setColor(255, 255, 255, 150)
-		love.graphics.draw(img, x + camera.x - img:getWidth() * 1.5, y + camera.y - img:getHeight() * 1.5, 0, sX, sY)
+		love.graphics.draw(img, x + camera.x - (img:getWidth() * sX) / 2, y + camera.y - (img:getHeight() * sY) / 2 - 10, 0, sX, sY)
 		shop.active = false
 	end
 end
