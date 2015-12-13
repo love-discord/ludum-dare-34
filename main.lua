@@ -17,6 +17,13 @@ require("src.interactives.shop")
 require("src.interactives.mouse")
 
 
+--[[ variables ]]--
+font = {
+	prototype = {
+		[20] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 20)
+	}
+}
+
 --[[ functions ]]--
 function love.load()
 	hexMap = hex:new(12, 48, 100)
@@ -25,12 +32,12 @@ function love.load()
 	immuneSystem:loadTroops()
 	immuneSystem:addUnit("Cell Damage Booster", 7, -9, 2)
 	immuneSystem:addUnit("Cell Healer", 8, -10, 2)
-	immuneSystem:addUnit("Bugfixer Spawn", 6, -8, 2)
+	immuneSystem:addUnit("Debugger Spawn", 6, -8, 2)
 	immuneSystem:addUnit("Cell Healer", 7, -9, 2)
 	immuneSystem:addUnit("Cell Damage Booster", 7, -10, 3)
-	immuneSystem:addUnit("Bugfixer Spawn", 8, -11, 3)
+	immuneSystem:addUnit("Debugger Spawn", 8, -11, 3)
 	immuneSystem:addUnit("Cell Damage Booster", 6, -9, 3)
-	immuneSystem:addUnit("Bugfixer Spawn", 7, -10, 3)
+	immuneSystem:addUnit("Debugger Spawn", 7, -10, 3)
 
 	virus:loadUnits()
 	virus:loadTroops()
@@ -77,6 +84,7 @@ function love.draw()
 
 	-- UI BEGGINS HERE
 	shop:draw()
+	love.graphics.setFont(font.prototype[20])
 	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
 end
 

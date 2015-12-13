@@ -84,7 +84,7 @@ function shop:update(dt)
 		shop.drawable = false
 	end
 
-	shop:mousefloating()
+	shop:mousefloating(dt)
 end
 
 function shop:draw()
@@ -142,8 +142,13 @@ function shop:draw()
 
 	if shop.drawable then
 		shop:drawProducts()
+		love.graphics.setColor(255, 255, 255)
+		love.graphics.setFont(font.prototype[20])
+		love.graphics.print("Bits", love.window.getWidth() / 2 - shop.targetX + 18, love.window.getHeight() - font.prototype[20]:getHeight("Bits: ") - 5)
+		love.graphics.print(shop.bits, love.window.getWidth() / 2 - shop.targetX + distanceUntilMainQuad * 3 - font.prototype[20]:getWidth(shop.bits) - 10, love.window.getHeight() - font.prototype[20]:getHeight(shop.bits) - 5)
 	end
 
+	shop:drawFloating()
 	shop:drawSelected()
 end
 
@@ -185,7 +190,7 @@ function shop:drawProducts()
 	end
 end
 
-function shop:mousefloating()		-- checks whether the mouse is floating over a product or not
+function shop:mousefloating(dt)		-- checks whether the mouse is floating over a product or not
 	local mouseX = love.mouse.getX()
 	local mouseY = love.mouse.getY()
 
@@ -203,8 +208,10 @@ function shop:mousefloating()		-- checks whether the mouse is floating over a pr
 		-- if mouse is inside of bounding box
 		if mouseX > frame[7] and mouseX < frame[3] and mouseY > frame[2] and mouseY < frame[6] then
 			shop.items[i].float = true
+			shop.items[i].floatNum = shop.items[i].floatNum + dt
 		else 
 			shop.items[i].float = false
+			shop.items[i].floatNum = 0
 		end
 	end
 end
@@ -221,6 +228,50 @@ function shop:mousepressed(x, y, key)
 		if cell and cell.team == "immune" then
 			immuneSystem:addUnit(shop.selected, mouse:getHexCoords())
 			shop.selected = nil
+		end
+	end
+end
+
+local function rounded_rectangle(x, y, w, h, precision, tl, tr, br, bl)
+	local corners = { tl, tr, br, bl }
+	local polygon = {}
+
+	-- true if on x/y, false if on w/h; TL, TR, BR, BL
+	local xs = { true, false, false, true  }
+	local ys = { true, true,  false, false }
+
+	-- Loop through each corner and calculate points based on [r]adius!
+	for i, r in ipairs(corners) do
+		if r == 0 then
+			table.insert(polygon, xs[i] and x or x+w)
+			table.insert(polygon, ys[i] and y or y+h)
+		else
+			for j = 0, precision do
+				local angle = (j / precision + (i - 3)) * math.pi / 2
+				table.insert(polygon, (xs[i] and x+r or x+w-r) + r * math.cos(angle))
+				table.insert(polygon, (ys[i] and y+r or y+h-r) + r * math.sin(angle))
+			end
+		end
+	end
+
+	return polygon
+end
+
+function shop:drawFloating()
+	if shop.drawable then
+		for i = 1, #shop.items do
+			if shop.items[i].float and shop.items[i].floatNum > 0.5 then
+				love.graphics.setColor(40, 40, 35)
+				local w = 150
+				local h = 225
+				local y = love.window.getHeight() - shop.y + 40 - 11 - h
+				local polygon = rounded_rectangle(love.mouse.getX(), y, w, h, 8, 8, 8, 8, 8)
+				love.graphics.polygon("fill", polygon)
+				love.graphics.setColor(0, 255, 255)
+				love.graphics.setLineWidth(1)
+				local polygon = rounded_rectangle(love.mouse.getX() + 5, y + 5, w - 10, h - 10, 8, 8, 8, 8, 8)
+				love.graphics.polygon("line", polygon)
+			end
 		end
 	end
 end

@@ -91,6 +91,8 @@ function cell:draw(mode)
 
 	love.graphics.polygon("fill", vertices)
 	love.graphics.setColor(255, 255, 255)
+	local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
+	love.graphics.print(self.hp, x, y)
 end
 
 function cell:getCorner(i)
@@ -135,7 +137,7 @@ function cell:update(dt)
 		if otherCell.hp <= 0 then
 			local x = otherCell.x
 			local z = otherCell.z
-			hexMap.cells[x][z] = cell:new(hexMap, x, -x-z, z, hexMap.cell_size, mainCell.hp / 2, default_hp, default_dmg, default_regen, default_def, mainCell.team)
+			hexMap.cells[x][z] = cell:new(hexMap, x, -x-z, z, hexMap.cell_size, math.max(mainCell.hp / 2, default_hp / 2), default_hp, default_dmg, default_regen, default_def, mainCell.team)
 		end
 	end
 end
