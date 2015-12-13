@@ -1,6 +1,8 @@
 --[[ requirements ]]--
 love.graphics.setDefaultFilter("nearest", "nearest")
 
+local lightWorld = require("lib.lightWorld")
+
 local class = require("lib.class")
 local lovebird = require("lib.lovebird")
 require("lib.time")
@@ -76,7 +78,16 @@ timeSinceLastTick = 0
 
 	love.mouse.setVisible(false)
 
+function love.load()
+  lightWorld = lightWorld({
+    ambient = {55,55,55},         --the general ambient light in the environment
+  })
+end
+
 function love.update(dt)
+  lightWorld:update(dt)
+  lightWorld:setTranslation(camera.x, camera.y, scale)
+  
 	if state.updating then
 		TICK_SPEED = 3 / timeScale -- 1/number
 		timeSinceLastTick = timeSinceLastTick + dt * timeScale
@@ -99,10 +110,17 @@ function love.update(dt)
 end
 
 function love.draw()
+  love.graphics.push()
+  love.graphics.scale(scale)
+  love.graphics.pop()
 	love.graphics.push()
 	love.graphics.translate(camera.x, camera.y)
 
+  lightWorld:draw(function()
 	hexMap:draw()
+end)
+  lightWorld.post_shader:addEffect("bloom")
+  lightWorld.post_shader:addEffect("blurv")
 	mouse:drawHex()
 	immuneSystem:draw()
 	virus:draw()
