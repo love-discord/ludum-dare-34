@@ -15,10 +15,11 @@ require("src.entities.virus")
 dyingTroop = require("src.entities.dyingTroop")
 
 require("src.interactives.camera")
-require("src.interactives.shop")
 require("src.interactives.mouse")
 require("src.interactives.input")
 
+require("src.UI.shop")
+require("src.ui.scorebar")
 
 --[[ variables ]]--
 font = {
