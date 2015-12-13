@@ -72,7 +72,7 @@ local timeSinceLastTick = 0
 
 function love.update(dt)
 
-	local TICK_SPEED = 3 -- 1/number
+	local TICK_SPEED = 0.5 -- 1/number
 	timeSinceLastTick = timeSinceLastTick + dt
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 		if state.updating then

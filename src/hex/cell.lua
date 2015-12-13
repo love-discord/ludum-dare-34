@@ -114,7 +114,7 @@ function cell:update(dt)
 	
 	for _, col in pairs(hexMap.cells) do
 		for _, cell in pairs(col) do
-			cell.hp = cell.hp + cell.regen * dt   -- there was no dt here!
+			cell.hp = cell.hp + cell.regen
 			if cell.hp > cell.maxHP then
 				cell.hp = cell.maxHP
 			end

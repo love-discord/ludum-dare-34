@@ -12,7 +12,7 @@ local teams = {"neutral", "virus", "immune"}
 
 -- these variables are used in cell.lua(cell:update) DONT LOCALIZE DON'T MOVE
 default_dmg = 10
-default_regen = 1
+default_regen = 10
 default_def = 0
 default_hp = 100
 
