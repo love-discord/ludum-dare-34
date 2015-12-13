@@ -57,6 +57,7 @@ end
 
 
 local function fighter(self)	-- fighter behaviour
+	self.target = nil
 	local pT = {} -- possible targets
 
 	for _, t in pairs(immuneSystem.troop) do	-- loop through enemy troops
@@ -137,15 +138,17 @@ end
 
 function virus:fastUpdate(dt)
 	for i, v in pairs(virus.troop) do
+		v.xvel, v.yvel = 0, 0
 		if v.target then
 			v.xvel = v.target.x - v.x
 			v.yvel = v.target.y - v.y
 		end
 		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
-		if velM < hexMap.cell_size then v.xvel, v.yvel = 0, 0 end -- if it gets in range, stop moving
-		if velM == 0 then velM = 1 end -- handle division by 0
-		v.x = v.x + v.xvel / velM * dt * v.speed
-		v.y = v.y + v.yvel / velM * dt * v.speed
+		if velM > hexMap.cell_size then -- if not in range (should still move)
+			if velM == 0 then velM = 1 end -- handle division by 0
+			v.x = v.x + v.xvel / velM * dt * v.speed
+			v.y = v.y + v.yvel / velM * dt * v.speed
+		end
 	end
 end
 

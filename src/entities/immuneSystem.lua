@@ -1,5 +1,6 @@
 --[[ effects ]]--
 function cellHealer(x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
 	if hexMap:getCell(x, y, z).team == "immune" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + 5
 	end
