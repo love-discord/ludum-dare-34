@@ -164,12 +164,12 @@ function shop:drawProducts()
 
 		local img = shop.items[i].img -- the item image
 
-		local sX = 100 / img:getWidth()
-		local sY = 40 / img:getHeight()
+		local sX = 40 / img:getWidth()
+		local sY = 55 / img:getHeight()
 
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(shop.items[i].img,
-							xCoord - 80 - subDistance - 33, love.window.getHeight() - shop.y + 40 - 1,
+							xCoord - 80 - subDistance - 33 + 100 / 2 - img:getWidth() * sX / 2 + subDistance / 2, love.window.getHeight() - shop.y + 40 - 1 + 70 / 2 - img:getHeight() * sY / 2,
 							0, sX, sY)
 	end
 end
