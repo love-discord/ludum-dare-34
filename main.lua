@@ -16,8 +16,13 @@ require("src.interactives.shop")
 function love.load()
 	hexMap = hex:new(12, 32, 100)
 	shop:load(immuneSystem:loadUnits())
-	immuneSystem:addUnit("Cell Damage Booster", 7, 8, 2)
-	immuneSystem:addUnit("Cell Healer", 8, 7, 2)
+	immuneSystem:addUnit("Cell Damage Booster", 7, -9, 2)
+	immuneSystem:addUnit("Cell Healer", 8, -9, 2)
+
+	virus:loadUnits()
+	virus:loadTroops()
+	virus:addUnit("Protein factory", -8, 9, -2)
+
 end
 
 updating = true
@@ -31,11 +36,13 @@ function love.update(dt)
 		if updating then
 			cell:update(dt)
 			immuneSystem:update()
+			virus:update()
 		end
 		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end
   
   shop:update(dt)
+  virus:fastUpdate(dt)
 end
 
 function love.draw()
@@ -54,6 +61,7 @@ function love.draw()
 	end
 
 	immuneSystem:draw()
+	virus:draw()
 
 	love.graphics.pop()
 

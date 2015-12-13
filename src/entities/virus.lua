@@ -5,7 +5,7 @@ virus = {
 	troop = {}
 }
 
-local function proteinFactory(x, y, z, amt)
+local function proteinFactory(x, y, z, amt)	-- effect is the spawn chance the bigger, the more fighters spawn
 	if math.random() < amt then
 		virus:addTroop("Fighter", hexMap:hexToPixel(x, y, z))
 	end
@@ -19,7 +19,7 @@ local function cellDamager(x, y, z, amt)
 end
 
 function virus:loadUnits()
-	virus:newUnit("Protein factory", 50, 1, 32, 48, 1/30, proteinFactory) -- should spawn a fighter every 5s on average
+	virus:newUnit("Protein factory", 50, 1, 32, 48, 1/12, proteinFactory) -- should spawn a fighter every 5s on average
 	virus:newUnit("Cell Damager", 50, 2, 32, 48, 1, cellDamager)
 end
 
@@ -58,20 +58,18 @@ function virus:addUnit(name, x, y, z)
 end
 
 
-local function fighter(self)
-	if not self.xvel then self.xvel, self.yvel = 0, 0 end
+local function fighter(self)	-- fighter behaviour
+	if not self.xvel then self.xvel, self.yvel, self.xtarget, self.ytarget = 0, 0, 0, 0 end
 	self.xvel = self.xvel + math.random()*10 - 5
 	self.yvel = self.yvel + math.random()*10 - 5
-	self.x = self.x + self.xvel
-	self.y = self.y + self.yvel
 end
 
 function virus:loadTroops()
-	virus:newTroop("Fighter", 1, 0, 10, 10, 1, fighter)
+	virus:newTroop("Fighter", 1, 0, 10, 10, 1, fighter, 50)
 end
 
-function virus:newTroop(name, hp, range, w, h, amount, effect)
-	virus.troopList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect}
+function virus:newTroop(name, hp, range, w, h, amount, effect, speed)
+	virus.troopList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, speed = speed}
 end
 
 function virus:addTroop(name, x, y)
@@ -79,7 +77,8 @@ function virus:addTroop(name, x, y)
 									range = virus.troopList[name].range,
 									w = virus.troopList[name].w,
 									h = virus.troopList[name].h,
-									effect = virus.troopList[name].effect}
+									effect = virus.troopList[name].effect,
+									speed = virus.troopList[name].speed}
 end
 
 function virus:remove(x, y)
@@ -107,6 +106,14 @@ function virus:update()
 	end
 	for i = 1, #virus.troop do
 		virus.troop[i]:effect()
+	end
+end
+
+function virus:fastUpdate(dt)
+	for i, v in pairs(virus.troop) do
+		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
+		v.x = v.x + v.xvel / velM * dt * v.speed
+		v.y = v.y + v.yvel / velM * dt * v.speed
 	end
 end
 
