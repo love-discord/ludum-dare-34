@@ -21,7 +21,9 @@ function love.load()
 
 	virus:loadUnits()
 	virus:loadTroops()
-	virus:addUnit("Bug factory", -8, 9, -2)
+	virus:addUnit("Bug factory", -8, 10, -2)
+	virus:addUnit("Bug factory", -10, 2, -8)
+	virus:addUnit("Bug factory", -2, 8, 10)
 end
 
 updating = true

@@ -137,6 +137,7 @@ function virus:fastUpdate(dt)
 			v.yvel = v.target.y - v.y
 		end
 		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
+		if velM < hexMap.cell_size then v.xvel, v.yvel = 0, 0 end -- if it gets in range, stop moving
 		if velM == 0 then velM = 1 end -- handle division by 0
 		v.x = v.x + v.xvel / velM * dt * v.speed
 		v.y = v.y + v.yvel / velM * dt * v.speed
