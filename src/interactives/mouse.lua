@@ -14,6 +14,7 @@ function mouse:getY()
 	return self.screenY
 end
 
+-- scaled functions are if we decide to add scaling again
 function mouse:scaledX()
 	local sx = self.screenX
 	return sx
