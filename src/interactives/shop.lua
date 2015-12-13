@@ -1,7 +1,7 @@
 shop = {
 	backgroundImg = love.graphics.newImage("gfx/shop/background.png"),
 	active = false,
-	selected = nil,
+	bits = 100,
 	y = 0,
 	x = 0,
 
@@ -210,10 +210,15 @@ function shop:mousefloating()		-- checks whether the mouse is floating over a pr
 end
 
 function shop:mousepressed(key)
-	for i = 1, #shop.items do
-		if shop.items[i].float and key == "l" then
-			shop.selected = shop.items[i].name
+	if shop.selected == nil then
+		for i = 1, #shop.items do
+			if shop.items[i].float and key == "l" then
+				shop.selected = shop.items[i].name
+			end
 		end
+	else
+		immuneSystem:addUnit(shop.selected, mouse:getHexCoords())
+		shop.selected = nil
 	end
 end
 
@@ -224,9 +229,9 @@ function shop:drawSelected()
 		local sX = hexMap.cell_size / immuneSystem.unitList[shop.selected].img:getWidth() 
 		local sY = (hexMap.cell_size + hexMap.cell_size / 2) / immuneSystem.unitList[shop.selected].img:getHeight()
 
-		-- if hexMap:getCell(mouse:getHexCoords()).team ~=  then
+		if hexMap:getCell(mouse:getHexCoords()).team ~= "immune" then
 
-		-- end
+		end
 		love.graphics.setColor(255, 255, 255, 150)
 		love.graphics.draw(img, x + camera.x - (img:getWidth() * sX) / 2, y + camera.y - (img:getHeight() * sY) / 2 - 10, 0, sX, sY)
 		shop.active = false
