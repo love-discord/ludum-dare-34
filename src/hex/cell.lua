@@ -90,8 +90,8 @@ function cell:draw(mode)
 
 	love.graphics.polygon("fill", vertices)
 	love.graphics.setColor(255, 255, 255)
-	local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
-	--love.graphics.print(self.hp, x, y)
+	-- local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
+	-- love.graphics.print(self.hp, x, y)
 end
 
 function cell:getCorner(i)

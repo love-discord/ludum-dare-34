@@ -10,6 +10,10 @@ shop = {
 	drawable = false
 }
 
+rads = math.rad(75)
+distanceUntilMainQuad = 150 / math.tan(rads)
+subDistance = 20
+
 function shop:load()
 	local i = 1
 	for k, v in pairs(immuneSystem.unitList) do
@@ -56,7 +60,7 @@ function shop:update(dt)
 		end
 	end
 
-	if shop.x >= shop.targetX - 10 then
+	if shop.x >= shop.targetX - 1 then
 		shop.ready = true
 	else
 		shop.ready = false
@@ -81,8 +85,7 @@ end
 function shop:draw()
 	local rads = math.rad(75)
 	love.graphics.setLineWidth(4)
-	local distanceUntilMainQuad = 150 / math.tan(rads)
-	local subDistance = 30
+	local subDistance = subDistance + 10
 
 	love.graphics.setColor(0, 0, 0, 150)
 	love.graphics.polygon("fill", 
@@ -106,7 +109,7 @@ function shop:draw()
 		love.window.getWidth() / 2 + shop.targetX - shop.x, love.window.getHeight() - shop.y + subDistance * 4,
 		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y + subDistance * 4,
 		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y,
-		love.window.getWidth() /2 + shop.targetX - shop.x, love.window.getHeight() - shop.y
+		love.window.getWidth() / 2 + shop.targetX - shop.x, love.window.getHeight() - shop.y
 	)
 	end
 
@@ -138,10 +141,18 @@ function shop:draw()
 end
 
 function shop:drawProducts()
-	local rads = math.rad(75)
-	local distanceUntilMainQuad = 150 / math.tan(rads)
 	for i = 1, #shop do
-		love.graphics.draw(shop[i].img, love.window.getWidth() / 2 - shop.targetX + (80 * i) + distanceUntilMainQuad - 30, love.window.getHeight() - shop.y + 30)
+		love.graphics.setLineWidth(3)
+		love.graphics.setColor(0, 255, 255, 150)
+		love.graphics.polygon("line",
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad + 20 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance + 20 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
+		)
+
+		love.graphics.setColor(255, 255, 255)
+		love.graphics.draw(shop[i].img, love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - subDistance - 33, love.window.getHeight() - shop.y + 40 - 1)
 	end
 end
 

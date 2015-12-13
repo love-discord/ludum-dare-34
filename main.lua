@@ -1,4 +1,6 @@
 --[[ requirements ]]--
+love.graphics.setDefaultFilter("nearest", "nearest")
+
 local class = require("lib.class")
 
 hex = require("src.hex.hex")
@@ -14,8 +16,8 @@ require("src.interactives.shop")
 
 --[[ functions ]]--
 function love.load()
-	hexMap = hex:new(12, 32, 100)
-
+	hexMap = hex:new(12, 48, 100)
+	
 	immuneSystem:loadUnits()
 	immuneSystem:loadTroops()
 	immuneSystem:addUnit("Cell Damage Booster", 7, -9, 2)

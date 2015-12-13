@@ -94,7 +94,7 @@ end
 function virus:update()
 	for i, unit in pairs(self.unit) do
 		if unit.hp <= 0 then
-			self.unit[i] = nil
+			self:remove(unit.x, unit.y, unit.z)
 		else
 			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
 			for v = 1, #inRange do

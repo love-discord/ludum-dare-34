@@ -28,8 +28,8 @@ immuneSystem = {
 function immuneSystem:loadUnits()
 	local sampleImg = love.graphics.newImage("res/sample.png")
 	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, "Heals friendly cells with 5HP every tick." ,cellHealer, 			2, 50,  sampleImg, "Nothing", 			function() return true end)
-	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly cells."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end)
-	immuneSystem:newUnit("Bugfixer Spawn",		50, 1, 32, 48, false, "Spawns bugfixes."						  ,bugfixSpawner,	 	1/12, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
+	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly cells."		  ,cellDamageBooster, 	2, 150, love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "2 Cell Healers", 	function() return false end)
+	immuneSystem:newUnit("Bugfixer Spawn", 		50, 2, 32, 48, false, "Does something."							  ,bugfixSpawner,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
 	immuneSystem:newUnit("Smth else2", 			50, 2, 32, 48, false, "Does something different."				  ,function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==0  end)
 	return immuneSystem.unitList
 end
@@ -60,8 +60,16 @@ end
 
 -- spawns a new unit
 function immuneSystem:addUnit(name, x, y, z)
-	if not immuneSystem:find(x, y, z) then
-		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect, amount = immuneSystem.unitList[name].amount}
+	if not self:find(x, y, z) then
+		self.unit[#self.unit + 1] = {name = name, x = x, y = y, z = z,
+									hp = self.unitList[name].hp,
+									range = self.unitList[name].range,
+									amount = self.unitList[name].amout,
+									w = self.unitList[name].w,
+									h = self.unitList[name].h,
+									effect = self.unitList[name].effect,
+									amount = self.unitList[name].amount,
+									img = self.unitList[name].img}
 	end
 end
 
@@ -104,7 +112,7 @@ end
 function immuneSystem:update(dt)
 	for i, unit in pairs(self.unit) do
 		if unit.hp <= 0 then
-			self.unit[i] = nil
+			self:remove(unit.x, unit.y, unit.z)
 		else
 			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
 			for v = 1, #inRange do
@@ -133,10 +141,13 @@ function immuneSystem:fastUpdate(dt)
 end
 
 function immuneSystem:draw()
-	for i, unit in pairs(self.unit) do
-		local x, y = hexMap:hexToPixel(unit.x, unit.y, unit.z)
+	for i = 1, #immuneSystem.unit do
+		local x, y = hexMap:hexToPixel(immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].z)
+		local sX = hexMap.cell_size / immuneSystem.unit[i].img:getWidth() 
+		local sY = (hexMap.cell_size + hexMap.cell_size / 2) / immuneSystem.unit[i].img:getHeight()
+
 		love.graphics.setColor(255, 255, 255)
-		love.graphics.rectangle("fill", x - unit.w / 2, y - unit.h / 2 - 10, unit.w, unit.h)
+		love.graphics.draw(immuneSystem.unit[i].img, x - hexMap.cell_size / 2, y - (hexMap.cell_size + hexMap.cell_size / 2) / 2 - 10, 0, sX, sY)
 	end
 	for i, t in pairs(self.troop) do
 		love.graphics.setColor(0, 100, 0)
