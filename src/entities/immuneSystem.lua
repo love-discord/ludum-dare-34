@@ -95,10 +95,6 @@ function immuneSystem:draw()
 		local sY = (hexMap.cell_size + hexMap.cell_size / 2) / immuneSystem.unit[i].img:getHeight()
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(immuneSystem.unit[i].img, x - hexMap.cell_size / 2, y - (hexMap.cell_size + hexMap.cell_size / 2) / 2 - 10, 0, sX, sY)
-	for i, unit in pairs(immuneSystem.unit) do
-		local x, y = hexMap:hexToPixel(unit.x, unit.y, unit.z)
-		love.graphics.setColor(255, 255, 255)
-		love.graphics.rectangle("fill", x - unit.w / 2, y - unit.h / 2 - 10, unit.w, unit.h)
 	end
 end
 
