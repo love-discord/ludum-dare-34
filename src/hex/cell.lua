@@ -110,6 +110,9 @@ function cell:getCorner(i)
 end
 
 function cell:update(dt)
+	scorebar.virusCells = 0
+	scorebar.immuneCells = 0
+	scorebar.totalCells = 0
 	local actions = {}
 	
 	for _, col in pairs(hexMap.cells) do
@@ -124,6 +127,13 @@ function cell:update(dt)
 					actions[#actions + 1] = {{x = cell.x, y = cell.y, z = cell.z}, {x = neighbor.x, y =  neighbor.y, z = neighbor.z}}
 				end
 			end
+
+			if cell.team == "immune" then
+				scorebar.immuneCells = scorebar.immuneCells + 1
+			elseif cell.team == "virus" then
+				scorebar.virusCells = scorebar.virusCells + 1
+			end
+			scorebar.totalCells = scorebar.totalCells + 1
 		end
 	end
 

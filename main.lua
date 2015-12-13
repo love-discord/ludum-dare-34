@@ -3,6 +3,7 @@ love.graphics.setDefaultFilter("nearest", "nearest")
 
 local class = require("lib.class")
 local lovebird = require("lib.lovebird")
+require("lib.time")
 
 hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
@@ -25,7 +26,8 @@ require("src.ui.scorebar")
 font = {
 	prototype = {
 		[15] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 15),
-		[20] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 20)
+		[20] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 20),
+		[32] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 32)
 	},
 	roboto = {
 		italic = {
@@ -33,6 +35,11 @@ font = {
 		},
 		bold = {
 			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 13)
+		}
+	},
+	ethnocentric = {
+		regular = {
+			[36] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 36)
 		}
 	}
 }
@@ -42,12 +49,14 @@ state = {
 	updating = true
 }
 
-local timeSinceLastTick = 0
+timeSinceLastTick = 0
 
 --[[ functions ]]--
 	hexMap = hex:new(12, 48, 100)
 
+	time:load()
 	input:load()
+	scorebar:load()
 
 	immuneSystem:loadUnits()
 	immuneSystem:loadTroops()
@@ -65,8 +74,7 @@ local timeSinceLastTick = 0
 	love.mouse.setVisible(false)
 
 function love.update(dt)
-
-	local TICK_SPEED = 0.5 -- 1/number
+	TICK_SPEED = 3 -- 1/number
 	timeSinceLastTick = timeSinceLastTick + dt
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 		if state.updating then
@@ -81,6 +89,7 @@ function love.update(dt)
 		virus:fastUpdate(dt)
 		immuneSystem:fastUpdate(dt)
 	end
+	time:update(dt)
 	camera:update(dt)
 	mouse:update()
 	shop:update(dt)
@@ -103,7 +112,7 @@ function love.draw()
 	love.graphics.setFont(font.prototype[20])
 	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
 	mouse:drawCircle()
-
+	scorebar:draw()
 end
 
 function love.mousepressed(x, y, b)
