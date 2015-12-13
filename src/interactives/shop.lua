@@ -234,7 +234,7 @@ function shop:drawSelected()
 
 		local cell = hexMap:getCell(mouse:getHexCoords())
 
-		if not cell or cell.team ~= "immune" then
+		if not cell or cell.team ~= "immune" or immuneSystem:find(mouse:getHexCoords()) then
 			love.graphics.setColor(255, 0, 0, 150)
 		else
 			love.graphics.setColor(0, 255, 0, 150)
