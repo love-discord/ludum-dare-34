@@ -15,7 +15,8 @@ require("src.interactives.shop")
 --[[ functions ]]--
 function love.load()
 	hexMap = hex:new(12, 32, 100)
-	shop:load(immuneSystem:loadUnits())
+	immuneSystem:loadUnits()
+	shop:load()
 	immuneSystem:addUnit("Cell Damage Booster", 7, -9, 2)
 	immuneSystem:addUnit("Cell Healer", 8, -9, 2)
 

@@ -3,11 +3,19 @@ shop = {
 	active = false,
 	y = 0,
 	x = 0,
+
+	flick = 0,
+	flickRate = 15,
+	flicked = 0,
+	drawable = false
 }
 
-function shop:load(unitList)
-	for i = 1, #unitList do
-		shop[#shop + 1] = {name = unitList[i].name, hp = unitList[i].hp, range = unitList[i].range, movable = unitList[i].movable, effectText = unitList[i].effectText, cost = unitList[i].cost, img = unitList[i].img, requireText = unitList.requireText}
+function shop:load()
+	local i = 1
+	for k, v in pairs(immuneSystem.unitList) do
+		shop[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText}
+		print("Added "..shop[#shop].name)
+		i = i + 1
 	end
 
 	shop:resize(love.window.getWidth(), love.window.getHeight())
@@ -47,10 +55,32 @@ function shop:update(dt)
 			shop.y = 0
 		end
 	end
+
+	if shop.x >= shop.targetX - 10 then
+		shop.ready = true
+	else
+		shop.ready = false
+	end
+
+	if shop.ready then
+		shop.flick = shop.flick + dt
+		if shop.flick > 1 / shop.flickRate then
+			if shop.flicked <= 4 then
+				shop.drawable = not shop.drawable
+				shop.flicked = shop.flicked + 1
+				shop.flick = shop.flick - 1 / shop.flickRate
+			end
+		end
+	else
+		shop.flick = 0
+		shop.flicked = 0
+		shop.drawable = false
+	end
 end
 
 function shop:draw()
 	local rads = math.rad(75)
+	love.graphics.setLineWidth(4)
 	local distanceUntilMainQuad = 150 / math.tan(rads)
 	local subDistance = 30
 
@@ -80,8 +110,6 @@ function shop:draw()
 	)
 	end
 
--- love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad) + distanceUntilMainQuad * 3 - subDistance / math.tan(rads) * 4
-
 	--[[ lines ]]--
 	love.graphics.setColor(0, 255, 255, 150)
 	-- left side
@@ -102,6 +130,18 @@ function shop:draw()
 	if shop.x > distanceUntilMainQuad then
 		love.graphics.line(love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y + subDistance * 4, love.window.getWidth() /2 + shop.targetX - shop.x, love.window.getHeight() - shop.y + subDistance * 4)
 		love.graphics.line(love.window.getWidth() / 2 + shop.targetX - distanceUntilMainQuad, love.window.getHeight() - shop.y, love.window.getWidth() /2 + shop.targetX - shop.x, love.window.getHeight() - shop.y)
+	end
+
+	if shop.drawable then
+		shop:drawProducts()
+	end
+end
+
+function shop:drawProducts()
+	local rads = math.rad(75)
+	local distanceUntilMainQuad = 150 / math.tan(rads)
+	for i = 1, #shop do
+		love.graphics.draw(shop[i].img, love.window.getWidth() / 2 - shop.targetX + (80 * i) + distanceUntilMainQuad - 30, love.window.getHeight() - shop.y + 30)
 	end
 end
 
