@@ -56,7 +56,7 @@ function virus:addUnit(name, x, y, z)
 end
 
 function virus:loadTroops()
-	self:newTroop("Fighter", 5, 0, 10, 10, 2, require("src.AI.virus_fighter"), 50, love.graphics.newImage("res/virusTroop.png"))
+	self:newTroop("Fighter", 5, 0, 20, 20, 2, require("src.AI.virus_fighter"), 50, love.graphics.newImage("res/virusTroop.png"))
 end
 
 function virus:newTroop(name, hp, range, w, h, amount, effect, speed ,img)
@@ -118,10 +118,12 @@ function virus:fastUpdate(dt)
 			v.xvel = v.target.x - v.x
 			v.yvel = v.target.y - v.y
 		end
-		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
-		if velM > hexMap.cell_size then -- if not in range (should still move)
-			v.x = v.x + v.xvel / velM * dt * v.speed
-			v.y = v.y + v.yvel / velM * dt * v.speed
+		if v.target ~= nil then 
+			local velM = v.xvel * v.xvel + v.yvel * v.yvel
+			if velM > v.target.radius then -- if not in range (should still move)
+				v.x = v.x + v.xvel / math.sqrt(velM) * dt * v.speed
+				v.y = v.y + v.yvel / math.sqrt(velM) * dt * v.speed
+			end
 		end
 	end
 end
@@ -132,12 +134,13 @@ function virus:draw()
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.rectangle("fill", x - unit.w / 2, y - unit.h / 2 - 10, unit.w, unit.h)
 	end
+
 	for i, t in pairs(self.troop) do
 		love.graphics.setColor(255, 255, 255)
-		local sX, sY = (t.img:getWidth() / t.w), (t.img:getHeight() / t.h)
+		local sX, sY = (t.w/t.img:getWidth()), (t.h/t.img:getHeight())
 		local velX, velY = t.xvel, t.yvel
 		local magnitudeSq = velX * velX + velY * velY
-		if math.abs(magnitudeSq - 1) > 0.0001 then
+		if math.abs(magnitudeSq) > 0.0001 then
 			velX = velX / math.sqrt(magnitudeSq)
 			velY = velY / math.sqrt(magnitudeSq)
 		end

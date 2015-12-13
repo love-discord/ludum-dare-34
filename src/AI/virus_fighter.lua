@@ -1,39 +1,31 @@
-return function(self)	-- fighter behaviour
+return function(self) -- fighter behaviour
 	self.target = nil
-	local pT = {} -- possible targets
+	local pt = {} -- potential targets
 
-	for _, t in pairs(immuneSystem.troop) do	-- loop through enemy troops
-		table.insert(pT, {x = t.x + t.xvel * t.speed, -- a little bit of prediction
-					 		y = t.y + t.yvel * t.speed,
-							o = immuneSystem.troop[_]}) --the actual object
+	for i, t in pairs(immuneSystem.troop) do -- for each enemy troop
+		table.insert(pt, t) -- add it to the potential target table
+		pt[#pt].radius = math.sqrt(t.w*t.w + t.h*t.h) / 2
+		pt[#pt].distSq = distSq(t.x, t.y, self.x, self.y)
 	end
 
-	for _, b in pairs(immuneSystem.unit) do	-- loop through enemy buildings
-		pT[#pT + 1] = {}
-		pT[#pT].x, pT[#pT].y = hexMap:hexToPixel(b.x, b.y, b.z)
-		pT[#pT].o = immuneSystem.unit[_] --the actual object
+	for i, b in pairs(immuneSystem.unit) do -- for each enemy building
+		table.insert(pt, b)
+		pt[#pt].X, pt[#pt].Y = hexMap:hexToPixel(b.x, b.y, b.z)
+		pt[#pt].radius = hexMap.cell_size
+		pt[#pt].distSq = distSq(pt[#pt].X, pt[#pt].Y, self.x, self.y)
 	end
 
-	local minDist = 4000000
-	local idx
-	for _, p in pairs(pT) do -- loop through all possible targets in order to decide on one
-		local px, py, pz = hexMap:pixelToHex(p.x, p.y)
-		if hexagonal(px, py, pz, 12) then
-			local dx, dy = (self.x - p.x), (self.y - p.y)
-			local distSq = dx*dx + dy*dy
-			if distSq < minDist then -- if we have found a closer target
-				minDist = distSq
-				self.target = p
-			end
-		end
-	end
+	if #pt == 0 then return end -- nothing left to attack
 
-	if minDist <= hexMap.cell_size*hexMap.cell_size then -- in range to attack
-		self.target.o.hp = self.target.o.hp - self.amount
-	end
+	table.sort(pt,
+		function(a, b)
+			return a.distSq < b.distSq -- sort the potential targets by their distance from the troop
+		end)
 
-	if self.target then
-		if self.target.o.hp <= 0 then self.target = nil end 
+	self.target = pt[1]
+	if self.target.distSq <= self.target.radius then
+		self.target.hp = self.target.hp - self.amount
 	end
-
+	if self.target.hp <= 0 then self.target = nil end
 end
+--]]

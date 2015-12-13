@@ -84,7 +84,7 @@ function immuneSystem:remove(x, y, z)
 end
 
 function immuneSystem:loadTroops()
-	self:newTroop("Bugfixer", 5, 0, 10, 10, 2, require("src.AI.antivirus_bugfix"), 50, love.graphics.newImage("res/immuneTroop.png"))
+	self:newTroop("Bugfixer", 5, 0, 20, 20, 2, require("src.AI.antivirus_bugfix"), 50, love.graphics.newImage("res/immuneTroop.png"))
 end
 
 function immuneSystem:newTroop(name, hp, range, w, h, amount, effect, speed, img)
@@ -131,10 +131,12 @@ function immuneSystem:fastUpdate(dt)
 			v.xvel = v.target.x - v.x
 			v.yvel = v.target.y - v.y
 		end
-		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
-		if velM > hexMap.cell_size then -- if not in range (should still move)
-			v.x = v.x + v.xvel / velM * dt * v.speed
-			v.y = v.y + v.yvel / velM * dt * v.speed
+		if v.target ~= nil then 
+			local velM = v.xvel * v.xvel + v.yvel * v.yvel
+			if velM > v.target.radius then -- if not in range (should still move)
+				v.x = v.x + v.xvel / math.sqrt(velM) * dt * v.speed
+				v.y = v.y + v.yvel / math.sqrt(velM) * dt * v.speed
+			end
 		end
 	end
 end
@@ -149,10 +151,10 @@ function immuneSystem:draw()
 	end
 	for i, t in pairs(self.troop) do
 		love.graphics.setColor(255, 255, 255)
-		local sX, sY = (t.img:getWidth() / t.w), (t.img:getHeight() / t.h)
+		local sX, sY = (t.w/t.img:getWidth()), (t.h/t.img:getHeight())
 		local velX, velY = t.xvel, t.yvel
 		local magnitudeSq = velX * velX + velY * velY
-		if math.abs(magnitudeSq - 1) > 0.0001 then
+		if math.abs(magnitudeSq) > 0.0001 then
 			velX = velX / math.sqrt(magnitudeSq)
 			velY = velY / math.sqrt(magnitudeSq)
 		end
