@@ -20,7 +20,7 @@ function camera:update(dt)
 	end
 end
 
-function camera:mousepressed(key)
+function camera:mousepressed(x, y, key)
 	if key == "wu" then
 		if camera.scale < 2 then
 			camera.scale = camera.scale * 1.1

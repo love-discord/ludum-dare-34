@@ -121,7 +121,10 @@ function cell:update(dt)
 			neighbor.def = 0
 		end
 	end
-  self.hp = math.round(self.hp, 0)
+  if self.hp < 100 then
+    self.hp = math.round(self.hp, 0)
+  end
+  if self.hp > self.maxHP then self.hp = self.maxHP end
 end
 
 return cell

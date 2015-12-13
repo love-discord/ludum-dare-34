@@ -8,7 +8,6 @@ function shop:load(a)
 end
 
 function shop:update()
-
 end
 
 function shop:draw()

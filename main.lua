@@ -32,6 +32,8 @@ function love.update(dt)
 		end
 		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end
+  
+  shop:update()
 end
 
 function love.draw()

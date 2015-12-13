@@ -15,8 +15,6 @@ function hex:init(radius, cell_size)
 	local default_regen = 1
 	local default_def = 0
 	local default_hp = 100
-  local team = nil
-  local newTeam = nil
 
 	self.cells = {}
 	self.radius = radius
