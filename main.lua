@@ -31,7 +31,10 @@ font = {
 	},
 	roboto = {
 		italic = {
-			[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 14)
+			[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 12)
+		},
+		regular = {
+			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 13)
 		},
 		bold = {
 			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 13)
