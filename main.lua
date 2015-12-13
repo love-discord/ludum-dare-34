@@ -6,6 +6,7 @@ local class = require("lib.class")
 hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
 
+
 stats = {unitsAlive = {}}
 require("src.entities.immuneSystem")
 require("src.entities.virus")
@@ -54,7 +55,7 @@ function love.update(dt)
 		end
 		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end
-  
+ 
 	camera:update(dt)
 	mouse:update()
 	shop:update(dt)
