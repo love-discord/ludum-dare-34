@@ -2,7 +2,7 @@
 function cellHealer(x, y, z, amount)
 	if hexMap:getCell(x, y, z) == nil then return end
 	if hexMap:getCell(x, y, z).team == "immune" then
-		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + 5
+		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + amount
 	end
 end
 
@@ -29,7 +29,7 @@ immuneSystem = {
 
 function immuneSystem:loadUnits()
 	local sampleImg = love.graphics.newImage("res/sample.png")
-	immuneSystem:newUnit("Chip Healer", 		50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick." ,cellHealer, 			2, 50,  love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 			function() return true end, "Those under my\nprotection will live. \nOthers'll have to\npush their luck.")
+	immuneSystem:newUnit("Chip Healer", 		50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick." ,cellHealer, 			10, 50,  love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 			function() return true end, "Those under my\nprotection will live. \nOthers'll have to\npush their luck.")
 	immuneSystem:newUnit("Chip Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly\nchips."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end, "Warning:// malware\ndetected.\nUpgrading hardware..")
 	immuneSystem:newUnit("Debugger Spawn", 		50, 1, 32, 48, false, "Spawns a debugger."						  ,bugfixerSpawn,	 1/12, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end, "The dream of\nall programmers.\nAn automatic\ndebugger.")
 

@@ -15,6 +15,7 @@ require("src.entities.virus")
 require("src.interactives.camera")
 require("src.interactives.shop")
 require("src.interactives.mouse")
+require("src.interactives.input")
 
 
 --[[ variables ]]--
@@ -33,10 +34,18 @@ font = {
 	}
 }
 
+state = {
+	drawHP = false,
+	updating = true
+}
+
+local timeSinceLastTick = 0
+
 --[[ functions ]]--
-function love.load()
 	hexMap = hex:new(12, 48, 100)
 
+	input:load()
+	
 	immuneSystem:loadUnits()
 	immuneSystem:loadTroops()
 	immuneSystem:addUnit("Chip Damage Booster", 7, -9, 2)
@@ -56,17 +65,13 @@ function love.load()
 	virus:addUnit("Bug factory", -2, 8, 10)
 
 	shop:load()
-end
-
-updating = true
-local timeSinceLastTick = 0
 function love.update(dt)
+
 	local TICK_SPEED = 3 -- 1/number
 	timeSinceLastTick = timeSinceLastTick + dt
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
-		if updating then
+		if state.updating then
 			cell:update(dt)
-
 			virus:update()
 			immuneSystem:update()
 		end
@@ -103,9 +108,7 @@ function love.mousepressed(x, y, b)
 end
 
 function love.keypressed(key)
-	if key == "q" then
-		updating = not updating
-	end
+	input:keypressed(key)
 end
 
 function love.resize(x, y)
