@@ -1,6 +1,8 @@
 local class = require 'lib.class'
 local cell = class:subclass()
 
+renderCanvas = love.graphics.newCanvas(love.window.getWidth(), love.window.getHeight())
+
 function round(num, idp)
   local mult = 10^(idp or 0)
   return math.floor(num * mult + 0.5) / mult
@@ -14,6 +16,7 @@ local colors = {
 }
 
 function cell:init(map, x, y, z, size, hp, maxHP, damage, regen, defense, team)
+
 	self.map = map
 
 	self.x = x
@@ -63,6 +66,7 @@ end
 
 -- Draws the cell on the screen
 function cell:draw(mode)
+
   self.size = self.size + 1
   if self.size > self.tSize - 3 then self.size = self.size - 1 end
   
@@ -88,15 +92,19 @@ function cell:draw(mode)
 		vertices[#vertices + 1] = x
 		vertices[#vertices + 1] = y
 	end
-
+  
+      
 	love.graphics.polygon("fill", vertices)
+  
 	love.graphics.setColor(255, 255, 255)
+  
 	if state.drawHP then
 		love.graphics.setFont(font.prototype[20])
 		local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
 		self.hp = round(self.hp)
 		love.graphics.print(self.hp, x, y)
 	end
+
 end
 
 function cell:getCorner(i)

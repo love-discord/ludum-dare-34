@@ -1,5 +1,7 @@
 local class = require 'lib.class'
 local cell = require 'src.hex.cell'
+local shine = require "lib.shine"
+
 
 function math.round(num, idp)
   local mult = 10^(idp or 0)
@@ -17,7 +19,9 @@ default_def = 0
 default_hp = 100
 
 function hex:init(radius, cell_size)
+  local desaturate = shine.desaturate{strength = 0.0, tint = {255,250,200}}
 
+  post_effect = desaturate
 	self.cells = {}
 	self.radius = radius
 	self.cell_size = cell_size
@@ -39,9 +43,12 @@ end
 function hex:draw()
 	for _, col in pairs(self.cells) do
 		for _, cell in pairs(col) do
-			cell:draw 'fill'
+      post_effect:draw(function()
+        cell:draw('fill')
+      end)
 		end
 	end
+
 end
 
 function hex:getCell(x, y, z)
