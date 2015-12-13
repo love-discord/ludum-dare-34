@@ -71,7 +71,6 @@ function love.draw()
 	mouse:draw()
 	immuneSystem:draw()
 	virus:draw()
-
 	love.graphics.pop()
 
 	-- UI BEGGINS HERE
