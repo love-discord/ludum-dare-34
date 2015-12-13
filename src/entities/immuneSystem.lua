@@ -1,7 +1,7 @@
 --[[ effects ]]--
 function cellHealer(x, y, z, amount)
 	if hexMap:getCell(x, y, z).team == "immune" then
-		hexMap:getCell(x, y, z).color = {0, 255, 0}
+		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + 5
 	end
 end
 
@@ -18,17 +18,17 @@ immuneSystem = {
 
 function immuneSystem:loadUnits()
 	local sampleImg = love.graphics.newImage("res/sample.png")
-	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, cellHealer, 			2, 50,  sampleImg, "Nothing", 			function() return true end)
-	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end)
-	immuneSystem:newUnit("Smth else", 			50, 2, 32, 48, false, function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
-	immuneSystem:newUnit("Smth else2", 			50, 2, 32, 48, false, function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==0  end)
+	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, "Heals friendly cells with 5HP every tick." ,cellHealer, 			2, 50,  sampleImg, "Nothing", 			function() return true end)
+	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly cells."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end)
+	immuneSystem:newUnit("Smth else", 			50, 2, 32, 48, false, "Does something."							  ,function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
+	immuneSystem:newUnit("Smth else2", 			50, 2, 32, 48, false, "Does something different."				  ,function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==0  end)
 	return immuneSystem.unitList
 end
 
 -- creates a new unit __TYPE__
-function immuneSystem:newUnit(name, hp, range, w, h, movable, effect, amount, cost, img, requireText, requireFunc)
+function immuneSystem:newUnit(name, hp, range, w, h, movable, effectText, effect, amount, cost, img, requireText, requireFunc)
 	immuneSystem.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, movable = movable,
-									effect = effect, amount = amount, cost = cost, img = img,
+									effectText = effectText, effect = effect, amount = amount, cost = cost, img = img,
 									requireText = requireText, requireFunc = requireFunc}
 	stats.unitsAlive[name] = 0
 end

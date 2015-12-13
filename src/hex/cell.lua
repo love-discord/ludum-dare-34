@@ -127,7 +127,6 @@ function cell:update(dt)
 		local otherCell = hexMap:getCell(actions[i][2].x, actions[i][2].y, actions[i][2].z)
 		if mainCell.team ~= otherCell.team then
 			otherCell.hp = otherCell.hp - mainCell.dmg + otherCell.def
-			print("hello")
 		end
 
 		if otherCell.hp < otherCell.maxHP then
