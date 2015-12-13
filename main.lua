@@ -74,15 +74,15 @@ timeSinceLastTick = 0
 	love.mouse.setVisible(false)
 
 function love.update(dt)
-	TICK_SPEED = 3 -- 1/number
-	timeSinceLastTick = timeSinceLastTick + dt
-	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
-		if state.updating then
-			cell:update(dt)
-			virus:update()
-			immuneSystem:update()
+	if state.updating then
+		TICK_SPEED = 3 -- 1/number
+		timeSinceLastTick = timeSinceLastTick + dt
+		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
+				cell:update(dt)
+				virus:update()
+				immuneSystem:update()
+			timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 		end
-		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end
  
  	if state.updating then
