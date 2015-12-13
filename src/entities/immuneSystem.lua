@@ -12,6 +12,12 @@ function cellDamageBooster(x, y, z, amount)
 	end
 end
 
+function bugfixerSpawn(x, y, z, amount)
+	if math.random() < amount then
+		immuneSystem:addTroop("Bugfixer", hexMap:hexToPixel(x, y, z))
+	end
+end
+
 immuneSystem = {
 	unitList = {},
 	unit = {},
@@ -23,7 +29,7 @@ function immuneSystem:loadUnits()
 	local sampleImg = love.graphics.newImage("res/sample.png")
 	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, "Heals friendly cells with 5HP every tick." ,cellHealer, 			2, 50,  love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 			function() return true end)
 	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly cells."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end)
-	immuneSystem:newUnit("Smth else", 			50, 2, 32, 48, false, "Does something."							  ,function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
+	immuneSystem:newUnit("Bugfixer Spawn", 		50, 2, 32, 48, false, "Spawns a bugfixer"						  ,bugfixerSpawn,	 	1, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
 	immuneSystem:newUnit("Smth else2", 			50, 2, 32, 48, false, "Does something different."				  ,function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==0  end)
 	return immuneSystem.unitList
 end
@@ -75,6 +81,27 @@ function immuneSystem:remove(x, y, z)
 	end
 end
 
+function immuneSystem:loadTroops()
+	self:newTroop("Bugfixer", 1, 0, 10, 10, 4, require("src.AI.antivirus_bugfix"), 50)
+end
+
+function immuneSystem:newTroop(name, hp, range, w, h, amount, effect, speed)
+	self.troopList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, speed = speed}
+end
+
+function immuneSystem:addTroop(name, x, y)
+	table.insert(self.troop,	{name = name, x = x, y = y,
+									hp = self.troopList[name].hp,
+									range = self.troopList[name].range,
+									w = self.troopList[name].w,
+									h = self.troopList[name].h,
+									effect = self.troopList[name].effect,
+									speed = self.troopList[name].speed,
+									amount = self.troopList[name].amount,
+									target = nil, xvel = 0, yvel = 0})
+end
+
+
 function immuneSystem:update(dt)
 	for i, unit in pairs(immuneSystem.unit) do
 		if unit.hp <= 0 then
@@ -88,6 +115,22 @@ function immuneSystem:update(dt)
 	end
 end
 
+function immuneSystem:fastUpdate(dt)
+	for i, v in pairs(self.troop) do
+		v.xvel, v.yvel = 0, 0
+		if v.target then
+			v.xvel = v.target.x - v.x
+			v.yvel = v.target.y - v.y
+		end
+		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
+		if velM > hexMap.cell_size then -- if not in range (should still move)
+			if velM == 0 then velM = 1 end -- handle division by 0
+			v.x = v.x + v.xvel / velM * dt * v.speed
+			v.y = v.y + v.yvel / velM * dt * v.speed
+		end
+	end
+end
+
 function immuneSystem:draw()
 	for i = 1, #immuneSystem.unit do
 		local x, y = hexMap:hexToPixel(immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].z)
@@ -95,6 +138,11 @@ function immuneSystem:draw()
 		local sY = (hexMap.cell_size + hexMap.cell_size / 2) / immuneSystem.unit[i].img:getHeight()
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.draw(immuneSystem.unit[i].img, x - hexMap.cell_size / 2, y - (hexMap.cell_size + hexMap.cell_size / 2) / 2 - 10, 0, sX, sY)
+	end
+	for i, t in pairs(self.troop) do
+		print("a")
+		love.graphics.setColor(0, 100, 0)
+		love.graphics.rectangle("fill", t.x - t.w / 2, t.y - t.h / 2 - 10, t.w, t.h)
 	end
 end
 
