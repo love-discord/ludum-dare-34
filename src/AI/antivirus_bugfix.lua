@@ -29,5 +29,5 @@ return function(self)	-- fighter behaviour
 		self.target.o.hp = self.target.o.hp - self.amount
 	end
 
-	print("Bugfix Target set: "..self.target.o.name)
+	--print("Bugfix Target set: "..self.target.o.name)
 end

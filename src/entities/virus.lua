@@ -76,6 +76,7 @@ function virus:addTroop(name, x, y)
 end
 
 function virus:remove(x, y)
+	print("virus remove: ", x, y, z)
 	local occupied, id = self:find(x, y)
 	local tempUnit = {}
 

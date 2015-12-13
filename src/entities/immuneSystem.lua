@@ -69,6 +69,8 @@ function immuneSystem:remove(x, y, z)
 	local occupied, id = immuneSystem:find(x, y, z)
 	local tempUnit = {}
 
+	print("immune system remove: ", x, y, z)
+
 	if occupied then
 		for i = 1, #immuneSystem.unit do
 			if i ~= id then
