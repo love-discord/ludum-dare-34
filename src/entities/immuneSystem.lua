@@ -95,6 +95,16 @@ function immuneSystem:remove(x, y, z)
 	end
 end
 
+function immuneSystem:getNumber(name)
+	local n = 0
+	for i, unit in pairs(immuneSystem.unit) do
+		if unit.name == name then
+			n = n + 1
+		end
+	end
+	return n
+end
+
 function immuneSystem:loadTroops()
 	self:newTroop("Bugfixer", 5, 0, 20, 20, 2, require("src.AI.antivirus_bugfix"), 50, love.graphics.newImage("res/immuneTroop.png"))
 end
