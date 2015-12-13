@@ -91,8 +91,12 @@ function cell:draw(mode)
 
 	love.graphics.polygon("fill", vertices)
 	love.graphics.setColor(255, 255, 255)
-	local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
-	--love.graphics.print(self.hp, x, y)
+	if state.drawHP then
+		love.graphics.setFont(font.prototype[20])
+		local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
+		self.hp = round(self.hp)
+		love.graphics.print(self.hp, x, y)
+	end
 end
 
 function cell:getCorner(i)
