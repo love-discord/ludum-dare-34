@@ -79,7 +79,7 @@ function cell:draw(mode)
 	love.graphics.setLineWidth(2)
 	love.graphics.polygon("line", vertices)
 
-	self.color[4] = 200
+	self.color[4] = self.hp * 2
 	love.graphics.setColor(self.color)
 
 	local vertices = {}
