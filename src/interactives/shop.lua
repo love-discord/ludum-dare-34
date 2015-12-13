@@ -63,7 +63,6 @@ function shop:draw()
 	for i = 1, #tri do
 		love.graphics.setColor(0, 0, 0, 150)
 		love.graphics.polygon("fill", tri[i].x1, tri[i].y1, tri[i].x2, tri[i].y2, tri[i].x3, tri[i].y3)
-		print("hi")
 	end
 
 	love.graphics.setColor(0, 255, 255, 150)

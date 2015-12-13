@@ -13,7 +13,9 @@ end
 
 immuneSystem = {
 	unitList = {},
-	unit = {}
+	unit = {},
+	troop = {},
+	troopList = {}
 }
 
 function immuneSystem:loadUnits()

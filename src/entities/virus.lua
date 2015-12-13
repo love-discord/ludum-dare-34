@@ -59,9 +59,29 @@ end
 
 
 local function fighter(self)	-- fighter behaviour
-	if not self.xvel then self.xvel, self.yvel, self.xtarget, self.ytarget = 0, 0, 0, 0 end
-	self.xvel = self.xvel + math.random()*10 - 5
-	self.yvel = self.yvel + math.random()*10 - 5
+	local pT = {} -- possible targets
+
+	for _, t in pairs(immuneSystem.troop) do	-- loop through enemy troops
+		pT[#pT+1] = {hp = t.hp,
+					x = t.x + t.xvel * t.speed, -- a little bit of prediction
+					y = t.y + t.yvel * t.speed}
+	end
+
+	for _, b in pairs(immuneSystem.unit) do	-- loop through enemy buildings
+		pT[#pT+1] = {hp = b.hp}
+		pT[#pT].x, pT[#pT].y = hexMap:hexToPixel(b.x, b.y, b.z)
+	end
+
+	local minDist = 10000000
+	local idx
+	for _, p in pairs(pT) do -- loop through all possible targets in order to decide on one
+		local dx, dy = (self.x - p.x), (self.y - p.y)
+		local distSq = dx*dx + dy*dy
+		if distSq < minDist then -- if we have found a closer target
+			minDist = distSq
+			self.target = p
+		end
+	end
 end
 
 function virus:loadTroops()
@@ -78,7 +98,8 @@ function virus:addTroop(name, x, y)
 									w = virus.troopList[name].w,
 									h = virus.troopList[name].h,
 									effect = virus.troopList[name].effect,
-									speed = virus.troopList[name].speed}
+									speed = virus.troopList[name].speed,
+									target = nil, xvel = 0, yvel = 0}
 end
 
 function virus:remove(x, y)
@@ -111,7 +132,12 @@ end
 
 function virus:fastUpdate(dt)
 	for i, v in pairs(virus.troop) do
+		if v.target then
+			v.xvel = v.target.x - v.x
+			v.yvel = v.target.y - v.y
+		end
 		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
+		if velM == 0 then velM = 1 end -- handle division by 0
 		v.x = v.x + v.xvel / velM * dt * v.speed
 		v.y = v.y + v.yvel / velM * dt * v.speed
 	end
