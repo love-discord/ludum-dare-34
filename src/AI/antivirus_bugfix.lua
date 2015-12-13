@@ -34,4 +34,3 @@ return function(self) -- fighter behaviour
 	end
 	if self.target.hp <= 0 then self.target = nil end
 end
---]]

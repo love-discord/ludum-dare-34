@@ -1,3 +1,9 @@
+function distSq(x1, y1, x2, y2)
+	local dx = x1 - x2
+	local dy = y1 - y2
+	return dx*dx + dy*dy
+end
+
 return function(self) -- fighter behaviour
 	self.target = nil
 	local pt = {} -- potential targets
@@ -28,4 +34,3 @@ return function(self) -- fighter behaviour
 	end
 	if self.target.hp <= 0 then self.target = nil end
 end
---]]
