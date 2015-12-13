@@ -41,24 +41,18 @@ function mouse:getHexCoords()
 	return hexMap:pixelToHex(self:scaledX() - camera.x, self:scaledY() - camera.y)
 end
 
-function mouse:getHex()
-	local x, y, z = self:getHexCoords()
-	local SIZE = 100
-	local tile = cell:new(hexMap, x, y, z, 20, SIZE, SIZE, SIZE, SIZE, SIZE, "other")
-	return tile
-end
 -- colors the hexagon under the mouse
 function mouse:draw()
-	local x, y, z = hexMap:pixelToHex(mouse.screenX, mouse.screenY)
+    local x, y, z = mouse:getHexCoords()
 
-	local vertices = {}
-	for i = 0, 5 do
-		getCorner(i, x, y, z)
-		vertices[#vertices + 1] = x
-		vertices[#vertices + 1] = y
-	end
+    local vertices = {}
+    for i = 0, 5 do
+        local xC, yC = getCorner(i, x, y, z)
+        vertices[#vertices + 1] = xC
+        vertices[#vertices + 1] = yC
+    end
 
-	love.graphics.setColor(unpack(mouse.color))
-	love.graphics.polygon("line", vertices)
+    love.graphics.setColor(mouse.color)
+    love.graphics.polygon("line", vertices)
 end
 
