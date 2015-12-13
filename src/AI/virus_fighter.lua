@@ -3,9 +3,9 @@ return function(self)	-- fighter behaviour
 	local pT = {} -- possible targets
 
 	for _, t in pairs(immuneSystem.troop) do	-- loop through enemy troops
-		pT[#pT+1] = {x = t.x + t.xvel * t.speed, -- a little bit of prediction
-					 y = t.y + t.yvel * t.speed}
-		pT[#pT].o = t --the actual object
+		table.insert(pT, {x = t.x + t.xvel * t.speed, -- a little bit of prediction
+					 		y = t.y + t.yvel * t.speed,
+							o = t}) --the actual object
 	end
 
 	for _, b in pairs(immuneSystem.unit) do	-- loop through enemy buildings

@@ -19,7 +19,7 @@ local function cellDamager(x, y, z, amt)
 end
 
 function virus:loadUnits()
-	virus:newUnit("Bug factory", 50, 1, 32, 48, 1/12, proteinFactory) -- should spawn a fighter every 5s on average
+	virus:newUnit("Bug factory", 50, 1, 32, 48, 1, proteinFactory) -- should spawn a fighter every 5s on average
 	virus:newUnit("Cell Damager", 50, 2, 32, 48, 1, cellDamager)
 end
 
@@ -116,7 +116,6 @@ function virus:fastUpdate(dt)
 		end
 		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
 		if velM > hexMap.cell_size then -- if not in range (should still move)
-			if velM == 0 then velM = 1 end -- handle division by 0
 			v.x = v.x + v.xvel / velM * dt * v.speed
 			v.y = v.y + v.yvel / velM * dt * v.speed
 		end

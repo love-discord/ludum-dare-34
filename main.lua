@@ -50,8 +50,8 @@ function love.update(dt)
 		if updating then
 			cell:update(dt)
 
-			immuneSystem:update()
 			virus:update()
+			immuneSystem:update()
 		end
 		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end

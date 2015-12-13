@@ -2,13 +2,13 @@ return function(self)	-- fighter behaviour
 	self.target = nil
 	local pT = {} -- possible targets
 
-	for _, t in pairs(immuneSystem.troop) do	-- loop through enemy troops
-		pT[#pT+1] = {x = t.x + t.xvel * t.speed, -- a little bit of prediction
-					 y = t.y + t.yvel * t.speed}
-		pT[#pT].o = t --the actual object
+	for _, t in pairs(virus.troop) do	-- loop through enemy troops
+		table.insert(pT, {x = t.x + t.xvel * t.speed, -- a little bit of prediction
+					 		y = t.y + t.yvel * t.speed,
+							o = t}) --the actual object
 	end
 
-	for _, b in pairs(immuneSystem.unit) do	-- loop through enemy buildings
+	for _, b in pairs(virus.unit) do	-- loop through enemy buildings
 		pT[#pT + 1] = {}
 		pT[#pT].x, pT[#pT].y = hexMap:hexToPixel(b.x, b.y, b.z)
 		pT[#pT].o = b --the actual object
@@ -20,10 +20,8 @@ return function(self)	-- fighter behaviour
 		local dx, dy = (self.x - p.x), (self.y - p.y)
 		local distSq = dx*dx + dy*dy
 		if distSq < minDist then -- if we have found a closer target
-			print("Found target")
 			minDist = distSq
 			self.target = p
-			print(self.target)
 		end
 	end
 

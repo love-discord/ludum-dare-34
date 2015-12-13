@@ -66,7 +66,7 @@ function immuneSystem:addUnit(name, x, y, z)
 end
 
 function immuneSystem:remove(x, y, z)
-	local occupied, id = immuneSystem:find(x, y)
+	local occupied, id = immuneSystem:find(x, y, z)
 	local tempUnit = {}
 
 	if occupied then
@@ -115,7 +115,9 @@ function immuneSystem:update(dt)
 	end
 	for i, troop in pairs(immuneSystem.troop) do
 		if troop.hp <= 0 then immuneSystem.troop[i] = nil
-		else troop:effect() end
+		else
+			troop:effect()
+		end
 	end
 end
 
@@ -128,7 +130,6 @@ function immuneSystem:fastUpdate(dt)
 		end
 		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
 		if velM > hexMap.cell_size then -- if not in range (should still move)
-			if velM == 0 then velM = 1 end -- handle division by 0
 			v.x = v.x + v.xvel / velM * dt * v.speed
 			v.y = v.y + v.yvel / velM * dt * v.speed
 		end
