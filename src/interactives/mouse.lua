@@ -10,7 +10,7 @@ local function getCorner(i, x, y, z)
 			cy + math.sin(angle_rad) * hexMap.cell_size
 end
 
-local mouse = {
+mouse = {
 	color = {0, 255, 0}
 }
 
@@ -56,4 +56,3 @@ function mouse:draw()
 	love.graphics.polygon("line", vertices)
 end
 
-return mouse

@@ -12,7 +12,7 @@ require("src.entities.virus")
 
 require("src.interactives.camera")
 require("src.interactives.shop")
-mouse = require("src.interactives.mouse")
+require("src.interactives.mouse")
 
 
 --[[ functions ]]--
