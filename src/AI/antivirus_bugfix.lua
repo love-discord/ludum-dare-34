@@ -28,4 +28,6 @@ return function(self)	-- fighter behaviour
 	if minDist <= hexMap.cell_size*hexMap.cell_size then -- in range to attack
 		self.target.o.hp = self.target.o.hp - self.amount
 	end
+
+	print("Bugfix Target set: "..self.target.o.name)
 end

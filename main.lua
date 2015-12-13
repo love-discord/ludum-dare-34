@@ -2,6 +2,7 @@
 love.graphics.setDefaultFilter("nearest", "nearest")
 
 local class = require("lib.class")
+local lovebird = require("lib.lovebird")
 
 hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
@@ -34,9 +35,11 @@ function love.load()
 	virus:loadUnits()
 	virus:loadTroops()
 
-	virus:addUnit("Bug factory", -8, 10, -2)
-	virus:addUnit("Bug factory", -10, 2, -8)
-	virus:addUnit("Bug factory", -2, 8, 10)
+	--virus:addUnit("Bug factory", -8, 10, -2)
+	--virus:addUnit("Bug factory", -10, 2, -8)
+	--virus:addUnit("Bug factory", -2, 8, 10)
+
+	virus:addTroop("Fighter", 0, 0, 0)
 
 	shop:load()
 end
@@ -61,6 +64,7 @@ function love.update(dt)
 	shop:update(dt)
 	virus:fastUpdate(dt)
 	immuneSystem:fastUpdate(dt)
+	lovebird.update()
 end
 
 function love.draw()
