@@ -110,7 +110,9 @@ function virus:update()
 	end
 	for i, troop in pairs(self.troop) do
 		if troop.hp <= 0 then
-			self.unit[troop.unit].troopsAlive = self.unit[troop.unit].troopsAlive - 1
+			if self.unit[troop.unit] then
+				self.unit[troop.unit].troopsAlive = self.unit[troop.unit].troopsAlive - 1
+			end
 			dyingTroop:died(troop)
 			self.troop[i] = nil
 		else
