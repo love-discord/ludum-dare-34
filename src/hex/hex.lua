@@ -25,14 +25,12 @@ function hex:init(radius, cell_size)
 				local team = "neutral"
 				if x+z/2 > 7 then team = "immune" end
 				if x+z/2 < -7 then team = "virus" end
+        if team == "neutral" then default_dmg = 0 
+        elseif team == "immune" or team == "virus" then default_dmg = 10 end
 				self.cells[x][z] = cell:new(self, x, -x-z, z, self.cell_size, default_hp, default_dmg, default_regen, default_def, team)
 			end
 		end
 	end
-  
-  if self.team == "neutral" then
-    self.dmg = 0
-  end
 end
 
 function hex:draw()
