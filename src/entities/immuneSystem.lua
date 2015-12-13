@@ -70,8 +70,6 @@ function immuneSystem:remove(x, y, z)
 	local occupied, id = immuneSystem:find(x, y, z)
 	local tempUnit = {}
 
-	print("immune system remove: ", x, y, z)
-
 	if occupied then
 		for i = 1, #immuneSystem.unit do
 			if i ~= id then
@@ -85,7 +83,7 @@ function immuneSystem:remove(x, y, z)
 end
 
 function immuneSystem:loadTroops()
-	self:newTroop("Bugfixer", 1, 0, 10, 10, 4, require("src.AI.antivirus_bugfix"), 50)
+	self:newTroop("Bugfixer", 5, 0, 10, 10, 2, require("src.AI.antivirus_bugfix"), 50)
 end
 
 function immuneSystem:newTroop(name, hp, range, w, h, amount, effect, speed)
@@ -150,6 +148,11 @@ function immuneSystem:draw()
 	for i, t in pairs(self.troop) do
 		love.graphics.setColor(0, 100, 0)
 		love.graphics.rectangle("fill", t.x - t.w / 2, t.y - t.h / 2 - 10, t.w, t.h)
+		love.graphics.setColor(255, 255, 255, 10)
+		if t.target ~= nil then
+			local vtx, vty = hexMap:hexToPixel(t.target.o.x, t.target.o.y, t.target.o.z)
+			love.graphics.line(t.x - t.w/2, t.y - t.h/2, vtx - t.target.o.w/2, vty - t.target.o.h/2)
+		end
 	end
 end
 

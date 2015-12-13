@@ -56,7 +56,7 @@ function virus:addUnit(name, x, y, z)
 end
 
 function virus:loadTroops()
-	self:newTroop("Fighter", 1, 0, 10, 10, 4, require("src.AI.virus_fighter"), 50)
+	self:newTroop("Fighter", 5, 0, 10, 10, 2, require("src.AI.virus_fighter"), 50)
 end
 
 function virus:newTroop(name, hp, range, w, h, amount, effect, speed)
@@ -76,7 +76,6 @@ function virus:addTroop(name, x, y)
 end
 
 function virus:remove(x, y)
-	print("virus remove: ", x, y, z)
 	local occupied, id = self:find(x, y)
 	local tempUnit = {}
 
@@ -135,5 +134,8 @@ function virus:draw()
 	for i, t in pairs(self.troop) do
 		love.graphics.setColor(255, 200, 0)
 		love.graphics.rectangle("fill", t.x - t.w / 2, t.y - t.h / 2 - 10, t.w, t.h)
+		love.graphics.setColor(255, 255, 255, 10)
+		local vtx, vty = hexMap:hexToPixel(t.target.o.x, t.target.o.y, t.target.o.z)
+		love.graphics.line(t.x - t.w/2, t.y - t.h/2, vtx - t.target.o.w/2, vty - t.target.o.h/2)
 	end
 end
