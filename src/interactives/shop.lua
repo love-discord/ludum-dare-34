@@ -1,5 +1,7 @@
 shop = {
 	backgroundImg = love.graphics.newImage("gfx/shop/background.png"),
+	borderImg = love.graphics.newImage("gfx/shop/border.png"),
+
 	active = false,
 	y = 0,
 	x = 0,
@@ -56,7 +58,7 @@ function shop:update(dt)
 		end
 	end
 
-	if shop.x >= shop.targetX - 10 then
+	if shop.x >= shop.targetX - 1 then
 		shop.ready = true
 	else
 		shop.ready = false
@@ -106,7 +108,7 @@ function shop:draw()
 		love.window.getWidth() / 2 + shop.targetX - shop.x, love.window.getHeight() - shop.y + subDistance * 4,
 		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y + subDistance * 4,
 		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y,
-		love.window.getWidth() /2 + shop.targetX - shop.x, love.window.getHeight() - shop.y
+		love.window.getWidth() / 2 + shop.targetX - shop.x, love.window.getHeight() - shop.y
 	)
 	end
 
@@ -140,8 +142,17 @@ end
 function shop:drawProducts()
 	local rads = math.rad(75)
 	local distanceUntilMainQuad = 150 / math.tan(rads)
+	local subDistance = 20
 	for i = 1, #shop do
-		love.graphics.draw(shop[i].img, love.window.getWidth() / 2 - shop.targetX + (80 * i) + distanceUntilMainQuad - 30, love.window.getHeight() - shop.y + 30)
+		love.graphics.setLineWidth(3)
+		love.graphics.polygon("line",
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad + 20 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance + 20 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1,
+			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
+		)
+		-- love.graphics.draw(shop.borderImg, love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80, love.window.getHeight() - shop.y + 30)
+		-- love.graphics.draw(shop[i].img, love.window.getWidth() / 2 - shop.targetX + (80 * i) + distanceUntilMainQuad - 60, love.window.getHeight() - shop.y + 30)
 	end
 end
 
