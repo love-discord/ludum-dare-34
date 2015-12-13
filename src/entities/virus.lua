@@ -45,8 +45,6 @@ end
 
 function virus:addUnit(name, x, y, z)
 	if not virus:find(x, y, z) then
-		print(name)
-		print(virus.unitList[name])
 		virus.unit[#virus.unit + 1] = {name = name, x = x, y = y, z = z,
 										hp = virus.unitList[name].hp,
 										range = virus.unitList[name].range,
@@ -59,17 +57,19 @@ end
 
 
 local function fighter(self)	-- fighter behaviour
+	self.target = nil
 	local pT = {} -- possible targets
 
 	for _, t in pairs(immuneSystem.troop) do	-- loop through enemy troops
-		pT[#pT+1] = {hp = t.hp,
-					x = t.x + t.xvel * t.speed, -- a little bit of prediction
-					y = t.y + t.yvel * t.speed}
+		pT[#pT+1] = {x = t.x + t.xvel * t.speed, -- a little bit of prediction
+					 y = t.y + t.yvel * t.speed}
+		pT[#pT].o = t --the actual object
 	end
 
 	for _, b in pairs(immuneSystem.unit) do	-- loop through enemy buildings
-		pT[#pT+1] = {hp = b.hp}
+		pT[#pT + 1] = {}
 		pT[#pT].x, pT[#pT].y = hexMap:hexToPixel(b.x, b.y, b.z)
+		pT[#pT].o = b --the actual object
 	end
 
 	local minDist = 10000000
@@ -82,10 +82,15 @@ local function fighter(self)	-- fighter behaviour
 			self.target = p
 		end
 	end
+
+	if minDist <= hexMap.cell_size*hexMap.cell_size then -- in range to attack
+		self.target.o.hp = self.target.o.hp - self.amount
+		print("Attacking "..self.target.o.name)
+	end
 end
 
 function virus:loadTroops()
-	virus:newTroop("Fighter", 1, 0, 10, 10, 1, fighter, 50)
+	virus:newTroop("Fighter", 1, 0, 10, 10, 4, fighter, 50)
 end
 
 function virus:newTroop(name, hp, range, w, h, amount, effect, speed)
@@ -99,6 +104,7 @@ function virus:addTroop(name, x, y)
 									h = virus.troopList[name].h,
 									effect = virus.troopList[name].effect,
 									speed = virus.troopList[name].speed,
+									amount = virus.troopList[name].amount,
 									target = nil, xvel = 0, yvel = 0}
 end
 
@@ -132,15 +138,17 @@ end
 
 function virus:fastUpdate(dt)
 	for i, v in pairs(virus.troop) do
+		v.xvel, v.yvel = 0, 0
 		if v.target then
 			v.xvel = v.target.x - v.x
 			v.yvel = v.target.y - v.y
 		end
 		local velM = math.sqrt(v.xvel * v.xvel + v.yvel * v.yvel)
-		if velM < hexMap.cell_size then v.xvel, v.yvel = 0, 0 end -- if it gets in range, stop moving
-		if velM == 0 then velM = 1 end -- handle division by 0
-		v.x = v.x + v.xvel / velM * dt * v.speed
-		v.y = v.y + v.yvel / velM * dt * v.speed
+		if velM > hexMap.cell_size then -- if not in range (should still move)
+			if velM == 0 then velM = 1 end -- handle division by 0
+			v.x = v.x + v.xvel / velM * dt * v.speed
+			v.y = v.y + v.yvel / velM * dt * v.speed
+		end
 	end
 end
 
