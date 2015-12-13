@@ -75,19 +75,23 @@ function immuneSystem:remove(x, y, z)
 end
 
 function immuneSystem:update(dt)
-	for i = 1, #immuneSystem.unit do
-		local inRange = hexMap:inRange(immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].z, immuneSystem.unit[i].range)
-		for v = 1, #inRange do
-			immuneSystem.unit[i].effect(inRange[v].x, inRange[v].y, inRange[v].z, immuneSystem.unit[i].amount)
+	for i, unit in pairs(immuneSystem.unit) do
+		if unit.hp <= 0 then
+			immuneSystem.unit[i] = nil
+		else
+			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
+			for v = 1, #inRange do
+				unit.effect(inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
+			end
 		end
 	end
 end
 
 function immuneSystem:draw()
-	for i = 1, #immuneSystem.unit do
-		local x, y = hexMap:hexToPixel(immuneSystem.unit[i].x, immuneSystem.unit[i].y, immuneSystem.unit[i].z)
+	for i, unit in pairs(immuneSystem.unit) do
+		local x, y = hexMap:hexToPixel(unit.x, unit.y, unit.z)
 		love.graphics.setColor(255, 255, 255)
-		love.graphics.rectangle("fill", x - immuneSystem.unit[i].w / 2, y - immuneSystem.unit[i].h / 2 - 10, immuneSystem.unit[i].w, immuneSystem.unit[i].h)
+		love.graphics.rectangle("fill", x - unit.w / 2, y - unit.h / 2 - 10, unit.w, unit.h)
 	end
 end
 
