@@ -1,7 +1,5 @@
 -- src/interactives/mouse.lua
 
-mouse = {}
-
 function mouse:update()
 	self.screenX = love.mouse.getX()
 	self.screenY = love.mouse.getY()
@@ -35,3 +33,19 @@ function mouse:getHex()
 	local tile = cell:new(hexMap, x, y, z, 20, SIZE, SIZE, SIZE, SIZE, SIZE, "other")
 	return tile
 end
+-- colors the hexagon under the mouse
+function mouse:draw()
+	local x, y, z = hexMap:pixelToHex(mouse.screenX, mouse.screenY)
+
+	local vertices = {}
+	for i = 0, 5 do
+		getCorner(i, x, y, z)
+		vertices[#vertices + 1] = x
+		vertices[#vertices + 1] = y
+	end
+
+	love.graphics.setColor(unpack(mouse.color))
+	love.graphics.polygon("line", vertices)
+end
+
+return mouse

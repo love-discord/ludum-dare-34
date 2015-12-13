@@ -1,6 +1,7 @@
 shop = {
 	backgroundImg = love.graphics.newImage("gfx/shop/background.png"),
 	active = false,
+	selected = nil,
 	y = 0,
 	x = 0,
 
@@ -142,6 +143,8 @@ function shop:draw()
 	if shop.drawable then
 		shop:drawProducts()
 	end
+
+	shop:drawSelected()
 end
 
 function shop:drawProducts()
@@ -209,8 +212,22 @@ end
 function shop:mousepressed(key)
 	for i = 1, #shop.items do
 		if shop.items[i].float and key == "l" then
-			print("hi")
+			shop.selected = shop.items[i].name
 		end
+	end
+end
+
+function shop:drawSelected()
+	if shop.selected ~= nil then
+		local img = immuneSystem.unitList[shop.selected].img
+		local x, y = love.mouse.getX() - img:getWidth() / 2, love.mouse.getY() - img:getHeight() / 2
+		local sX = hexMap.cell_size / immuneSystem.unitList[name].img:getWidth() 
+		local sY = (hexMap.cell_size + hexMap.cell_size / 2) / immuneSystem.unitList[name].img:getHeight()
+		
+		hexMap:getCell()
+		love.graphics.setColor(255, 255, 255, 150)
+		love.graphics.draw(img, x, y, 0, sX, sY)
+		shop.active = false
 	end
 end
 

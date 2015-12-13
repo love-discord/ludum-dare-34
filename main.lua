@@ -13,7 +13,7 @@ require("src.entities.virus")
 
 require("src.interactives.camera")
 require("src.interactives.shop")
-require("src.interactives.mouse")
+mouse = require("src.interactives.mouse")
 
 
 --[[ functions ]]--
@@ -44,8 +44,6 @@ end
 updating = true
 local timeSinceLastTick = 0
 function love.update(dt)
-	camera:update(dt)
-
 	local TICK_SPEED = 3 -- 1/number
 	timeSinceLastTick = timeSinceLastTick + dt
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
@@ -57,12 +55,12 @@ function love.update(dt)
 		end
 		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end
-  
-  shop:update(dt)
-  virus:fastUpdate(dt)
-  immuneSystem:fastUpdate(dt)
-
-  mouse:update()
+ 
+	camera:update(dt)
+	mouse:update()
+	shop:update(dt)
+	virus:fastUpdate(dt)
+	immuneSystem:fastUpdate(dt)
 end
 
 function love.draw()
@@ -70,15 +68,7 @@ function love.draw()
 	love.graphics.translate(camera.x, camera.y)
 
 	hexMap:draw()
-	local mx, my = love.mouse.getPosition()
-	mx = mx - camera.x
-	my = my - camera.y
-	local x, y, z = hexMap:pixelToHex(mx, my)
-	if hexMap:getCell(x, y, z) ~= {} then
-		local cellUnderMouse = cell:new(hexMap, x, y, z, 32, 10, 1, 1, 1, "immune")
-		cellUnderMouse:draw("line")
-	end
-
+	mouse:draw()
 	immuneSystem:draw()
 	virus:draw()
 
@@ -86,10 +76,7 @@ function love.draw()
 
 	-- UI BEGGINS HERE
 	shop:draw()
-	love.graphics.print(love.timer.getFPS(), 10, 10)
-	love.graphics.print(shop.x, 10, 20)
-	love.graphics.print(shop.y, 10, 30)
-	love.graphics.print(tostring(shop.active), 10, 40)
+	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
 end
 
 function love.mousepressed(x, y, b)
