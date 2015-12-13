@@ -19,7 +19,7 @@ subDistance = 20
 function shop:load()
 	local i = 1
 	for k, v in pairs(immuneSystem.unitList) do
-		shop.items[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText}
+		shop.items[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText, float = false}
 		print("Added "..shop.items[#shop.items].name)
 		i = i + 1
 	end
@@ -82,6 +82,8 @@ function shop:update(dt)
 		shop.flicked = 0
 		shop.drawable = false
 	end
+
+	shop:mousefloating()
 end
 
 function shop:draw()
@@ -143,7 +145,7 @@ function shop:draw()
 end
 
 function shop:drawProducts()
-	for i = 1, #shop.items do		
+	for i = 1, #shop.items do
 
 		-- saw this was repeated a lot: (DRY code FTW)
 		local xCoord = love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad
@@ -156,10 +158,16 @@ function shop:drawProducts()
 			xCoord - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
 		}
 
+		local color = {0, 255, 255, 150}
+
+		if shop.items[i].float then	-- if mouse is not over the product
+			color[2] = 100
+		end
 		love.graphics.setLineWidth(3)
-		love.graphics.setColor(0, 255, 255, 150)
+		love.graphics.setColor(unpack(color))
 		love.graphics.polygon("fill", frame)	-- blue interior
-		love.graphics.setColor(0, 255, 255)
+		color[4] = nil
+		love.graphics.setColor(unpack(color))
 		love.graphics.polygon("line", frame)	-- blue line
 
 		local img = shop.items[i].img -- the item image
@@ -174,8 +182,36 @@ function shop:drawProducts()
 	end
 end
 
-function shop:mousepressed()
+function shop:mousefloating()		-- checks whether the mouse is floating over a product or not
+	local mouseX = love.mouse.getX()
+	local mouseY = love.mouse.getY()
 
+	for i = 1, #shop.items do
+		local xCoord = love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad
+
+		-- also, since both love.graphics.polygon-s use the same polygon, i'll store it in this table
+		local frame = {
+			xCoord - 80 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			xCoord + 20 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			xCoord - subDistance + 20 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1,
+			xCoord - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
+		}
+
+		-- if mouse is inside of bounding box
+		if mouseX > frame[7] and mouseX < frame[3] and mouseY > frame[2] and mouseY < frame[6] then
+			shop.items[i].float = true
+		else 
+			shop.items[i].float = false
+		end
+	end
+end
+
+function shop:mousepressed(key)
+	for i = 1, #shop.items do
+		if shop.items[i].float and key == "l" then
+			print("hi")
+		end
+	end
 end
 
 function shop:resize(x, y)

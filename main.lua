@@ -91,6 +91,7 @@ end
 
 function love.mousepressed(x, y, b)
 	camera:mousepressed(x, y, b)
+	shop:mousepressed(b)
 end
 
 function love.keypressed(key)
