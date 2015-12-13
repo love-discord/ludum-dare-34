@@ -12,6 +12,8 @@ stats = {unitsAlive = {}}
 require("src.entities.immuneSystem")
 require("src.entities.virus")
 
+dyingTroop = require("src.entities.dyingTroop")
+
 require("src.interactives.camera")
 require("src.interactives.shop")
 require("src.interactives.mouse")
@@ -65,6 +67,10 @@ local timeSinceLastTick = 0
 	virus:addUnit("Bug factory", -2, 8, 10)
 
 	shop:load()
+
+	dyingTroop:load()
+	dyingTroop:died({x = 0, y = 0, w = 20, h = 20})
+
 function love.update(dt)
 
 	local TICK_SPEED = 3 -- 1/number
@@ -96,6 +102,7 @@ function love.draw()
 	mouse:draw()
 	immuneSystem:draw()
 	virus:draw()
+	dyingTroop:draw()
 	love.graphics.pop()
 
 	-- UI BEGGINS HERE
