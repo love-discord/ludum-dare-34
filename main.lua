@@ -8,8 +8,6 @@ require("lib.time")
 hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
 
-
-stats = {unitsAlive = {}}
 require("src.entities.immuneSystem")
 require("src.entities.virus")
 
@@ -81,21 +79,19 @@ timeSinceLastTick = 0
 function love.update(dt)
 	if state.updating then
 		TICK_SPEED = 3 / timeScale -- 1/number
-		timeSinceLastTick = timeSinceLastTick + dt
+		timeSinceLastTick = timeSinceLastTick + dt * timeScale
 		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 			shop.bits = shop.bits + 7 + math.floor(time.seconds / 60) / 2 -- every minute this increases by 0.5
-				cell:update(dt)
+				cell:update(dt * timeScale)
 				virus:update()
 				immuneSystem:update()
 			timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 		end
+
+		virus:fastUpdate(dt * timeScale)
+		immuneSystem:fastUpdate(dt * timeScale)
+		time:update(dt * timeScale)
 	end
- 
- 	if state.updating then
-		virus:fastUpdate(dt)
-		immuneSystem:fastUpdate(dt)
-	end
-	time:update(dt)
 	camera:update(dt)
 	mouse:update()
 	shop:update(dt)

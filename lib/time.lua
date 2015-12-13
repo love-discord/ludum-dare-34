@@ -10,7 +10,7 @@ end
 
 function time:update(dt)
 	if time.count then
-		time.temp = time.temp + dt * timeScale
+		time.temp = time.temp + dt
 		if time.temp > 1 then
 			time.temp = time.temp - 1
 			time.seconds = time.seconds + 1
@@ -34,5 +34,5 @@ function time:getTimeinString()
 	if minutes:len() < 2 then
 		minutes = "0"..minutes
 	end
-	return minutes..":"..seconds
+	return minutes..":"..seconds.." (x"..tostring(timeScale):sub(1, 4)..")"
 end

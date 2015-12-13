@@ -6,14 +6,14 @@ virus = {
 }
 
 
-function cellHealer(self, x, y, z, amount)
+function bugObfuscator(self, x, y, z, amount) -- healer
 	if hexMap:getCell(x, y, z) == nil then return end
 	if hexMap:getCell(x, y, z).team == "virus" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + amount
 	end
 end
 
-function cellDamageBooster(self, x, y, z, amount)
+function bugCascadeMaker(self, x, y, z, amount) -- boost damage
 	if hexMap:getCell(x, y, z) == nil then return end
 	if hexMap:getCell(x, y, z).team == "virus" then
 		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
@@ -29,7 +29,7 @@ function bugSpawn(self, x, y, z, amount)
 	end
 end
 
-local function cellDamager(self, x, y, z, amt)
+local function bugActivator(self, x, y, z, amt) -- damage
 	if hexMap:getCell(x, y, z).team == "virus" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp - amt
 		--hexMap:getCell(x, y, z).color = {255, 255, 0}
@@ -37,10 +37,10 @@ local function cellDamager(self, x, y, z, amt)
 end
 
 function virus:loadUnits()
-	virus:newUnit("Bug Factory", 		50, 0, 32, 48, 1/12, bugSpawn, 10,			love.graphics.newImage("gfx/units/virus/bugSpawn.png"))
-	virus:newUnit("Bug Activator", 		50, 2, 32, 48, 1,	 cellDamager, nil, 		love.graphics.newImage("gfx/units/virus/cellDamager.png"))
-	virus:newUnit("Bug Cascade maker",	50, 2, 32, 48, 1, 	 cellDamageBooster, nil,love.graphics.newImage("gfx/units/virus/cellDamageBooster.png"))
-	virus:newUnit("Bug Obfuscator", 	50, 2, 32, 48, 1, 	 cellHealer, nil,		love.graphics.newImage("gfx/units/virus/cellHealer.png"))
+	virus:newUnit("Bug Factory", 		50, 0, 32, 48, 1/3,  bugSpawn, 10,			love.graphics.newImage("gfx/units/virus/bugSpawn.png"))
+	virus:newUnit("Bug Activator", 		50, 2, 32, 48, 1,	 bugActivator, nil, 		love.graphics.newImage("gfx/units/virus/cellDamager.png"))
+	virus:newUnit("Bug Cascade maker",	50, 2, 32, 48, 1, 	 bugCascadeMaker, nil,love.graphics.newImage("gfx/units/virus/cellDamageBooster.png"))
+	virus:newUnit("Bug Obfuscator", 	50, 2, 32, 48, 1, 	 bugObfuscator, nil,		love.graphics.newImage("gfx/units/virus/cellHealer.png"))
 end
 
 -- creates a new unit __TYPE__

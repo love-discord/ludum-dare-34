@@ -36,30 +36,30 @@ function bugfixerSpawn(self, x, y, z, amount)
 end
 
 function immuneSystem:loadUnits()
-	immuneSystem:newUnit("Chip Healer", 		50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick." ,cellHealer, 10, 50, love.graphics.newImage("gfx/units/antivirus/CellHealer.png"),
+	immuneSystem:newUnit("Chip Healer", 50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick.", cellHealer, 10, 50, love.graphics.newImage("gfx/units/antivirus/CellHealer.png"),
 							"50 Bits", 				
 							function()
-								return shop.bits > 50
+								return shop.bits >= 50
 							end,
 							"Those under my\nprotection will live.\nOthers'll have to push\ntheir luck.")
 
-	immuneSystem:newUnit("Chip Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly\nchips." ,cellDamageBooster, 2, 75, love.graphics.newImage("gfx/units/antivirus/cellDamageBooster.png"),
+	immuneSystem:newUnit("Chip Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly\nchips.", cellDamageBooster, 2, 75, love.graphics.newImage("gfx/units/antivirus/cellDamageBooster.png"),
 							"2 Chip Healers\n75 Bits", 
 							function()
-								return immuneSystem:getNumber("Chip Healer") > 1 and shop.bits > 75
+								return immuneSystem:getNumber("Chip Healer") > 1 and shop.bits >= 75
 							end,
 							"Warning:// malware\ndetected.\nUpgrading hardware..")
 
-	immuneSystem:newUnit("Bug Fixing Tower",	50, 1, 32, 48, false, "Damages enemy chips." ,cellDamager, 10, 150, love.graphics.newImage("gfx/units/antivirus/cellDamager.png"),
+	immuneSystem:newUnit("Bug Fixing Tower", 50, 1, 32, 48, false, "Damages enemy chips.", cellDamager, 10, 150, love.graphics.newImage("gfx/units/antivirus/cellDamager.png"),
 							"2 Chip Healers\n150 Bits",
 							function()
-								return immuneSystem:getNumber("Chip Healer") > 1 and shop.bits > 150
+								return immuneSystem:getNumber("Chip Healer") > 1 and shop.bits >= 150
 							end,
 							"Full-on offensive")
 
-	immuneSystem:newUnit("Debugger Spawn", 		50, 0, 32, 48, false, "Spawns a debugger." ,bugfixerSpawn, 1/12, 75, love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png"), "75 Bits",
+	immuneSystem:newUnit("Debugger Spawn", 		50, 0, 32, 48, false, "Spawns a debugger.", bugfixerSpawn, 1/3, 75, love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png"), "75 Bits",
 							function()
-								return shop.bits > 75
+								return shop.bits >= 75
 							end,
 							"The dream of all\nprogrammers. An\nautomatic debugger.", 10)
 end
@@ -70,7 +70,6 @@ function immuneSystem:newUnit(name, hp, range, w, h, movable, effectText, effect
 									effectText = effectText, effect = effect, amount = amount, cost = cost, img = img,
 									requireText = requireText, requireFunc = requireFunc, info = info or "Unit",
 									maxTroops = maxTroops}
-	stats.unitsAlive[name] = 0
 end
 
 function immuneSystem:find(x, y, z)
@@ -92,12 +91,13 @@ end
 -- spawns a new unit
 function immuneSystem:addUnit(name, x, y, z)
 	if not immuneSystem:find(x, y, z) then
+		local unitType = immuneSystem.unitList[name]
 		table.insert(immuneSystem.unit, {name = name, x = x, y = y, z = z, id = #immuneSystem.unit + 1,
-						hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range,
-						amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w,
-						h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect,
-						amount = immuneSystem.unitList[name].amount, img = immuneSystem.unitList[name].img,
-						info = immuneSystem.unitList[name].info, troopsAlive = 0, maxTroops = immuneSystem.unitList[name].maxTroops})
+						hp = unitType.hp, range = unitType.range,
+						amount = unitType.amout, w = unitType.w,
+						h = unitType.h, effect = unitType.effect,
+						amount = unitType.amount, img = unitType.img,
+						info = unitType.info, troopsAlive = 0, maxTroops = unitType.maxTroops})
 	end
 end
 
@@ -157,7 +157,7 @@ function immuneSystem:update(dt)
 		else
 			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
 			for v = 1, #inRange do
-				unit:effect(inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
+				self.unitList[unit.name].effect(unit, inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
 			end
 		end
 	end
