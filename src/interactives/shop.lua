@@ -1,4 +1,5 @@
 shop = {
+	backgroundImg = love.graphics.newImage("gfx/shop/background.png"),
 	active = false,
 	y = 0,
 	x = 0,
@@ -53,19 +54,35 @@ function shop:draw()
 	local distanceUntilMainQuad = 150 / math.tan(rads)
 	local subDistance = 30
 
-	-- the polygons
-	local tri = love.math.triangulate(
+	love.graphics.setColor(0, 0, 0, 150)
+	love.graphics.polygon("fill", 
 		love.window.getWidth() / 2 - shop.targetX, love.window.getHeight(),
-		love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad),
-		love.window.getHeight() - shop.y, love.window.getWidth() / 2 - shop.targetX + shop.x, love.window.getHeight() - shop.y
+		love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad), love.window.getHeight() - shop.y,
+		love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad) + distanceUntilMainQuad * 3 - subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y,
+		love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad) + distanceUntilMainQuad * 3 - subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y + subDistance * 4,
+		love.window.getWidth() / 2 - shop.targetX + distanceUntilMainQuad * 3, love.window.getHeight()
+	)
+	love.graphics.polygon("fill",
+		love.window.getWidth() / 2 + shop.targetX, love.window.getHeight(),
+		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad), love.window.getHeight() - shop.y,
+		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y,
+		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y + subDistance * 4,
+		love.window.getWidth() / 2 + shop.targetX - distanceUntilMainQuad * 3, love.window.getHeight()
 	)
 
-	for i = 1, #tri do
-		love.graphics.setColor(0, 0, 0, 150)
-		love.graphics.polygon("fill", tri[i].x1, tri[i].y1, tri[i].x2, tri[i].y2, tri[i].x3, tri[i].y3)
-		print("hi")
+	if shop.x > distanceUntilMainQuad + 88 then
+	love.graphics.rectangle("fill", love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad) + distanceUntilMainQuad * 3 - subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y, shop.x - distanceUntilMainQuad - 88, subDistance * 4)
+	love.graphics.polygon("fill", 
+		love.window.getWidth() / 2 + shop.targetX - shop.x, love.window.getHeight() - shop.y + subDistance * 4,
+		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y + subDistance * 4,
+		love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) - distanceUntilMainQuad * 3 + subDistance / math.tan(rads) * 4, love.window.getHeight() - shop.y,
+		love.window.getWidth() /2 + shop.targetX - shop.x, love.window.getHeight() - shop.y
+	)
 	end
 
+-- love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad) + distanceUntilMainQuad * 3 - subDistance / math.tan(rads) * 4
+
+	--[[ lines ]]--
 	love.graphics.setColor(0, 255, 255, 150)
 	-- left side
 	-- tilted line1
