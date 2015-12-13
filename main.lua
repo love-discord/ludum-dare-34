@@ -45,7 +45,7 @@ local timeSinceLastTick = 0
 	hexMap = hex:new(12, 48, 100)
 
 	input:load()
-	
+
 	immuneSystem:loadUnits()
 	immuneSystem:loadTroops()
 	immuneSystem:addUnit("Chip Damage Booster", 7, -9, 2)
@@ -78,11 +78,13 @@ function love.update(dt)
 		timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 	end
  
+ 	if state.updating then
+		virus:fastUpdate(dt)
+		immuneSystem:fastUpdate(dt)
+	end
 	camera:update(dt)
 	mouse:update()
 	shop:update(dt)
-	virus:fastUpdate(dt)
-	immuneSystem:fastUpdate(dt)
 	lovebird.update()
 end
 
