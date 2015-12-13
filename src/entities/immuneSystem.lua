@@ -7,6 +7,7 @@ function cellHealer(x, y, z, amount)
 end
 
 function cellDamageBooster(x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
 	if hexMap:getCell(x, y, z).team == "immune" then
 		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
 	end
@@ -83,11 +84,11 @@ function immuneSystem:remove(x, y, z)
 end
 
 function immuneSystem:loadTroops()
-	self:newTroop("Bugfixer", 5, 0, 10, 10, 2, require("src.AI.antivirus_bugfix"), 50)
+	self:newTroop("Bugfixer", 5, 0, 10, 10, 2, require("src.AI.antivirus_bugfix"), 50, love.graphics.newImage("res/immuneTroop.png"))
 end
 
-function immuneSystem:newTroop(name, hp, range, w, h, amount, effect, speed)
-	self.troopList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, speed = speed}
+function immuneSystem:newTroop(name, hp, range, w, h, amount, effect, speed, img)
+	self.troopList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, speed = speed, img = img}
 end
 
 function immuneSystem:addTroop(name, x, y)
@@ -99,6 +100,7 @@ function immuneSystem:addTroop(name, x, y)
 									effect = self.troopList[name].effect,
 									speed = self.troopList[name].speed,
 									amount = self.troopList[name].amount,
+									img = self.troopList[name].img,
 									target = nil, xvel = 0, yvel = 0})
 end
 
@@ -146,13 +148,15 @@ function immuneSystem:draw()
 		love.graphics.draw(immuneSystem.unit[i].img, x - hexMap.cell_size / 2, y - (hexMap.cell_size + hexMap.cell_size / 2) / 2 - 10, 0, sX, sY)
 	end
 	for i, t in pairs(self.troop) do
-		love.graphics.setColor(0, 100, 0)
-		love.graphics.rectangle("fill", t.x - t.w / 2, t.y - t.h / 2 - 10, t.w, t.h)
-		love.graphics.setColor(255, 255, 255, 10)
-		if t.target ~= nil then
-			local vtx, vty = hexMap:hexToPixel(t.target.o.x, t.target.o.y, t.target.o.z)
-			love.graphics.line(t.x - t.w/2, t.y - t.h/2, vtx - t.target.o.w/2, vty - t.target.o.h/2)
+		love.graphics.setColor(255, 255, 255)
+		local sX, sY = (t.img:getWidth() / t.w), (t.img:getHeight() / t.h)
+		local velX, velY = t.xvel, t.yvel
+		local magnitudeSq = velX * velX + velY * velY
+		if math.abs(magnitudeSq - 1) > 0.0001 then
+			velX = velX / math.sqrt(magnitudeSq)
+			velY = velY / math.sqrt(magnitudeSq)
 		end
+		love.graphics.draw(t.img, t.x - t.w / 2, t.y - t.h / 2 - 10, math.atan2(velY, velX) + math.pi/2, sX, sY)
 	end
 end
 

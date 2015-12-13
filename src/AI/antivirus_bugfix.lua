@@ -32,6 +32,7 @@ return function(self)	-- fighter behaviour
 		self.target.o.hp = self.target.o.hp - self.amount
 	end
 
-	if self.target.o.hp <= 0 then self.target = nil end 
-
+	if self.target then
+		if self.target.o.hp <= 0 then self.target = nil end 
+	end
 end
