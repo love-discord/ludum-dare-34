@@ -72,8 +72,8 @@ function love.draw()
 	my = my - camera.y
 	local x, y, z = hexMap:pixelToHex(mx, my)
 	if hexMap:getCell(x, y, z) ~= {} then
-		local bestCellEverTenOutOfTenSelection = cell:new(hexMap, x, y, z, 32, 10, 1, 1, 1, "immune")
-		bestCellEverTenOutOfTenSelection:draw("line")
+		local cellUnderMouse = cell:new(hexMap, x, y, z, 32, 10, 1, 1, 1, "immune")
+		cellUnderMouse:draw("line")
 	end
 
 	immuneSystem:draw()
