@@ -17,22 +17,26 @@ require("src.interactives.shop")
 --[[ functions ]]--
 function love.load()
 	hexMap = hex:new(12, 48, 100)
+	
 	immuneSystem:loadUnits()
-	shop:load()
+	immuneSystem:loadTroops()
 	immuneSystem:addUnit("Cell Damage Booster", 7, -9, 2)
 	immuneSystem:addUnit("Cell Healer", 8, -10, 2)
-	immuneSystem:addUnit("Cell Damage Booster", 6, -8, 2)
+	immuneSystem:addUnit("Bugfixer Spawn", 6, -8, 2)
 	immuneSystem:addUnit("Cell Healer", 7, -9, 2)
 	immuneSystem:addUnit("Cell Damage Booster", 7, -10, 3)
-	immuneSystem:addUnit("Cell Healer", 8, -11, 3)
+	immuneSystem:addUnit("Bugfixer Spawn", 8, -11, 3)
 	immuneSystem:addUnit("Cell Damage Booster", 6, -9, 3)
-	immuneSystem:addUnit("Cell Healer", 7, -10, 3)
+	immuneSystem:addUnit("Bugfixer Spawn", 7, -10, 3)
 
 	virus:loadUnits()
 	virus:loadTroops()
+
 	virus:addUnit("Bug factory", -8, 10, -2)
 	virus:addUnit("Bug factory", -10, 2, -8)
 	virus:addUnit("Bug factory", -2, 8, 10)
+
+	shop:load()
 end
 
 updating = true
@@ -45,6 +49,7 @@ function love.update(dt)
 	while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 		if updating then
 			cell:update(dt)
+
 			immuneSystem:update()
 			virus:update()
 		end
@@ -53,6 +58,7 @@ function love.update(dt)
   
   shop:update(dt)
   virus:fastUpdate(dt)
+  immuneSystem:fastUpdate(dt)
 end
 
 function love.draw()
