@@ -44,7 +44,7 @@ function mouse:getHexCoords()
 end
 
 -- colors the hexagon under the mouse
-function mouse:draw()
+function mouse:drawHex()
     local x, y, z = mouse:getHexCoords()
 
     if hexMap:getCell(x, y, z) == nil then return end
@@ -58,5 +58,10 @@ function mouse:draw()
 
     love.graphics.setColor(mouse.color)
     love.graphics.polygon("line", vertices)
+end
+
+function mouse:drawCircle()
+    love.graphics.setColor(mouse.color)
+    love.graphics.circle("line", self:scaledX(), self:scaledY(), 5, 10)
 end
 

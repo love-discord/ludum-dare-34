@@ -68,8 +68,7 @@ local timeSinceLastTick = 0
 
 	shop:load()
 
-	dyingTroop:load()
-	dyingTroop:died({x = 0, y = 0, w = 20, h = 20})
+	love.mouse.setVisible(false)
 
 function love.update(dt)
 
@@ -99,7 +98,7 @@ function love.draw()
 	love.graphics.translate(camera.x, camera.y)
 
 	hexMap:draw()
-	mouse:draw()
+	mouse:drawHex()
 	immuneSystem:draw()
 	virus:draw()
 	dyingTroop:draw()
@@ -109,6 +108,8 @@ function love.draw()
 	shop:draw()
 	love.graphics.setFont(font.prototype[20])
 	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
+	mouse:drawCircle()
+
 end
 
 function love.mousepressed(x, y, b)

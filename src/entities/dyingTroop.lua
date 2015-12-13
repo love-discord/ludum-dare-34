@@ -7,10 +7,8 @@ local dyingTroop = {
 	frameSize = 32
 }
 
-function dyingTroop:load()
-	for i = 1, 10 do
-		self.frames[i] = love.graphics.newImage("res/dieAnim/"..i..".png")
-	end
+for i = 1, 10 do
+	dyingTroop.frames[i] = love.graphics.newImage("res/dieAnim/"..i..".png")
 end
 
 function dyingTroop:draw() 
@@ -21,7 +19,6 @@ function dyingTroop:draw()
 			self.dyingTroops[i] = nil
 		else
 			local sX, sY = t.w / self.frameSize, t.h / self.frameSize
-			print(frame)
 			love.graphics.draw(self.frames[frame], t.x - t.w/2, t.y - t.h/2, 0, sX, sY)
 		end
 	end
