@@ -1,8 +1,9 @@
 local class = require 'lib.class'
 local cell = require 'src.hex.cell'
 
-function math.round(x) return
-	math.floor(x + 0.5)
+function math.round(num, idp)
+  local mult = 10^(idp or 0)
+  return math.floor(num * mult + 0.5) / mult
 end
 
 local hex = class:subclass()
@@ -14,6 +15,8 @@ function hex:init(radius, cell_size)
 	local default_regen = 1
 	local default_def = 0
 	local default_hp = 100
+  local team = nil
+  local newTeam = nil
 
 	self.cells = {}
 	self.radius = radius

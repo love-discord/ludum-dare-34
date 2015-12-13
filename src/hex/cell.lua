@@ -1,6 +1,11 @@
 local class = require 'lib.class'
 local cell = class:subclass()
 
+function round(num, idp)
+  local mult = 10^(idp or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
 local colors = {
 	neutral = {200, 200, 200},
 	immune = {50, 100, 200},
@@ -100,8 +105,6 @@ function cell:getCorner(i)
 end
 
 function cell:update(dt)
-  self.size = self.size + 1*dt*100
-  if self.size > self.tSize then self.size = self.size - 1*dt*100 end
 	self.hp = self.hp + self.regen
 	for neighbor in self:neighbors() do
 		if neighbor.team ~= self.team then
@@ -118,6 +121,7 @@ function cell:update(dt)
 			neighbor.def = 0
 		end
 	end
+  self.hp = math.round(self.hp, 0)
 end
 
 return cell
