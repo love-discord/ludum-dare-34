@@ -5,13 +5,15 @@ virus = {
 	troop = {}
 }
 
-local function proteinFactory(x, y, z, amt)	-- effect is the spawn chance the bigger, the more fighters spawn
-	if math.random() < amt then
-		virus:addTroop("Fighter", hexMap:hexToPixel(x, y, z))
+local function proteinFactory(self, x, y, z, amt)	-- effect is the spawn chance the bigger, the more fighters spawn
+	if math.random() < amt and self.troopsAlive < self.maxTroops then
+		local hexPixel = {hexMap:hexToPixel(x, y, z)}
+		virus:addTroop("Fighter", hexPixel[1], hexPixel[2], self.id)
+		self.troopsAlive = self.troopsAlive + 1
 	end
 end
 
-local function cellDamager(x, y, z, amt)
+local function cellDamager(self, x, y, z, amt)
 	if hexMap:getCell(x, y, z).team == "immune" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp - amt
 		hexMap:getCell(x, y, z).color = {255, 255, 0}
@@ -19,13 +21,13 @@ local function cellDamager(x, y, z, amt)
 end
 
 function virus:loadUnits()
-	virus:newUnit("Bug factory", 50, 1/12, 32, 48, 1, proteinFactory) -- should spawn a fighter every 5s on average
+	virus:newUnit("Bug factory", 50, 1/12, 32, 48, 1, proteinFactory, 10) -- should spawn a fighter every 5s on average
 	virus:newUnit("Cell Damager", 50, 2, 32, 48, 1, cellDamager)
 end
 
 -- creates a new unit __TYPE__
-function virus:newUnit(name, hp, range, w, h, amount, effect)
-	virus.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect}
+function virus:newUnit(name, hp, range, w, h, amount, effect, maxTroops)
+	virus.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, maxTroops = maxTroops}
 end
 
 function virus:find(x, y)
@@ -45,13 +47,15 @@ end
 
 function virus:addUnit(name, x, y, z)
 	if not virus:find(x, y, z) then
-		table.insert(virus.unit, 	{name = name, x = x, y = y, z = z,
+		table.insert(virus.unit, 	{id = #virus.unit+1, name = name, x = x, y = y, z = z,
 										hp = self.unitList[name].hp,
 										range = self.unitList[name].range,
 										w = self.unitList[name].w,
 										h = self.unitList[name].h,
 										effect = self.unitList[name].effect,
-										amount = self.unitList[name].amount})
+										amount = self.unitList[name].amount,
+										troopsAlive = 0,
+										maxTroops = self.unitList[name].maxTroops})
 	end
 end
 
@@ -59,11 +63,11 @@ function virus:loadTroops()
 	self:newTroop("Fighter", 5, 0, 20, 20, 2, require("src.AI.virus_fighter"), 50, love.graphics.newImage("res/virusTroop.png"))
 end
 
-function virus:newTroop(name, hp, range, w, h, amount, effect, speed ,img)
+function virus:newTroop(name, hp, range, w, h, amount, effect, speed, img)
 	self.troopList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, speed = speed, img = img}
 end
 
-function virus:addTroop(name, x, y)
+function virus:addTroop(name, x, y, unit)
 	table.insert(self.troop,	{name = name, x = x, y = y,
 									hp = self.troopList[name].hp,
 									range = self.troopList[name].range,
@@ -73,6 +77,7 @@ function virus:addTroop(name, x, y)
 									speed = self.troopList[name].speed,
 									amount = self.troopList[name].amount,
 									img = self.troopList[name].img,
+									unit = unit,
 									target = nil, xvel = 0, yvel = 0})
 end
 
@@ -99,12 +104,13 @@ function virus:update()
 		else
 			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
 			for v = 1, #inRange do
-				unit.effect(inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
+				unit:effect(inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
 			end
 		end
 	end
 	for i, troop in pairs(self.troop) do
 		if troop.hp <= 0 then
+			self.unit[troop.unit].troopsAlive = self.unit[troop.unit].troopsAlive - 1
 			dyingTroop:died(troop)
 			self.troop[i] = nil
 		else

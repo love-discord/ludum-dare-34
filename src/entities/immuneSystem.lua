@@ -1,25 +1,3 @@
---[[ effects ]]--
-function cellHealer(x, y, z, amount)
-	if hexMap:getCell(x, y, z) == nil then return end
-	if hexMap:getCell(x, y, z).team == "immune" then
-		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + amount
-	end
-end
-
-function cellDamageBooster(x, y, z, amount)
-	if hexMap:getCell(x, y, z) == nil then return end
-	if hexMap:getCell(x, y, z).team == "immune" then
-		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
-	end
-end
-
-function bugfixerSpawn(x, y, z, amount)
-	if hexMap:getCell(x, y, z) == nil then return end
-	if math.random() < amount then
-		immuneSystem:addTroop("Bugfixer", hexMap:hexToPixel(x, y, z))
-	end
-end
-
 immuneSystem = {
 	unitList = {},
 	unit = {},
@@ -27,20 +5,44 @@ immuneSystem = {
 	troopList = {}
 }
 
+function cellHealer(self, x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
+	if hexMap:getCell(x, y, z).team == "immune" then
+		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + amount
+	end
+end
+
+function cellDamageBooster(self, x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
+	if hexMap:getCell(x, y, z).team == "immune" then
+		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
+	end
+end
+
+function bugfixerSpawn(self, x, y, z, amount)
+	if hexMap:getCell(x, y, z) == nil then return end
+	if math.random() < amount and self.troopsAlive < self.maxTroops then
+		local hexPixel = {hexMap:hexToPixel(x, y, z)}
+		immuneSystem:addTroop("Bugfixer", hexPixel[1], hexPixel[2], self.id)
+		self.troopsAlive = self.troopsAlive + 1
+	end
+end
+
 function immuneSystem:loadUnits()
 	local sampleImg = love.graphics.newImage("res/sample.png")
 	immuneSystem:newUnit("Chip Healer", 		50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick." ,cellHealer, 			10, 50,  love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 			function() return true end, "Those under my\nprotection will live. \nOthers'll have to\npush their luck.")
 	immuneSystem:newUnit("Chip Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly\nchips."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end, "Warning:// malware\ndetected.\nUpgrading hardware..")
-	immuneSystem:newUnit("Debugger Spawn", 		50, 1, 32, 48, false, "Spawns a debugger."						  ,bugfixerSpawn,	 1/12, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end, "The dream of\nall programmers.\nAn automatic\ndebugger.")
+	immuneSystem:newUnit("Debugger Spawn", 		50, 1, 32, 48, false, "Spawns a debugger."						  ,bugfixerSpawn,	 1/12, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end, "The dream of\nall programmers.\nAn automatic\ndebugger.", 10)
 
 	return immuneSystem.unitList
 end
 
 -- creates a new unit __TYPE__
-function immuneSystem:newUnit(name, hp, range, w, h, movable, effectText, effect, amount, cost, img, requireText, requireFunc, info)
+function immuneSystem:newUnit(name, hp, range, w, h, movable, effectText, effect, amount, cost, img, requireText, requireFunc, info, maxTroops)
 	immuneSystem.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, movable = movable,
 									effectText = effectText, effect = effect, amount = amount, cost = cost, img = img,
-									requireText = requireText, requireFunc = requireFunc, info = info or "Unit"}
+									requireText = requireText, requireFunc = requireFunc, info = info or "Unit",
+									maxTroops = maxTroops}
 	stats.unitsAlive[name] = 0
 end
 
@@ -63,7 +65,12 @@ end
 -- spawns a new unit
 function immuneSystem:addUnit(name, x, y, z)
 	if not immuneSystem:find(x, y, z) then
-		immuneSystem.unit[#immuneSystem.unit + 1] = {name = name, x = x, y = y, z = z, hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range, amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w, h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect, amount = immuneSystem.unitList[name].amount, img = immuneSystem.unitList[name].img, info = immuneSystem.unitList[name].info}
+		table.insert(immuneSystem.unit, {name = name, x = x, y = y, z = z, id = #immuneSystem.unit + 1,
+						hp = immuneSystem.unitList[name].hp, range = immuneSystem.unitList[name].range,
+						amount = immuneSystem.unitList[name].amout, w = immuneSystem.unitList[name].w,
+						h = immuneSystem.unitList[name].h, effect = immuneSystem.unitList[name].effect,
+						amount = immuneSystem.unitList[name].amount, img = immuneSystem.unitList[name].img,
+						info = immuneSystem.unitList[name].info, troopsAlive = 0, maxTroops = immuneSystem.unitList[name].maxTroops})
 	end
 end
 
@@ -91,7 +98,7 @@ function immuneSystem:newTroop(name, hp, range, w, h, amount, effect, speed, img
 	self.troopList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, speed = speed, img = img}
 end
 
-function immuneSystem:addTroop(name, x, y)
+function immuneSystem:addTroop(name, x, y, unit)
 	table.insert(self.troop,	{name = name, x = x, y = y,
 									hp = self.troopList[name].hp,
 									range = self.troopList[name].range,
@@ -101,7 +108,8 @@ function immuneSystem:addTroop(name, x, y)
 									speed = self.troopList[name].speed,
 									amount = self.troopList[name].amount,
 									img = self.troopList[name].img,
-									target = nil, xvel = 0, yvel = 0})
+									target = nil, xvel = 0, yvel = 0,
+									unit = unit})
 end
 
 
@@ -112,12 +120,13 @@ function immuneSystem:update(dt)
 		else
 			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
 			for v = 1, #inRange do
-				unit.effect(inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
+				unit:effect(inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
 			end
 		end
 	end
 	for i, troop in pairs(self.troop) do
 		if troop.hp <= 0 then
+			self.unit[troop.unit].troopsAlive = self.unit[troop.unit].troopsAlive - 1
 			dyingTroop:died(troop)
 			self.troop[i] = nil
 		else
