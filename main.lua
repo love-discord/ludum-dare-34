@@ -81,6 +81,7 @@ function love.update(dt)
 		TICK_SPEED = 3 -- 1/number
 		timeSinceLastTick = timeSinceLastTick + dt
 		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
+			shop.bits = shop.bits + 10 + math.floor(time.seconds / 60) / 2
 				cell:update(dt)
 				virus:update()
 				immuneSystem:update()
