@@ -29,7 +29,7 @@ function immuneSystem:loadUnits()
 	local sampleImg = love.graphics.newImage("res/sample.png")
 	immuneSystem:newUnit("Cell Healer", 		50, 2, 32, 48, false, "Heals friendly cells with 5HP every tick." ,cellHealer, 			2, 50,  love.graphics.newImage("gfx/units/antivirus/CellHealer.png"), "Nothing", 			function() return true end)
 	immuneSystem:newUnit("Cell Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly cells."		  ,cellDamageBooster, 	2, 150, sampleImg, "2 Cell Healers", 	function() return false end)
-	immuneSystem:newUnit("Bugfixer Spawn", 		50, 2, 32, 48, false, "Spawns a bugfixer"						  ,bugfixerSpawn,	 	1, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
+	immuneSystem:newUnit("Bugfixer Spawn", 		50, 1, 32, 48, false, "Spawns a bugfixer"						  ,bugfixerSpawn,	 1/12, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==1  end)
 	immuneSystem:newUnit("Smth else2", 			50, 2, 32, 48, false, "Does something different."				  ,function() end,	 	2, 666, sampleImg, "Test", 				function() return math.floor(os.time() % 2)==0  end)
 	return immuneSystem.unitList
 end
@@ -140,7 +140,6 @@ function immuneSystem:draw()
 		love.graphics.draw(immuneSystem.unit[i].img, x - hexMap.cell_size / 2, y - (hexMap.cell_size + hexMap.cell_size / 2) / 2 - 10, 0, sX, sY)
 	end
 	for i, t in pairs(self.troop) do
-		print("a")
 		love.graphics.setColor(0, 100, 0)
 		love.graphics.rectangle("fill", t.x - t.w / 2, t.y - t.h / 2 - 10, t.w, t.h)
 	end

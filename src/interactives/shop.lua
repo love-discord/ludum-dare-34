@@ -7,7 +7,9 @@ shop = {
 	flick = 0,
 	flickRate = 15,
 	flicked = 0,
-	drawable = false
+	drawable = false,
+
+	items = {}
 }
 
 rads = math.rad(75)
@@ -17,8 +19,8 @@ subDistance = 20
 function shop:load()
 	local i = 1
 	for k, v in pairs(immuneSystem.unitList) do
-		shop[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText}
-		print("Added "..shop[#shop].name)
+		shop.items[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText}
+		print("Added "..shop.items[#shop.items].name)
 		i = i + 1
 	end
 
@@ -141,29 +143,34 @@ function shop:draw()
 end
 
 function shop:drawProducts()
-	for i = 1, #shop do		
+	for i = 1, #shop.items do		
+
+		-- saw this was repeated a lot: (DRY code FTW)
+		local xCoord = love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad
+
+		-- also, since both love.graphics.polygon-s use the same polygon, i'll store it in this table
+		local frame = {
+			xCoord - 80 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			xCoord + 20 - 33, love.window.getHeight() - shop.y + 40 - 1,
+			xCoord - subDistance + 20 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1,
+			xCoord - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
+		}
+
 		love.graphics.setLineWidth(3)
 		love.graphics.setColor(0, 255, 255, 150)
-		love.graphics.polygon("fill",
-			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - 33, love.window.getHeight() - shop.y + 40 - 1,
-			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad + 20 - 33, love.window.getHeight() - shop.y + 40 - 1,
-			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance + 20 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1,
-			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
-		)
-
+		love.graphics.polygon("fill", frame)	-- blue interior
 		love.graphics.setColor(0, 255, 255)
-		love.graphics.polygon("line",
-			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - 33, love.window.getHeight() - shop.y + 40 - 1,
-			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad + 20 - 33, love.window.getHeight() - shop.y + 40 - 1,
-			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance + 20 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1,
-			love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - subDistance - 80 - 33, love.window.getHeight() - shop.y + 30 + 80 - 1
-		)
+		love.graphics.polygon("line", frame)	-- blue line
 
-		local sX = 100 / immuneSystem.unit[i].img:getWidth()
-		local sY = 40 / immuneSystem.unit[i].img:getHeight()
+		local img = shop.items[i].img -- the item image
+
+		local sX = 100 / img:getWidth()
+		local sY = 40 / img:getHeight()
 
 		love.graphics.setColor(255, 255, 255)
-		love.graphics.draw(shop[i].img, love.window.getWidth() / 2 - shop.targetX + (120 * i) + distanceUntilMainQuad - 80 - subDistance - 33, love.window.getHeight() - shop.y + 40 - 1, 0 ,sX, sY)
+		love.graphics.draw(shop.items[i].img,
+							xCoord - 80 - subDistance - 33, love.window.getHeight() - shop.y + 40 - 1,
+							0, sX, sY)
 	end
 end
 
