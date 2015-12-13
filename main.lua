@@ -6,12 +6,14 @@ local class = require("lib.class")
 hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
 
+
 stats = {unitsAlive = {}}
 require("src.entities.immuneSystem")
 require("src.entities.virus")
 
 require("src.interactives.camera")
 require("src.interactives.shop")
+require("src.interactives.mouse")
 
 
 --[[ functions ]]--
@@ -59,6 +61,8 @@ function love.update(dt)
   shop:update(dt)
   virus:fastUpdate(dt)
   immuneSystem:fastUpdate(dt)
+
+  mouse:update()
 end
 
 function love.draw()
@@ -66,7 +70,6 @@ function love.draw()
 	love.graphics.translate(camera.x, camera.y)
 
 	hexMap:draw()
-
 	local mx, my = love.mouse.getPosition()
 	mx = mx - camera.x
 	my = my - camera.y

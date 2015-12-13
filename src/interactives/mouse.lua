@@ -1,6 +1,6 @@
 -- src/interactives/mouse.lua
 
-local mouse = {}
+mouse = {}
 
 function mouse:update()
 	self.screenX = love.mouse.getX()
@@ -25,8 +25,13 @@ function mouse:scaledY()
 	return sy
 end
 
-function mouse:getHex()
-	return hexMap:pixelToHex(self:scaledX(), self:scaledY())
+function mouse:getHexCoords()
+	return hexMap:pixelToHex(self:scaledX() - camera.x, self:scaledY() - camera.y)
 end
 
-return mouse
+function mouse:getHex()
+	local x, y, z = self:getHexCoords()
+	local SIZE = 100
+	local tile = cell:new(hexMap, x, y, z, 20, SIZE, SIZE, SIZE, SIZE, SIZE, "other")
+	return tile
+end

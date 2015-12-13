@@ -9,7 +9,8 @@ end
 local colors = {
 	neutral = {200, 200, 200},
 	immune = {50, 100, 200},
-	virus = {200, 20, 20}
+	virus = {200, 20, 20},
+	other = {255, 0, 255}
 }
 
 function cell:init(map, x, y, z, size, hp, maxHP, damage, regen, defense, team)
@@ -90,8 +91,6 @@ function cell:draw(mode)
 
 	love.graphics.polygon("fill", vertices)
 	love.graphics.setColor(255, 255, 255)
-	-- local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
-	-- love.graphics.print(self.hp, x, y)
 end
 
 function cell:getCorner(i)
