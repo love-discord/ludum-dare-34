@@ -87,6 +87,7 @@ end
 function love.update(dt)
   lightWorld:update(dt)
   lightWorld:setTranslation(camera.x, camera.y, scale)
+  lightWorld:refreshScreenSize()
   
 	if state.updating then
 		TICK_SPEED = 3 / timeScale -- 1/number
