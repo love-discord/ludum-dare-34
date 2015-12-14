@@ -49,7 +49,6 @@ function virus:loadUnits()
 	virus:newUnit("Bug Cascade maker",	50, 2, 32, 48, bugCascadeMaker, 1, 	 75,	love.graphics.newImage("gfx/units/virus/cellDamageBooster.png")	,function() return virus.ai.bits >= 75  and virus:getNumber("Bug Obfuscator") >= 2 end)
 	virus:newUnit("Bug Obfuscator", 	50, 2, 32, 48, bugObfuscator, 	1, 	 50,	love.graphics.newImage("gfx/units/virus/cellHealer.png")		,function() return virus.ai.bits >= 50 end)
 	virus:newUnit("Memory Reader",	 	50, 2, 32, 48, bugObfuscator, 	1, 	 25,	love.graphics.newImage("gfx/units/virus/memoryReader.png")		,function() return virus.ai.bits >= 25 end)
-	virus:newUnit("Bit Farmer",	 		50, 2, 32, 48, bitFarmer, 		1, 	 25,	love.graphics.newImage("gfx/units/virus/memoryReader.png")		,function() return virus.ai.bits >= 25 end)
 end
 
 -- creates a new unit __TYPE__
