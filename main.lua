@@ -30,6 +30,8 @@ require("src.ui.winlosescreen")
 timeScale = 1
 
 --[[ variables ]]--
+math.randomseed(os.time())
+
 font = {}
 font.prototype = {}
 for _, i in pairs({15, 20, 28, 32, 36, 48}) do 

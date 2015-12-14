@@ -24,8 +24,11 @@ end
 function music:playPlaylist(playlist)
 	local p = self.playlists[playlist]
 	music.activePlaylist = playlist
-	if p.currentTrack == nil then p.currentTrack = 1 end
+	if p.currentTrack == nil then p.currentTrack = math.floor(math.random() * #p.tracks) end
 	love.audio.play(p.tracks[p.currentTrack].sound)
+	for _, subscriber in ipairs(p.subscribed) do 
+		subscriber(p.tracks[p.currentTrack])
+	end
 end
 
 function music:pausePlaylist(playlist)
@@ -38,7 +41,7 @@ function music:stopPlaylist(playlist)
 	local p = self.playlists[playlist]
 	music.activePlaylist = ""
 	love.audio.stop(p.tracks[p.currentTrack].sound)
-	p.currentTrack = 1
+	p.currentTrack = math.floor(math.random() * #p.tracks)
 end
 
 function music:setVolume(vol)
@@ -56,7 +59,7 @@ function music:update()
 			local currentTrack = p.tracks[p.currentTrack]
 			if currentTrack.sound:tell() == 0 then -- next track
 				if p.currentTrack == #p.tracks then p.currentTrack = 0 end
-				p.currentTrack = p.currentTrack + 1
+				p.currentTrack = math.floor(math.random() * #p.tracks)
 				currentTrack = p.tracks[p.currentTrack]
 				for _, subscriber in ipairs(p.subscribed) do 
 					subscriber(p.tracks[p.currentTrack])

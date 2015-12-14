@@ -6,12 +6,12 @@ function options:addChoice(name, codeRight, codeLeft, code) -- code (enter of " 
 end
 
 options:addChoice("< Volume: 100 >", function(dt)
-	state.options.volume = state.options.volume + 200 * dt
+	state.options.volume = state.options.volume + 1000 * dt
 	if state.options.volume > 100 then state.options.volume = 100 end
 	options.choice[1].name = "< Volume: "..tostring(state.options.volume):sub(1,4).." >"
 	music:setVolume(state.options.volume)
 end, function(dt)
-	state.options.volume = state.options.volume - 200 * dt
+	state.options.volume = state.options.volume - 1000 * dt
 	if state.options.volume < 0 then state.options.volume = 0 end
 	options.choice[1].name = "< Volume: "..tostring(state.options.volume):sub(1,4).." >"
 	music:setVolume(state.options.volume)
