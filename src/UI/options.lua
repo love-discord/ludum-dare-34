@@ -6,12 +6,12 @@ function options:addChoice(name, codeRight, codeLeft, code) -- code (enter of " 
 end
 
 options:addChoice("< Volume: 100 >", function(dt)
-	state.options.volume = state.options.volume + 50 * dt
+	state.options.volume = state.options.volume + 200 * dt
 	if state.options.volume > 100 then state.options.volume = 100 end
 	options.choice[1].name = "< Volume: "..tostring(state.options.volume):sub(1,4).." >"
 	music:setVolume(state.options.volume)
 end, function(dt)
-	state.options.volume = state.options.volume - 50 * dt
+	state.options.volume = state.options.volume - 200 * dt
 	if state.options.volume < 0 then state.options.volume = 0 end
 	options.choice[1].name = "< Volume: "..tostring(state.options.volume):sub(1,4).." >"
 	music:setVolume(state.options.volume)
@@ -24,20 +24,26 @@ local function gotoMenu()
 	state.game="menu"
 	math.randomseed(os.time())
 	menu.percentage = 90 + math.random(0, 9)
+	love.keyboard.setKeyRepeat(false)
 end
 options:addChoice("Back", gotoMenu, gotoMenu, gotoMenu)
+
+function options:keypressed(key)
+	local dt = love.timer:getDelta()
+	if key == "left" then
+		pcall(self.choice[self.current].codeLeft, dt)
+	elseif key == "right" then
+		pcall(self.choice[self.current].codeRight, dt)
+	elseif key == "enter" or key == " " then
+		pcall(self.choice[self.current].code, dt)
+	end
+end
 
 function options:update(dt)
 	if love.keyboard.isDown("up") then
 		self.percentage = self.percentage + 150 * dt
 	elseif love.keyboard.isDown("down") then
 		self.percentage = self.percentage - 150 * dt
-	elseif love.keyboard.isDown("left") then
-		pcall(self.choice[self.current].codeLeft, dt)
-	elseif love.keyboard.isDown("right") then
-		pcall(self.choice[self.current].codeRight, dt)
-	elseif love.keyboard.isDown("enter", " ") then
-		pcall(self.choice[self.current].code, dt)
 	end
 
 	if self.percentage > 100 then

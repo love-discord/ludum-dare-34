@@ -15,13 +15,13 @@ effect = function(self, x, y, z, amt)
 	if hexMap:getCell(x, y, z).team == "immune" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + amount
 	end
-	spawnLight(self, 15, 50,100)
+	spawnLight(self, 15, 50, 100)
 end
 
 amount = 10
 cost = 50
 img = love.graphics.newImage("gfx/units/antivirus/CellHealer.png")
-requireText = "-"
+requireText = "50 Bits"
 requireFunc = function() return shop.bits >= 50 end
 
 info = "Those under my\n"..

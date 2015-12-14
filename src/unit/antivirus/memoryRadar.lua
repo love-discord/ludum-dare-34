@@ -20,7 +20,7 @@ end
 
 cost = 25
 img = love.graphics.newImage("gfx/units/antivirus/memoryreader.png")
-requireText = "-"
+requireText = "25 Bits"
 requireFunc = function() return shop.bits >= 25 end
 
 info = "I will show you things.\n"..

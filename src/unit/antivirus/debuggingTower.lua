@@ -21,8 +21,8 @@ end
 amount = 10
 cost = 150
 img = love.graphics.newImage("gfx/units/antivirus/cellDamager.png")
-requireText = "2 Chip Healers"
-requireFunc = function() return shop.bits >= 150 and virus:getNumber("Chip Healer") >= 2 end
+requireText = "1 Chip Damage Booster"
+requireFunc = function() return shop.bits >= 150 and virus:getNumber("Chip Damage Booster") >= 1 end
 
 info = "The dream of all\n"..
 		"programmers. An\n"..

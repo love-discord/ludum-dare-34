@@ -11,8 +11,9 @@ immuneSystem = {
 	x = 0
 }
 
-function spawnLight(self, r, g, b)
+function spawnLight(self, r, g, b, range)
 	local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
+	range = range or self.range
 
 	if not self.hasLight then
 		local range = self.range * hexMap.cell_size * 2

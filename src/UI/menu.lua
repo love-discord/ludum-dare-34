@@ -2,12 +2,12 @@ local cell = require("src.hex.cell")
 
 menu = {
 	cursorImg = love.graphics.newImage("gfx/menu/cursor.png"),
+	title = love.graphics.newImage("gfx/menu/title.png"),
 	choice = {}
 }
 
-function singleplayer()
-	state.game = "singleplayer"
-	hexMap = hex:new(12, 48, 100)
+function startGame()
+	hexMap = hex:new(10, 48, 100)
 
 	TICK_SPEED = 3 / timeScale -- 1/number
 
@@ -25,19 +25,34 @@ function singleplayer()
 
 	require("src.AI.virusSetup")
 
-	lightWorld = lightWorld({
-		ambient = {55,55,55},         --the general ambient light in the environment
-		blur = 0,
-		glowBlur = 0,
-		refractionStrength = 0
-	})
-	lightWorld:setGlowStrength(0)
-	lightWorld:setShadowBlur(0)
-	cell:update()
-	neutralLight = lightWorld:newLight(0, 0, 60, 60, 60, love.window.getWidth() / 2)
+	if lightWorld.blur == nil then
+		lightWorld = lightWorld({
+			ambient = {55,55,55},         --the general ambient light in the environment
+			blur = 0,
+			glowBlur = 0,
+			refractionStrength = 0
+		})
+		lightWorld:setGlowStrength(0)
+		lightWorld:setShadowBlur(0)
+		cell:update()
+		neutralLight = lightWorld:newLight(0, 0, 60, 60, 60, love.window.getWidth() / 2)
+	end
+end
+
+function singleplayer()
+	state.game = "singleplayer"
+	startGame()
+end
+
+
+function tutorial()
+	state.game = "tutorial"
+	state.updating = false
+	startGame()
 end
 
 function optionsFunc()
+	love.keyboard.setKeyRepeat(true)
 	state.game = "options"
 end
 
@@ -55,6 +70,7 @@ function menu:load()
 
 	menu:addChoice("Singleplayer", singleplayer)
 	menu:addChoice("Options", optionsFunc)
+	menu:addChoice("Tutorial", tutorial)
 	menu:addChoice("Credits", credits)
 	menu:addChoice("Exit", exit)
 end
@@ -71,11 +87,9 @@ end
 
 function menu:update(dt)
 	if love.keyboard.isDown("up") then
-		menu.percentage = menu.percentage + 150 * dt
+		menu.percentage = menu.percentage + 200 * dt
 	elseif love.keyboard.isDown("down") then
-		menu.percentage = menu.percentage - 150 * dt
-	elseif love.keyboard.isDown("return") or love.keyboard.isDown(" ") then
-		menu.choice[menu.current].code()
+		menu.percentage = menu.percentage - 200 * dt
 	end
 
 	if menu.percentage > 100 then
@@ -86,28 +100,34 @@ function menu:update(dt)
 	end
 end
 
+function menu:keypressed(key)
+	if love.keyboard.isDown("return") or love.keyboard.isDown(" ") then
+		menu.choice[menu.current].code()
+	end
+end
+
 function menu:drawChoosables()
 	love.graphics.setColor(0, 150, 255)
 	love.graphics.setLineWidth(5)
-	love.graphics.line(150, love.window.getHeight(), 150, love.window.getHeight() - 220)
+	love.graphics.line(100, love.window.getHeight(), 100, love.window.getHeight() - 260)
 
 	for i = 1, #menu.choice do
 		local prozent = menu.percentage / 10
 
-		if prozent >= 10 - 2.5 * i and prozent <= 10 - math.abs((1 - i) * 2.5) then
+		if prozent >= 10 - 2 * i and prozent <= 10 - math.abs((1 - i) * 2) then
 			menu.current = i
 			love.graphics.setFont(font.roboto.bold[28])
 		else
 			love.graphics.setFont(font.roboto.regular[28])
 		end
 
-		love.graphics.print(menu.choice[i].name, 190, love.window.getHeight() - (5 - i) * 50)
+		love.graphics.print(menu.choice[i].name, 140, love.window.getHeight() - (6 - i) * 50)
 	end
 end
 
 function menu:drawCursor()
 	love.graphics.setColor(0, 150, 255)
-	love.graphics.draw(menu.cursorImg, 160, love.window.getHeight() - 150 * menu.percentage / 100 - 48)
+	love.graphics.draw(menu.cursorImg, 110, love.window.getHeight() - 200 * menu.percentage / 100 - 48)
 end
 
 
@@ -120,6 +140,8 @@ function menu:drawUI()
 	love.graphics.setLineWidth(5)
 	love.graphics.circle("line", x, y, 350, 100)
 	love.graphics.circle("line", x, y, 310, 100)
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.draw(menu.title)
 	love.graphics.setColor(0, 255, 255)
 	love.graphics.setLineWidth(26)
 	local totalLen = 315 - 130
