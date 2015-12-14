@@ -5,6 +5,9 @@ shop = {
 	y = 0,
 	x = 0,
 
+	targetX = 458,
+	targetY = 150,
+
 	flick = 0,
 	flickRate = 15,
 	flicked = 0,
@@ -28,8 +31,6 @@ function shop:load()
 		print("Added "..shop.items[#shop.items].name)
 		i = i + 1
 	end
-
-	shop:resize(love.window.getWidth(), love.window.getHeight())
 end
 
 function shop:update(dt)
@@ -153,6 +154,7 @@ function shop:draw()
 		shop:drawMessages()
 	end
 
+	love.graphics.setScissor(0, 0, love.window.getWidth(), love.window.getHeight())
 	shop:drawFloating()
 end
 
@@ -263,7 +265,6 @@ function shop:drawMessages()
 	love.graphics.print(self.messages.text, x + shop.messages.x, y)
 	love.graphics.print(self.messages.text, x + shop.messages.x - font.prototype[28]:getWidth(shop.messages.text) - 100, y)
 	love.graphics.print(self.messages.text, x + shop.messages.x - font.prototype[28]:getWidth(shop.messages.text) * 2 - 200, y)
-	love.graphics.setScissor(0, 0, love.window.getWidth(), love.window.getHeight())
 
 	shop.messages.x = shop.messages.x + 2
 end
@@ -368,9 +369,4 @@ function shop:drawSelected()
 		local x, y, z = mouse:getHexCoords()
 		hexMap:drawInRange(x, y, z, immuneSystem.unitList[shop.selected].range)
 	end
-end
-
-function shop:resize(x, y)
-	shop.targetX = x / 2 - 150
-	shop.targetY = 150
 end

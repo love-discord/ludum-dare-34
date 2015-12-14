@@ -163,6 +163,5 @@ function love.keypressed(key)
 end
 
 function love.resize(x, y)
-	shop:resize(x, y)
-	lightWorld:refreshScreenSize()
+	lightWorld:refreshScreenSize(x, y)
 end
