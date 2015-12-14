@@ -227,6 +227,8 @@ function shop:mousepressed(x, y, key)
 				if shop.bits >= shop.items[i].cost and shop.items[i].requireFunc() then
 					shop.selected = shop.items[i].name
 					shop.bits = shop.bits - shop.items[i].cost
+				else
+					shop:editMessage("You can't buy this unit yet!")
 				end
 			end
 		end
