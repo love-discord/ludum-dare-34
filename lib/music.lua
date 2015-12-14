@@ -41,6 +41,10 @@ function music:stopPlaylist(playlist)
 	p.currentTrack = 1
 end
 
+function music:setVolume(vol)
+	love.audio.setVolume(vol / 100)
+end
+
 function music:trackChangeSubscribe(playlist, f)
 	table.insert(music.playlists[playlist].subscribed, f)
 end
