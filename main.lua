@@ -72,11 +72,6 @@ timeSinceLastTick = 0
 	virus:loadUnits()
 	virus:loadTroops()
 
-	virus:addUnit("Bug Factory", -8, 10, -2)
-	virus:addUnit("Bug Factory", -9, 11, -2)
-	virus:addUnit("Bug Factory", -8, 11, -3)
-	virus:addUnit("Bug Factory", -9, 12, -3)
-
 	shop:load()
 
 	love.mouse.setVisible(false)
