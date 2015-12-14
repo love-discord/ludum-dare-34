@@ -86,7 +86,7 @@ function love.load()
 		glowBlur = 0
 	})
 	lightWorld:setGlowStrength(0)
-	-- lightWorld:setBlur(0)
+	lightWorld:setShadowBlur(0)
 	cell:update()
 	neutralLight = lightWorld:newLight(0, 0, 30, 30, 30, love.window.getWidth())
 end
@@ -131,12 +131,15 @@ function love.draw()
 	lightWorld:draw(function()
 		hexMap:draw()
 		immuneSystem:draw()
+		virus:draw()
+		dyingTroop:draw()
 	end)
+	lightWorld.post_shader:addEffect("tilt_shift")
+	lightWorld.post_shader:addEffect("contrast")
+
 
 	shop:drawSelected()
 
-	virus:draw()
-	dyingTroop:draw()
 	mouse:drawHex()
 	love.graphics.pop()
 
