@@ -40,7 +40,7 @@ function memoryReader(self, x, y, z)
 
 	if not self.hasLight then
 		local range = self.range * hexMap.cell_size * 2
-		lightWorld:newLight(x, y, 60, 60, 60, range)
+		lightWorld:newLight(x, y, 150, 150, 150, range)
 		self.hasLight = true
 	end
 end

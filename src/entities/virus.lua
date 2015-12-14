@@ -3,7 +3,8 @@ virus = {
 	unitList = {},
 	unit = {},
 	troopList = {},
-	troop = {}
+	troop = {},
+	ai = require("src.ai.virus")
 }
 
 
@@ -120,6 +121,7 @@ function virus:remove(x, y)
 end
 
 function virus:update()
+	self.ai:update()
 	for i, unit in pairs(self.unit) do
 		if unit.hp <= 0 then
 			self:remove(unit.x, unit.y, unit.z)
