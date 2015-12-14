@@ -155,6 +155,7 @@ function love.draw()
 		love.graphics.setFont(font.prototype[20])
 		--love.graphics.print("Virus bits: "..virus.ai.bits, 10, 30)
 		scorebar:draw()
+		wlScreen:draw()
 		if state.game == "tutorial" then
 			tut:draw()
 		end
