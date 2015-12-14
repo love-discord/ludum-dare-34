@@ -37,7 +37,7 @@ function singleplayer()
 	neutralLight = lightWorld:newLight(0, 0, 60, 60, 60, love.window.getWidth() / 2)
 end
 
-function options()
+function optionsFunc()
 	state.game = "options"
 end
 
@@ -54,7 +54,7 @@ function menu:load()
 	menu.percentage = 90 + math.random(0, 9)
 
 	menu:addChoice("Singleplayer", singleplayer)
-	menu:addChoice("Options", options)
+	menu:addChoice("Options", optionsFunc)
 	menu:addChoice("Credits", credits)
 	menu:addChoice("Exit", exit)
 end

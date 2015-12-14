@@ -6,7 +6,7 @@ lightWorld = require("lib.lightWorld")
 local class = require("lib.class")
 local lovebird = require("lib.lovebird")
 require("lib.time")
-local music = require("lib.music")
+music = require("lib.music")
 
 hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
@@ -23,6 +23,7 @@ require("src.interactives.input")
 require("src.UI.shop")
 require("src.ui.scorebar")
 require("src.ui.menu")
+require("src.ui.options")
 
 timeScale = 1
 
@@ -63,19 +64,20 @@ state = {
 	drawHP = false,
 	updating = true,
 	debug = false,
-	game = "menu"
+	game = "menu",
+	options = {volume = 100}
 }
 
 timeSinceLastTick = 0
 
 --[[ functions ]]--
-music:loadTrack("Playlist", "gfx/sound/bg/Alan Walker - Fade.mp3", "Alan Walker - Fade")
+--[[music:loadTrack("Playlist", "gfx/sound/bg/Alan Walker - Fade.mp3", "Alan Walker - Fade")
 music:loadTrack("Playlist", "gfx/sound/bg/Distrion & Alex Skrindo - Entropy.mp3", "Distrion & Alex Skrindo - Entropy")
 music:loadTrack("Playlist", "gfx/sound/bg/Jim Yosef - Arrow.mp3", "Jim Yosef - Arrow")
 music:loadTrack("Playlist", "gfx/sound/bg/Unison-Aperture.mp3", "Unison - Aperture")
 music:loadTrack("Playlist", "gfx/sound/bg/Lensko - Circles.mp3", "Lensko - Circles")
 music:trackChangeSubscribe("Playlist", function(nextTrack) print("Now playing: "..nextTrack.name) end)
-music:playPlaylist("Playlist")
+music:playPlaylist("Playlist")--]]
 
 menu:load()
 love.mouse.setVisible(false)
@@ -112,6 +114,8 @@ function love.update(dt)
 	--[[ menu ]]--
 	elseif state.game == "menu" then
 		menu:update(dt)
+	elseif state.game == "options" then
+		options:update(dt)
 	end
 
 	mouse:update()
@@ -150,6 +154,8 @@ function love.draw()
 		scorebar:draw()
 	elseif state.game == "menu" then
 		menu:draw()
+	elseif state.game == "options" then
+		options:draw()
 	end
 
 	mouse:drawCircle()
@@ -170,7 +176,9 @@ function love.keypressed(key)
 	if state.game == "singleplayer" then
 		input:keypressed(key)
 	elseif state.game == "menu" then
-
+		menu:keypressed(key)
+	elseif state.game == "options" then
+		options:keypressed(key)
 	end
 end
 
