@@ -83,26 +83,27 @@ function love.load()
 	lightWorld = lightWorld({
 		ambient = {55,55,55},         --the general ambient light in the environment
 		blur = 0,
-		glowBlur = 0
+		glowBlur = 0,
+		refractionStrength = 0
 	})
 	lightWorld:setGlowStrength(0)
 	lightWorld:setShadowBlur(0)
 	cell:update()
-	neutralLight = lightWorld:newLight(0, 0, 30, 30, 30, love.window.getWidth())
+	neutralLight = lightWorld:newLight(0, 0, 60, 60, 60, love.window.getWidth() / 2)
 end
 
 function love.update(dt)
 	if state.updating then
-		TICK_SPEED = 3 / timeScale -- 1/number
+		TICK_SPEED = 1 / timeScale -- 1/number
 		timeSinceLastTick = timeSinceLastTick + dt * timeScale
 		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 			shop.bits = shop.bits + 7 + math.floor(time.seconds / 60) / 2 -- every minute this increases by 0.5
 				cell:update(dt * timeScale)
 				lightWorld:clearLights()
 				lightWorld:clear()
-				neutralLight = lightWorld:newLight(0, 0, 30, 30, 30, love.window.getWidth())
-				virus:update()
+				neutralLight = lightWorld:newLight(0, 0, 60, 60, 60, love.window.getWidth() / 2)
 				immuneSystem:update()
+				virus:update()
 			timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 		end
 
@@ -110,11 +111,10 @@ function love.update(dt)
 		immuneSystem:fastUpdate(dt * timeScale)
 		time:update(dt * timeScale)
 	end
+	camera:update(dt)
 
 	lightWorld:update(dt)
 	lightWorld:setTranslation(camera.x, camera.y, scale)
-
-	camera:update(dt)
 	mouse:update()
 	shop:update(dt)
 	lovebird.update()
@@ -128,16 +128,15 @@ function love.draw()
 	love.graphics.translate(camera.x, camera.y)
 
 
+	lightWorld:clear()
 	lightWorld:draw(function()
 		hexMap:draw()
 		immuneSystem:draw()
 		virus:draw()
 		dyingTroop:draw()
 	end)
-	lightWorld.post_shader:addEffect("tilt_shift")
-	lightWorld.post_shader:addEffect("contrast")
-
-
+	lightWorld.post_shader:addEffect("phosphor")
+	-- lightWorld.post_shader:addEffect("tilt_shift")
 	shop:drawSelected()
 
 	mouse:drawHex()
