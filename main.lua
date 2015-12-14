@@ -121,9 +121,8 @@ function love.draw()
 	if state.game == "loading" then
 		local faces = {"._.", ":/", ":|", ":\\", ".-.", "/:", "|:", "\\:"}
 		local face = state.assetsLoaded % #faces + 1
-		love.graphics.setFont(font.ethnocentric.regular[80])
+		love.graphics.setFont(font.roboto.bold[28])
 		love.graphics.print(faces[face], love.graphics.getWidth() - 200, love.graphics.getHeight() - 200)
-		love.graphics.setFont(font.ethnocentric.regular[36])
 		love.graphics.print(state.currentAsset or "?", 100, 100)
 		return
 	end
