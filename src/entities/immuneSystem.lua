@@ -31,14 +31,6 @@ function immuneSystem:loadUnits()
 	self.unitList["Bit Farmer"] = require("src.unit.antivirus.bitFarmer")
 end
 
--- creates a new unit __TYPE__
-function immuneSystem:newUnit(name, hp, range, w, h, movable, effectText, effect, amount, cost, img, requireText, requireFunc, info, maxTroops)
-	immuneSystem.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, movable = movable,
-									effectText = effectText, effect = effect, amount = amount, cost = cost, img = img,
-									requireText = requireText, requireFunc = requireFunc, info = info or "Unit",
-									maxTroops = maxTroops, hasLight = false}
-end
-
 function immuneSystem:find(x, y, z)
 	local occupied = false
 	local id
