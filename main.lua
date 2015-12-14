@@ -53,7 +53,8 @@ font = {
 	},
 	ethnocentric = {
 		regular = {
-			[36] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 36)
+			[36] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 36),
+			[80] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 80)
 		}
 	}
 }
