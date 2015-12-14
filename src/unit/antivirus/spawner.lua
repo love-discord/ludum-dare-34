@@ -22,7 +22,7 @@ end
 amount = 1/3
 cost = 75
 img = love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png")
-requireText = "-"
+requireText = "75 Bits"
 requireFunc = function() return shop.bits >= 75 end
 
 info = "Let's be serious.\n"..

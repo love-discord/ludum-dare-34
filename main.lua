@@ -23,6 +23,7 @@ require("src.interactives.input")
 require("src.UI.shop")
 require("src.ui.scorebar")
 require("src.ui.menu")
+require("src.ui.tutorial")
 
 timeScale = 1
 
@@ -68,14 +69,15 @@ state = {
 
 timeSinceLastTick = 0
 
+
 --[[ functions ]]--
-music:loadTrack("Playlist", "gfx/sound/bg/Alan Walker - Fade.mp3", "Alan Walker - Fade")
-music:loadTrack("Playlist", "gfx/sound/bg/Distrion & Alex Skrindo - Entropy.mp3", "Distrion & Alex Skrindo - Entropy")
-music:loadTrack("Playlist", "gfx/sound/bg/Jim Yosef - Arrow.mp3", "Jim Yosef - Arrow")
-music:loadTrack("Playlist", "gfx/sound/bg/Unison-Aperture.mp3", "Unison - Aperture")
-music:loadTrack("Playlist", "gfx/sound/bg/Lensko - Circles.mp3", "Lensko - Circles")
-music:trackChangeSubscribe("Playlist", function(nextTrack) print("Now playing: "..nextTrack.name) end)
-music:playPlaylist("Playlist")
+-- music:loadTrack("Playlist", "gfx/sound/bg/Alan Walker - Fade.mp3", "Alan Walker - Fade")
+-- music:loadTrack("Playlist", "gfx/sound/bg/Distrion & Alex Skrindo - Entropy.mp3", "Distrion & Alex Skrindo - Entropy")
+-- music:loadTrack("Playlist", "gfx/sound/bg/Jim Yosef - Arrow.mp3", "Jim Yosef - Arrow")
+-- music:loadTrack("Playlist", "gfx/sound/bg/Unison-Aperture.mp3", "Unison - Aperture")
+-- music:loadTrack("Playlist", "gfx/sound/bg/Lensko - Circles.mp3", "Lensko - Circles")
+-- music:trackChangeSubscribe("Playlist", function(nextTrack) print("Now playing: "..nextTrack.name) end)
+-- music:playPlaylist("Playlist")
 
 menu:load()
 love.mouse.setVisible(false)
@@ -83,7 +85,7 @@ love.mouse.setVisible(false)
 function love.update(dt)
 	music:update()
 	--[[ game ]]--
-	if state.game == "singleplayer" then
+	if state.game == "singleplayer" or state.game == "tutorial" then
 		if state.updating then
 			TICK_SPEED = 3 / timeScale -- 1/number
 			timeSinceLastTick = timeSinceLastTick + dt * timeScale
@@ -120,7 +122,7 @@ function love.update(dt)
 end
 
 function love.draw()
-	if state.game == "singleplayer" then
+	if state.game == "singleplayer" or state.game == "tutorial" then
 		love.graphics.push()
 		love.graphics.scale(scale)
 		love.graphics.pop()
@@ -148,6 +150,9 @@ function love.draw()
 		love.graphics.setFont(font.prototype[20])
 		love.graphics.print("Virus bits: "..virus.ai.bits, 10, 30)
 		scorebar:draw()
+		if state.game == "tutorial" then
+			tut:draw()
+		end
 	elseif state.game == "menu" then
 		menu:draw()
 	end
@@ -169,13 +174,21 @@ end
 function love.keypressed(key)
 	if state.game == "singleplayer" then
 		input:keypressed(key)
+	elseif state.game == "tutorial" then
+		if key == " " then
+			if tut.imgCount < 4 then
+				tut.imgCount = tut.imgCount + 1
+			else
+				state.game = "menu"
+			end
+		end
 	elseif state.game == "menu" then
-
+		menu:keypressed(key)
 	end
 end
 
 function love.resize(x, y)
-	if state.game == "singleplayer" then
+	if state.game == "singleplayer" or state.game == "tutorial" then
 		lightWorld:refreshScreenSize(x, y)
 	end
 end
