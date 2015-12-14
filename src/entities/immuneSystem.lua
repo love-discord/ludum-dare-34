@@ -102,6 +102,15 @@ function immuneSystem:addUnit(name, x, y, z)
 	end
 end
 
+function immuneSystem:selectUnit(key, x, y, z)
+	if key == "l" then
+		local occupied, id = immuneSystem:find()
+		if occupied and immuneSystem.unit[id].team == "immune" then
+			immuneSystem.selected = id
+		end
+	end
+end
+
 function immuneSystem:remove(x, y, z)
   cellSound:play()
   

@@ -44,6 +44,17 @@ function hex:draw()
 	end
 end
 
+function hex:drawInRange(x, y, z, range)
+	local inRange = hex:inRange(x, y, z, range)
+
+	for i = 1, #inRange do
+		local cell = hexMap:getCell(inRange[i].x, inRange[i].y, inRange[i].z)
+		if cell then
+			cell.color = {0, 255, 0}
+		end
+	end
+end
+
 function hex:getCell(x, y, z)
 	if self.cells[x] then
 		return self.cells[x][z]
