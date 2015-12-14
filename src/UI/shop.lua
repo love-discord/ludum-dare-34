@@ -334,7 +334,6 @@ function shop:drawSelected()
 		end
 		love.graphics.draw(img, x + camera.x - (img:getWidth() * sX) / 2, y + camera.y - (img:getHeight() * sY) / 2 - 10, 0, sX, sY)
 
-		print(immuneSystem.unitList[shop.selected].range)
 		local x, y, z = mouse:getHexCoords()
 		local inRange = hex:inRange(x, y, z, immuneSystem.unitList[shop.selected].range)
 		for i = 1, #inRange do

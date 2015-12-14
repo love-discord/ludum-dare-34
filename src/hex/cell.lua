@@ -83,6 +83,7 @@ function cell:draw(mode)
 	love.graphics.polygon("line", vertices)
 
 	self.color[4] = self.hp * 2
+	if self.color[2] == 255 then self.color[4] = 200 end
 	love.graphics.setColor(self.color)
 
 	local vertices = {}
