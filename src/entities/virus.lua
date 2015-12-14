@@ -149,8 +149,8 @@ function virus:fastUpdate(dt)
 	for i, v in pairs(self.troop) do
 		v.xvel, v.yvel = 0, 0
 		if v.target then
-			v.xvel = v.target.x - v.x
-			v.yvel = v.target.y - v.y
+			v.xvel = (v.target.X or v.target.x) - v.x
+			v.yvel = (v.target.Y or v.target.y) - v.y
 		end
 		if v.target ~= nil then 
 			local velM = v.xvel * v.xvel + v.yvel * v.yvel

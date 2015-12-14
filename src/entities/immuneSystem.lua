@@ -207,8 +207,8 @@ function immuneSystem:fastUpdate(dt)
 	for i, v in pairs(self.troop) do
 		v.xvel, v.yvel = 0, 0
 		if v.target then
-			v.xvel = v.target.x - v.x
-			v.yvel = v.target.y - v.y
+			v.xvel = (v.target.X or v.target.x) - v.x
+			v.yvel = (v.target.Y or v.target.y) - v.y
 		end
 		if v.target ~= nil then 
 			local velM = v.xvel * v.xvel + v.yvel * v.yvel
@@ -295,7 +295,11 @@ function immuneSystem:drawSelectedUnitInfo()
 		love.graphics.line(xcoord, ycoord + 40, xcoord + 290, ycoord + 40)
 		love.graphics.setFont(font.prototype[32])
 		love.graphics.setColor(255, 255, 255)
-		love.graphics.print(immuneSystem.unit[immuneSystem.selected].name, xcoord + 5, ycoord + 3)
+		love.graphics.print(immuneSystem.unit[immuneSystem.selected].name, 		 xcoord + 5, ycoord + 3)
+
+		love.graphics.setFont(font.prototype[20])
+		love.graphics.print("HP: "..immuneSystem.unit[immuneSystem.selected].hp, xcoord + 5, ycoord + 45)
+		love.graphics.print("Test", xcoord + 5, ycoord + 65)
 	end
 end
 
