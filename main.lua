@@ -25,6 +25,7 @@ require("src.ui.scorebar")
 require("src.ui.menu")
 require("src.ui.options")
 require("src.ui.tutorial")
+--require("src.ui.credits")
 require("src.ui.winlosescreen")
 
 timeScale = 1
@@ -206,6 +207,14 @@ function love.keypressed(key)
 		menu:keypressed(key)
 	elseif state.game == "options" then
 		options:keypressed(key)
+	elseif state.game == "credits" then
+		if key == " " then
+			if cred.imgCount < 5 then
+				cred.imgCount = cred.imgCount + 1
+			else
+				state.game = "menu"
+			end
+		end
 	end
 end
 

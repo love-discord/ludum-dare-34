@@ -17,7 +17,11 @@ end, function(dt)
 	music:setVolume(state.options.volume)
 end)
 
-options:addChoice("")
+local function changeSong()
+	music:playPlaylist("Playlist")
+end
+
+options:addChoice("Switch song", changeSong, changeSong, changeSong)
 options:addChoice("")
 
 local function gotoMenu()

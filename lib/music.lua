@@ -22,15 +22,18 @@ function music:loadTrack(playlist, path, name)
 end
 
 function music:playPlaylist(playlist)
+	self:stopPlaylist(self.activePlaylist)
 	local p = self.playlists[playlist]
+	if p == nil then return end
 	music.activePlaylist = playlist
 	local anotherTrack = math.floor(math.random() * #p.tracks)
-	while not(anotherTrack ~= p.currentTrack and p.tracks[anotherTrack] ~= nil) do
+	while anotherTrack == p.currentTrack or p.tracks[anotherTrack] == nil do
 		anotherTrack = math.floor(math.random() * #p.tracks)
 	end
 
 	p.currentTrack = anotherTrack
 	love.audio.play(p.tracks[p.currentTrack].sound)
+	p.tracks[p.currentTrack].sound:seek(1, "samples")
 	for _, subscriber in ipairs(p.subscribed) do
 		subscriber(p.tracks[p.currentTrack])
 	end
@@ -38,12 +41,14 @@ end
 
 function music:pausePlaylist(playlist)
 	local p = self.playlists[playlist]
+	if p == nil then return end
 	music.activePlaylist = ""
 	love.audio.pause(p.tracks[p.currentTrack].sound)
 end
 
 function music:stopPlaylist(playlist)
 	local p = self.playlists[playlist]
+	if p == nil then return end
 	music.activePlaylist = ""
 	love.audio.stop(p.tracks[p.currentTrack].sound)
 	p.currentTrack = math.floor(math.random() * #p.tracks)
@@ -62,6 +67,7 @@ function music:update()
 		if self.playlists[self.activePlaylist] then
 			local p = self.playlists[self.activePlaylist]
 			if p.tracks[p.currentTrack].sound:tell() == 0 then
+				self:stopPlaylist(self.activePlaylist)
 				self:playPlaylist(self.activePlaylist)
 			end
 		end

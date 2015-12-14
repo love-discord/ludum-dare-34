@@ -48,8 +48,6 @@ function startGame()
 
 	shop:load()
 
-	require("src.AI.virusSetup")
-
 	if lightWorld.blur == nil then
 		lightWorld = lightWorld({
 			ambient = {55,55,55},         --the general ambient light in the environment
