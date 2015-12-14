@@ -18,7 +18,7 @@ amount = 3
 cost = 75
 img = love.graphics.newImage("gfx/units/antivirus/bitFarmer.png")
 requireText = "75 Bits"
-requireFunc = function() return shop.bits >= 25 end
+requireFunc = function() return shop.bits >= 75 end
 
 info = "Am I worth it? There's\nonly one way to find out."
 
