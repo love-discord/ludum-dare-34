@@ -38,10 +38,6 @@ local function bugActivator(self, x, y, z, amt) -- damage
 	end
 end
 
-function bitFarmer(self, x, y, z, amount)
-	virus.ai.bits = virus.ai.bits + amount
-end
-
 function virus:loadUnits()
 	--				NAME 				HP RNG W   H   EFFECT    		AMT  COST 	IMG 															Require 																					MaxTroops
 	virus:newUnit("Bug Factory", 		50, 0, 32, 48, bugSpawn, 		1/3, 75,	love.graphics.newImage("gfx/units/virus/bugSpawn.png")			,function() return virus.ai.bits >= 75 end,													 10)
