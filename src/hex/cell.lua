@@ -141,6 +141,8 @@ function cell:update(dt)
 				scorebar.virusCells = scorebar.virusCells + 1
 			end
 			scorebar.totalCells = scorebar.totalCells + 1
+
+			cell.color = {colors[cell.team]}
 		end
 	end
 

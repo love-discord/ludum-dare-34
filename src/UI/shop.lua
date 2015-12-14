@@ -333,6 +333,8 @@ function shop:drawSelected()
 			love.graphics.setColor(0, 255, 0, 150)
 		end
 		love.graphics.draw(img, x + camera.x - (img:getWidth() * sX) / 2, y + camera.y - (img:getHeight() * sY) / 2 - 10, 0, sX, sY)
+
+
 	end
 end
 
