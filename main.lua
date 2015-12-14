@@ -6,6 +6,7 @@ lightWorld = require("lib.lightWorld")
 local class = require("lib.class")
 local lovebird = require("lib.lovebird")
 require("lib.time")
+local music = require("lib.music")
 
 hex = require("src.hex.hex")
 local cell = require("src.hex.cell")
@@ -78,8 +79,6 @@ timeSinceLastTick = 0
 
 	love.mouse.setVisible(false)
 
-	require("src.AI.virusSetup")
-
 function love.load()
 	lightWorld = lightWorld({
 		ambient = {55,55,55},         --the general ambient light in the environment
@@ -91,6 +90,7 @@ function love.load()
 	lightWorld:setShadowBlur(0)
 	cell:update()
 	neutralLight = lightWorld:newLight(0, 0, 60, 60, 60, love.window.getWidth() / 2)
+	music:playPlaylist("playlist1")
 end
 
 function love.update(dt)
@@ -121,6 +121,7 @@ function love.update(dt)
 	mouse:update()
 	shop:update(dt)
 	lovebird.update()
+	music:update()
 end
 
 function love.draw()
