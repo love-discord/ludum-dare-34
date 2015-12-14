@@ -82,7 +82,7 @@ function love.load()
   lightWorld = lightWorld({
     ambient = {55,55,55},         --the general ambient light in the environment
   })
-  lightWorld:newLight(0, 0, 200, 200, 200, love.window.getWidth())
+  lightWorld:newLight(0, 0, 150, 150, 200, love.window.getWidth())
 end
 
 function love.update(dt)
@@ -122,7 +122,7 @@ function love.draw()
   lightWorld:draw(function()
 	hexMap:draw()
   end)
-  lightWorld.post_shader:addEffect("bloom")
+  lightWorld.post_shader:addEffect("contrast")
 	mouse:drawHex()
 	immuneSystem:draw()
 	virus:draw()
