@@ -32,7 +32,7 @@ timeScale = 1
 --[[ variables ]]--
 font = {}
 font.prototype = {}
-for _, i in pairs({15, 20, 26, 32, 36, 48}) do 
+for _, i in pairs({15, 20, 26, 28, 32, 36, 48}) do 
 	font.prototype[i] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", i)
 end
 
