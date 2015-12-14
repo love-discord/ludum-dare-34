@@ -25,10 +25,7 @@ require("src.ui.scorebar")
 require("src.ui.menu")
 require("src.ui.options")
 require("src.ui.tutorial")
-<<<<<<< HEAD
-=======
 require("src.ui.credits")
->>>>>>> origin/master
 require("src.ui.winlosescreen")
 require("src.ui.musicUI")
 
