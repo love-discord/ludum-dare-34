@@ -5,6 +5,8 @@ immuneSystem = {
 	troop = {},
 	troopList = {},
 	readable = {},
+
+	unitInfo = false,
 	x = 0
 }
 
@@ -216,6 +218,25 @@ function immuneSystem:fastUpdate(dt)
 			end
 		end
 	end
+
+	-- selected info box
+	if immuneSystem.selected ~= nil then
+		local width = font.prototype[32]:getWidth(immuneSystem.unit[immuneSystem.selected].name) + 100
+		if immuneSystem.unitInfo then
+			if immuneSystem.x < width then
+				immuneSystem.x = immuneSystem.x + ((width - immuneSystem.x) * 12) * dt
+			else
+				immuneSystem.x = width
+			end
+		else
+			if immuneSystem.x > 0 then
+				immuneSystem.x = immuneSystem.x - (math.abs(immuneSystem.x - (width + 1)) * 12) * dt
+			else
+				immuneSystem.x = 0
+				immuneSystem.selected = nil
+			end
+		end
+	end
 end
 
 function immuneSystem:draw()
@@ -257,11 +278,24 @@ function immuneSystem:drawReadables()
 end
 
 function immuneSystem:drawSelectedUnitInfo()
-	if immuneSystem.selected ~= nil then
-		local polygon = rounded_rectangle(love.graphics.getWidth() - 200, love.graphics.getHeight() / 2 - 200, 300, 400, 10, 10, 10, 10, 10)
+	if immuneSystem.x > 0 then
+		local width = math.max(300, font.prototype[32]:getWidth(immuneSystem.unit[immuneSystem.selected].name) + 100)
 
+		local polygon = rounded_rectangle(love.graphics.getWidth() - immuneSystem.x, love.graphics.getHeight() / 2 - 200, width, 400, 10, 10, 10, 10, 10)
 		love.graphics.setColor(40, 40, 35)
 		love.graphics.polygon("fill", polygon)
+
+		local polygon = rounded_rectangle(love.graphics.getWidth() - immuneSystem.x + 5, love.graphics.getHeight() / 2 - 195, width - 10, 390, 10, 10, 10, 10, 10)
+		love.graphics.setColor(0, 255, 255)
+		love.graphics.polygon("line", polygon)
+
+		local xcoord = love.graphics.getWidth() - immuneSystem.x + 5
+		local ycoord = love.graphics.getHeight() / 2 - 195
+
+		love.graphics.line(xcoord, ycoord + 40, xcoord + 290, ycoord + 40)
+		love.graphics.setFont(font.prototype[32])
+		love.graphics.setColor(255, 255, 255)
+		love.graphics.print(immuneSystem.unit[immuneSystem.selected].name, xcoord + 5, ycoord + 3)
 	end
 end
 
@@ -271,7 +305,8 @@ function immuneSystem:mousepressed(key)
 
 	if occupied and key == "l" then
 		immuneSystem.selected = id
+		immuneSystem.unitInfo = true
 	else
-		immuneSystem.selected = nil
+		immuneSystem.unitInfo = false
 	end
 end
