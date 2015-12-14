@@ -65,7 +65,7 @@ function scorebar:drawMainPoly()
 	)
 end
 
-function scorebar:drawTickBar(x)
+function scorebar:drawTickBar()
 	local x = love.window.getWidth() / 2 - 400
 	local totalDistance = (love.window.getWidth() / 2 - (x + 50 + 45)) * 2
 	local progress = totalDistance * (timeSinceLastTick / TICK_SPEED)
@@ -86,6 +86,11 @@ function scorebar:drawTickBar(x)
 			love.window.getWidth() - (x + 50 + 45), 45
 		)
 	end
+end
+
+
+function scorebar:drawPercentage()
+
 end
 
 function scorebar:drawStatistics()

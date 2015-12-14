@@ -34,10 +34,12 @@ font = {
 	},
 	roboto = {
 		italic = {
-			[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 12)
+			[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 12),
+			[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 20)
 		},
 		regular = {
-			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 13)
+			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 13),
+			[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 20)
 		},
 		bold = {
 			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 13)
@@ -94,16 +96,18 @@ end
 
 function love.update(dt)
 	if state.updating then
-		TICK_SPEED = 1 / timeScale -- 1/number
+		TICK_SPEED = 5 / timeScale -- 1/number
 		timeSinceLastTick = timeSinceLastTick + dt * timeScale
 		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 			shop.bits = shop.bits + 7 + math.floor(time.seconds / 60) / 2 -- every minute this increases by 0.5
 				cell:update(dt * timeScale)
+
 				lightWorld:clearLights()
 				lightWorld:clear()
 				neutralLight = lightWorld:newLight(0, 0, 60, 60, 60, love.window.getWidth() / 2)
-				immuneSystem:update()
+
 				virus:update()
+				immuneSystem:update()
 			timeSinceLastTick = timeSinceLastTick - TICK_SPEED
 		end
 

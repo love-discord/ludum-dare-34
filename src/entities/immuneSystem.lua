@@ -7,14 +7,26 @@ immuneSystem = {
 	readable = {},
 
 	unitInfo = false,
+	float = false,
 	x = 0
 }
+
+function spawnLight(self, r, g, b)
+	local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
+
+	if not self.hasLight then
+		local range = self.range * hexMap.cell_size * 2
+		lightWorld:newLight(x, y, r, g, b, range)
+		self.hasLight = true
+	end
+end
 
 function cellHealer(self, x, y, z, amount)
 	if hexMap:getCell(x, y, z) == nil then return end
 	if hexMap:getCell(x, y, z).team == "immune" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + amount
 	end
+	spawnLight(self, 15, 50,100)
 end
 
 function cellDamageBooster(self, x, y, z, amount)
@@ -22,6 +34,7 @@ function cellDamageBooster(self, x, y, z, amount)
 	if hexMap:getCell(x, y, z).team == "immune" then
 		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
 	end
+	spawnLight(self, 100, 80, 80)
 end
 
 function cellDamager(self, x, y, z, amount)
@@ -29,20 +42,16 @@ function cellDamager(self, x, y, z, amount)
 	if hexMap:getCell(x, y, z).team ~= "immune" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp - amount
 	end
+	local range = self.range * hexMap.cell_size * 2
+	spawnLight(self, 100, 50, 50)
 end
 
 function memoryReader(self, x, y, z)
 	if hexMap:getCell(x, y, z) == nil then
 		return
-	end
+	end	
 	immuneSystem.readable[#immuneSystem.readable + 1] = {x = x, y = y, z = z}
-	local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
-
-	if not self.hasLight then
-		local range = self.range * hexMap.cell_size * 2
-		lightWorld:newLight(x, y, 100, 100, 100, range)
-		self.hasLight = true
-	end
+	spawnLight(self, 100, 100, 100, range)
 end
 
 function bugfixerSpawn(self, x, y, z, amount)
@@ -135,7 +144,7 @@ function immuneSystem:selectUnit(key, x, y, z)
 end
 
 function immuneSystem:remove(x, y, z)
-  cellSound:play()
+	cellSound:play()
   
 	local occupied, id = immuneSystem:find(x, y, z)
 	local tempUnit = {}
@@ -149,6 +158,9 @@ function immuneSystem:remove(x, y, z)
 		end
 
 		immuneSystem.unit = tempUnit
+
+		immuneSystem.unitInfo = false
+		immuneSystem.selected = nil
 	end
 end
 
@@ -245,6 +257,12 @@ function immuneSystem:fastUpdate(dt)
 				immuneSystem.selected = nil
 			end
 		end
+
+		if love.mouse.getX() > love.graphics.getWidth() - immuneSystem.x + 10 and love.mouse.getX() < love.graphics.getWidth() and love.mouse.getY() > love.graphics.getHeight() / 2 + 160 and love.mouse.getY() < love.graphics.getHeight() / 2 + 190 then
+			immuneSystem.float = true
+		else
+			immuneSystem.float = false
+		end
 	end
 end
 
@@ -287,7 +305,7 @@ function immuneSystem:drawReadables()
 end
 
 function immuneSystem:drawSelectedUnitInfo()
-	if immuneSystem.x > 0 then
+	if immuneSystem.x > 0 and immuneSystem.selected ~= nil then
 		local width = math.max(300, font.prototype[32]:getWidth(immuneSystem.unit[immuneSystem.selected].name) + 150)
 
 		local polygon = rounded_rectangle(love.graphics.getWidth() - immuneSystem.x, love.graphics.getHeight() / 2 - 200, width, 400, 10, 10, 10, 10, 10)
@@ -296,6 +314,14 @@ function immuneSystem:drawSelectedUnitInfo()
 
 		local polygon = rounded_rectangle(love.graphics.getWidth() - immuneSystem.x + 5, love.graphics.getHeight() / 2 - 195, width - 10, 390, 10, 10, 10, 10, 10)
 		love.graphics.setColor(0, 255, 255)
+		love.graphics.polygon("line", polygon)
+
+		local polygon = rounded_rectangle(love.graphics.getWidth() - immuneSystem.x + 10, love.graphics.getHeight() / 2 + 160, width - 20, 30, 10, 10, 10, 10, 10)
+		if self.float then
+			love.graphics.setColor(0, 255, 255, 150)
+			love.graphics.polygon("fill", polygon)
+			love.graphics.setColor(0, 255, 255)
+		end
 		love.graphics.polygon("line", polygon)
 
 		local xcoord = love.graphics.getWidth() - immuneSystem.x + 5
@@ -307,18 +333,53 @@ function immuneSystem:drawSelectedUnitInfo()
 		love.graphics.print(immuneSystem.unit[immuneSystem.selected].name, 		 xcoord + 5, ycoord + 3)
 
 		love.graphics.setFont(font.prototype[20])
-		love.graphics.print("HP: "..immuneSystem.unit[immuneSystem.selected].hp, xcoord + 5, ycoord + 45)
-		love.graphics.print("Test", xcoord + 5, ycoord + 65)
+		love.graphics.print("HP: "..immuneSystem.unit[immuneSystem.selected].hp.."/"..immuneSystem.unitList[immuneSystem.unit[immuneSystem.selected].name].hp, xcoord + 5, ycoord + 45)
+		love.graphics.print("Sell for: "..tostring(round(immuneSystem.unitList[immuneSystem.unit[immuneSystem.selected].name].cost / 3)).." [Bits]", xcoord + width / 2 - font.prototype[20]:getWidth("Sell for: "..tostring(round(immuneSystem.unitList[immuneSystem.unit[immuneSystem.selected].name].cost / 3)).." [Bits]") / 2 - 20, love.graphics.getHeight() / 2 + 165)
+
+		love.graphics.setFont(font.roboto.regular[20])
+		love.graphics.print(immuneSystem.unitList[immuneSystem.unit[immuneSystem.selected].name].effectText, xcoord + 5, ycoord + 75)
+
+		-- gets how many lines the text has
+		local lines = 1
+		local text = immuneSystem.unitList[immuneSystem.unit[immuneSystem.selected].name].info
+
+		for i = 1, text:len() do
+			if text:sub(i, i) == "\n" then
+				lines = lines + 1
+			end
+		end
+		-- end
+		love.graphics.setFont(font.roboto.italic[20])
+		love.graphics.print(text, xcoord + 5, love.graphics.getHeight() / 2 + 165 - lines * font.roboto.italic[20]:getHeight(text) - 10)
 	end
+end
+
+function immuneSystem:sell(x, y, z)
+	immuneSystem.selected = id
+	immuneSystem.unitInfo = true
+	immuneSystem.float = false
+
+	oc, id = immuneSystem:find(x, y, z)
+	shop.bits = shop.bits + round(self.unitList[immuneSystem.unit[id].name].cost / 3)
+	immuneSystem:remove(x, y, z)
 end
 
 function immuneSystem:mousepressed(key)
 	local x, y, z = mouse:getHexCoords()
 	local occupied, id = immuneSystem:find(x, y, z)
 
-	if occupied and key == "l" then
-		immuneSystem.selected = id
-		immuneSystem.unitInfo = true
+	if immuneSystem.float then
+		if key == "l" then
+			immuneSystem:sell(self.unit[self.selected].x, self.unit[self.selected].y, self.unit[self.selected].z)
+		end
+	end
+
+	if occupied then
+		if key == "l" then
+			immuneSystem.selected = id
+			immuneSystem.unitInfo = true
+			immuneSystem.float = false
+		end
 	else
 		immuneSystem.unitInfo = false
 	end
