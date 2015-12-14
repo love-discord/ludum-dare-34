@@ -78,47 +78,13 @@ function bitFarmer(self, x, y, z, amount)
 end
 
 function immuneSystem:loadUnits()
-	immuneSystem:newUnit("Chip Healer", 50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick.", cellHealer, 10, 50, love.graphics.newImage("gfx/units/antivirus/CellHealer.png"),
-							"50 Bits", 				
-							function()
-								return shop.bits >= 50
-							end,
-							"Those under my\nprotection will live.\nOthers'll have to push\ntheir luck.")
-
-	immuneSystem:newUnit("Chip Damage Booster", 50, 2, 32, 48, false, "Boosts damage of friendly\nchips.", cellDamageBooster, 2, 75, love.graphics.newImage("gfx/units/antivirus/cellDamageBooster.png"),
-							"2 Chip Healers\n75 Bits", 
-							function()
-								return immuneSystem:getNumber("Chip Healer") > 1 and shop.bits >= 75
-							end,
-							"Warning:// malware\ndetected.\nUpgrading hardware..")
-
-	immuneSystem:newUnit("Debugging Tower", 50, 1, 32, 48, false, "Damages enemy chips.", cellDamager, 10, 150, love.graphics.newImage("gfx/units/antivirus/cellDamager.png"),
-							"2 Chip Healers\n150 Bits",
-							function()
-								return immuneSystem:getNumber("Chip Healer") > 1 and shop.bits >= 150
-							end,
-							"The dream of all\nprogrammers. An\nautomatic debugger.")
-
-	immuneSystem:newUnit("AntiVirus Client", 		50, 0, 32, 48, false, "Spawns a scanner.", bugfixerSpawn, 1/3, 75, love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png"), "75 Bits",
-							function()
-								return shop.bits >= 75
-							end,
-							"Let's be serious.\nIf your PC is under\nattack, you use\nan antivirus client.", 10)
-	immuneSystem:newUnit("Memory Reader",		50, 3, 32, 48, false, "Reads data of chips in\nrange.",	memoryReader, 111, 25, love.graphics.newImage("gfx/units/antivirus/memoryreader.png"), "25 Bits", 
-							function() 
-								return shop.bits >= 25
-							end,
-							"I will show you things.\nThings you have never\nimagined to see.")
-	immuneSystem:newUnit("Real Time Protector", 50, 4, 32, 48, false, "Damages enemy\nmalwares with\n2 damage per tick.", troopDamager, 1, 25, love.graphics.newImage("gfx/units/antivirus/scannertower.png"), "1 AntiVirus Client\n75 Bits",
-							function ()
-								return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1
-							end,
-							"This is what you should\nhave on your PC. Ingame\nAs well as in real life.")
-	immuneSystem:newUnit("Bit Farmer", 50, 0, 32, 48, false, "Farms bits\nfor you", bitFarmer, 1, 25, love.graphics.newImage("gfx/units/antivirus/bitFarmer.png"), "1 AntiVirus Client\n25 Bits",
-							function ()
-								return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1
-							end,
-							"Does the nasty\nwork for you")
+	self.unitList["Chip Healer"] = require("src.unit.antivirus.chipHealer")
+	self.unitList["Chip Damage Booster"] = require("src.unit.antivirus.chipDmgBooster")
+	self.unitList["Debugging Tower"] = require("src.unit.antivirus.debuggingTower")
+	self.unitList["AntiVirus Client"] = require("src.unit.antivirus.spawner")
+	self.unitList["Memory Reader"] = require("src.unit.antivirus.memoryRadar")
+	self.unitList["Real Time Protector"] = require("src.unit.antivirus.rtProtector")
+	self.unitList["Bit Farmer"] = require("src.unit.antivirus.bitFarmer")
 end
 
 -- creates a new unit __TYPE__
