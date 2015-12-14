@@ -57,6 +57,14 @@ steps = {
 		end
 	end,
 	[31] = function(self)
+	if math.random() < 1/1 and self.bits >= 25 then -- randomly place memory readers (1/10 chance)
+		local battlefront = (scorebar.virusPercent / 100 - 0.5) * self.r -- get the approximate battlefront zone
+		print("battlefront: ",battlefront)
+		local x, z = 	math.floor(battlefront + math.random(self.r/2) - self.r/4),
+						math.floor(math.random(self.r*2)) - self.r
+		virus:addUnit("Memory Reader", x, -x-z, z)
+		self.bits = self.bits - 25
+	end
 	end,
 	[4] = function(self)
 	end,

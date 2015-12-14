@@ -68,7 +68,7 @@ function virus:find(x, y)
 end
 
 function virus:addUnit(name, x, y, z)
-	if not virus:find(x, y, z) then
+	if not virus:find(x, y, z) and hexMap:getCell(x, y, z) and hexMap:getCell(x, y, z).team == "virus" then
 		table.insert(virus.unit, 	{id = #virus.unit+1, name = name, x = x, y = y, z = z,
 										hp = self.unitList[name].hp,
 										range = self.unitList[name].range,
