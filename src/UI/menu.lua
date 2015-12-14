@@ -6,6 +6,31 @@ menu = {
 	choice = {}
 }
 
+function resetGame()
+	hexMap = nil
+
+	time.count = false
+	time.temp = 0
+	time.seconds = 0
+
+	timeScale = 1
+
+	scorebar.virusCells = 0
+	scorebar.immuneCells = 0
+	scorebar.neutralCells = 0
+	scorebar.totalCells = 0
+	scorebar.virusPercent = 0
+	scorebar.immunePercent = 0
+	scorebar.neutralPercent = 0
+
+	immuneSystem.unit = {}
+	immuneSystem.troop = {}
+
+	virus.unit = {}
+	virus.troop = {}
+	state.updating = true
+end
+
 function startGame()
 	hexMap = hex:new(12, 48, 100)
 

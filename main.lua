@@ -38,6 +38,7 @@ end
 
 font.roboto = {italic = {}, regular = {}, bold = {}}
 font.roboto.italic[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 12)
+font.roboto.italic[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 13)
 font.roboto.italic[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 20)
 font.roboto.regular[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 13)
 font.roboto.regular[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 20)
@@ -186,11 +187,13 @@ function love.keypressed(key)
 		else
 			if key == " " then
 				state.game = "menu"
+				wlScreen.type = nil
+				resetGame()
 			end
 		end
 	elseif state.game == "tutorial" then
 		if key == " " then
-			if tut.imgCount < 4 then
+			if tut.imgCount < 5 then
 				tut.imgCount = tut.imgCount + 1
 			else
 				state.game = "menu"

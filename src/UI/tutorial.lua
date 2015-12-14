@@ -3,7 +3,8 @@ tut = {
 		[1] = love.graphics.newImage("gfx/tut/tut1.png"),
 		[2] = love.graphics.newImage("gfx/tut/tut2.png"),
 		[3] = love.graphics.newImage("gfx/tut/tut3.png"),
-		[4] = love.graphics.newImage("gfx/tut/tut4.png")
+		[4] = love.graphics.newImage("gfx/tut/tut4.1.png"),
+		[5] = love.graphics.newImage("gfx/tut/tut4.png")
 	},
 	imgCount = 1
 }
