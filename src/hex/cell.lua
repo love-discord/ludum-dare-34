@@ -29,7 +29,11 @@ function cell:init(map, x, y, z, size, hp, maxHP, damage, regen, defense, team)
 
 	self.hp = hp
 	self.maxHP = maxHP
-	self.dmg = damage
+	if team == virus then
+		self.dmg = damage * 1.5
+	else
+		self.dmg = damage
+	end
 	self.regen = regen
 	self.def = defense
 end
@@ -82,7 +86,7 @@ function cell:draw(mode)
 	love.graphics.setLineWidth(2)
 	love.graphics.polygon("line", vertices)
 
-	self.color[4] = self.hp * 2
+	self.color[4] = math.min(self.hp * 2, 255)
 	if self.color[2] == 255 then self.color[4] = 200 end
 	love.graphics.setColor(self.color)
 

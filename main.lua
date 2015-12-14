@@ -1,7 +1,7 @@
 --[[ requirements ]]--
 love.graphics.setDefaultFilter("nearest", "nearest")
 
-local lightWorld = require("lib.lightWorld")
+lightWorld = require("lib.lightWorld")
 
 local class = require("lib.class")
 local lovebird = require("lib.lovebird")
@@ -86,8 +86,9 @@ function love.load()
 		glowBlur = 0
 	})
 	lightWorld:setGlowStrength(0)
+	-- lightWorld:setBlur(0)
 	cell:update()
-	neutralLight = lightWorld:newLight(0, 0, 200, 200, 200, love.window.getWidth())
+	neutralLight = lightWorld:newLight(0, 0, 30, 30, 30, love.window.getWidth())
 end
 
 function love.update(dt)
@@ -97,6 +98,9 @@ function love.update(dt)
 		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 			shop.bits = shop.bits + 7 + math.floor(time.seconds / 60) / 2 -- every minute this increases by 0.5
 				cell:update(dt * timeScale)
+				lightWorld:clearLights()
+				lightWorld:clear()
+				neutralLight = lightWorld:newLight(0, 0, 30, 30, 30, love.window.getWidth())
 				virus:update()
 				immuneSystem:update()
 			timeSinceLastTick = timeSinceLastTick - TICK_SPEED
@@ -127,8 +131,9 @@ function love.draw()
 	lightWorld:draw(function()
 		hexMap:draw()
 		immuneSystem:draw()
-		shop:drawSelected()
 	end)
+
+	shop:drawSelected()
 
 	virus:draw()
 	dyingTroop:draw()

@@ -36,6 +36,13 @@ function memoryReader(self, x, y, z)
 		return
 	end
 	immuneSystem.readable[#immuneSystem.readable + 1] = {x = x, y = y, z = z}
+	local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
+
+	if not self.hasLight then
+		local range = self.range * hexMap.cell_size * 2
+		lightWorld:newLight(x, y, 150, 150, 150, range)
+		self.hasLight = true
+	end
 end
 
 function bugfixerSpawn(self, x, y, z, amount)
@@ -86,7 +93,7 @@ function immuneSystem:newUnit(name, hp, range, w, h, movable, effectText, effect
 	immuneSystem.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, movable = movable,
 									effectText = effectText, effect = effect, amount = amount, cost = cost, img = img,
 									requireText = requireText, requireFunc = requireFunc, info = info or "Unit",
-									maxTroops = maxTroops}
+									maxTroops = maxTroops, hasLight = false}
 end
 
 function immuneSystem:find(x, y, z)
@@ -185,11 +192,13 @@ function immuneSystem:update(dt)
 			immuneSystem:remove(unit.x, unit.y, unit.z)
 		else
 			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
+			unit.hasLight = false
 			for v = 1, #inRange do
 				self.unitList[unit.name].effect(unit, inRange[v].x, inRange[v].y, inRange[v].z, unit.amount)
 			end
 		end
 	end
+
 	for i, troop in pairs(self.troop) do
 		if troop.hp <= 0 then
 			if self.unit[troop.unit] then
@@ -279,7 +288,7 @@ end
 
 function immuneSystem:drawSelectedUnitInfo()
 	if immuneSystem.x > 0 then
-		local width = math.max(300, font.prototype[32]:getWidth(immuneSystem.unit[immuneSystem.selected].name) + 100)
+		local width = math.max(300, font.prototype[32]:getWidth(immuneSystem.unit[immuneSystem.selected].name) + 150)
 
 		local polygon = rounded_rectangle(love.graphics.getWidth() - immuneSystem.x, love.graphics.getHeight() / 2 - 200, width, 400, 10, 10, 10, 10, 10)
 		love.graphics.setColor(40, 40, 35)
@@ -292,7 +301,7 @@ function immuneSystem:drawSelectedUnitInfo()
 		local xcoord = love.graphics.getWidth() - immuneSystem.x + 5
 		local ycoord = love.graphics.getHeight() / 2 - 195
 
-		love.graphics.line(xcoord, ycoord + 40, xcoord + 290, ycoord + 40)
+		love.graphics.line(xcoord, ycoord + 40, xcoord + width - 10, ycoord + 40)
 		love.graphics.setFont(font.prototype[32])
 		love.graphics.setColor(255, 255, 255)
 		love.graphics.print(immuneSystem.unit[immuneSystem.selected].name, 		 xcoord + 5, ycoord + 3)
