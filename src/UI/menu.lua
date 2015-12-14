@@ -66,6 +66,7 @@ end
 function menu:draw()
 	menu:drawChoosables()
 	menu:drawCursor()
+	menu:drawUI()
 end
 
 function menu:update(dt)
@@ -107,4 +108,31 @@ end
 function menu:drawCursor()
 	love.graphics.setColor(0, 150, 255)
 	love.graphics.draw(menu.cursorImg, 160, love.window.getHeight() - 150 * menu.percentage / 100 - 48)
+end
+
+
+function menu:drawUI()
+	love.graphics.setColor(0, 150, 255)
+	local x = love.graphics.getWidth() - 200
+	local y = love.graphics.getHeight() - 220
+	love.graphics.setLineWidth(15)
+	love.graphics.circle("line", x, y, 400, 100)
+	love.graphics.setLineWidth(5)
+	love.graphics.circle("line", x, y, 350, 100)
+	love.graphics.circle("line", x, y, 310, 100)
+	love.graphics.setColor(0, 255, 255)
+	love.graphics.setLineWidth(26)
+	local totalLen = 315 - 130
+	local radian1 = math.rad(130)
+	local radian2 = math.rad(130 + totalLen * (menu.percentage / 100))
+	love.graphics.arc("line", x, y, 330, radian1, radian2, 100)
+	love.graphics.setColor(0, 0, 0)
+	love.graphics.circle("fill", x, y, 307, 100)
+	love.graphics.setColor(0, 255, 255)
+	love.graphics.setFont(font.ethnocentric.regular[80])
+	local text = tostring(round(menu.percentage)).."%"
+	love.graphics.print(text, x - font.ethnocentric.regular[80]:getWidth(text) / 2, y - font.ethnocentric.regular[80]:getHeight(text) / 2 - 100)
+	love.graphics.setFont(font.roboto.italic[20])
+	love.graphics.setColor(200, 20, 20)
+	love.graphics.print("Note: Navigate through the menu by pressing\nthe arrow keys. Then press enter or space.", x - 225, love.window.getHeight() - 125)
 end
