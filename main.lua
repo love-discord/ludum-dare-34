@@ -29,62 +29,33 @@ require("src.ui.tutorial")
 timeScale = 1
 
 --[[ variables ]]--
-font = {
-	prototype = {
-		[15] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 15),
-		[20] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 20),
-		[28] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 26),
-		[32] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 32),
-		[36] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 36),
-		[48] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 48)
-	},
-	roboto = {
-		italic = {
-			[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 12),
-			[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 20)
-		},
-		regular = {
-			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 13),
-			[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 20),
-			[28] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 28)
-		},
-		bold = {
-			[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 13),
-			[28] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 28)
-		}
-	},
-	ethnocentric = {
-		regular = {
-			[36] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 36),
-			[80] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 80)
-		}
-	}
-}
+font = {} -- moved this to loading.lua
 
 state = {
 	drawHP = false,
 	updating = true,
 	debug = false,
-	game = "menu",
-	options = {volume = 100}
+	game = "loading",
+	options = {volume = 100},
+	assetsLoaded = 0, currentAsset = "?"
 }
 
 timeSinceLastTick = 0
 
-
 --[[ functions ]]--
--- music:loadTrack("Playlist", "gfx/sound/bg/Alan Walker - Fade.mp3", "Alan Walker - Fade")
--- music:loadTrack("Playlist", "gfx/sound/bg/Distrion & Alex Skrindo - Entropy.mp3", "Distrion & Alex Skrindo - Entropy")
--- music:loadTrack("Playlist", "gfx/sound/bg/Jim Yosef - Arrow.mp3", "Jim Yosef - Arrow")
--- music:loadTrack("Playlist", "gfx/sound/bg/Unison-Aperture.mp3", "Unison - Aperture")
--- music:loadTrack("Playlist", "gfx/sound/bg/Lensko - Circles.mp3", "Lensko - Circles")
--- music:trackChangeSubscribe("Playlist", function(nextTrack) print("Now playing: "..nextTrack.name) end)
--- music:playPlaylist("Playlist")
+local load = coroutine.create(require("loading"))
 
 menu:load()
 love.mouse.setVisible(false)
 
 function love.update(dt)
+	if coroutine.status(load) == "dead" then state.game = "menu" end
+	if state.game == "loading" then
+		local a, b = coroutine.resume(load)
+		if a then state.currentAsset = b end
+		state.assetsLoaded = state.assetsLoaded + 1
+		return
+	end
 	music:update()
 	--[[ game ]]--
 	if state.game == "singleplayer" or state.game == "tutorial" then
@@ -126,6 +97,12 @@ function love.update(dt)
 end
 
 function love.draw()
+	if state.game == "loading" then
+		local faces = {"._.", ":/", ":|", ":\\", ".-.", "/:", "|:", "\\:"}
+		local face = state.assetsLoaded % #faces + 1
+		love.graphics.print(faces[face].."\n"..(state.currentAsset or ""), 100, 100)
+		return
+	end
 	if state.game == "singleplayer" or state.game == "tutorial" then
 		love.graphics.push()
 		love.graphics.scale(scale)

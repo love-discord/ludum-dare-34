@@ -28,7 +28,6 @@ function shop:load()
 	local i = 1
 	for k, v in pairs(immuneSystem.unitList) do
 		shop.items[i] = {name = v.name, hp = v.hp, range = v.range, movable = v.movable, effectText = v.effectText, cost = v.cost, img = v.img, requireText = v.requireText, requireFunc = v.requireFunc, float = false, info = v.info, floatNum = 0}
-		print("Added "..shop.items[#shop.items].name)
 		i = i + 1
 	end
 end

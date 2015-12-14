@@ -101,7 +101,7 @@ function menu:update(dt)
 end
 
 function menu:keypressed(key)
-	if love.keyboard.isDown("return") or love.keyboard.isDown(" ") then
+	if key == "return" or key == " " then
 		menu.choice[menu.current].code()
 	end
 end
