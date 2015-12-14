@@ -114,7 +114,7 @@ function immuneSystem:loadUnits()
 								return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1
 							end,
 							"This is what you should\nhave on your PC. Ingame\nAs well as in real life.")
-	immuneSystem:newUnit("Bit Farmer", 50, 0, 32, 48, false, "Farms bits\nfor you", bitFarmer, 1, 25, love.graphics.newImage("gfx/units/antivirus/scannertower.png"), "1 AntiVirus Client\n25 Bits",
+	immuneSystem:newUnit("Bit Farmer", 50, 0, 32, 48, false, "Farms bits\nfor you", bitFarmer, 1, 25, love.graphics.newImage("gfx/units/antivirus/bitFarmer.png"), "1 AntiVirus Client\n25 Bits",
 							function ()
 								return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1
 							end,
