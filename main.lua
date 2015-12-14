@@ -29,6 +29,7 @@ font = {
 	prototype = {
 		[15] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 15),
 		[20] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 20),
+		[28] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 26),
 		[32] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 32),
 		[36] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", 36)
 	},

@@ -10,7 +10,11 @@ shop = {
 	flicked = 0,
 	drawable = false,
 
-	items = {}
+	items = {},
+	messages = {
+		text = "Welcome to the shop!",
+		x = 0
+	}
 }
 
 rads = math.rad(75)
@@ -146,10 +150,10 @@ function shop:draw()
 		love.graphics.setFont(font.prototype[20])
 		love.graphics.print("Bits", love.window.getWidth() / 2 - shop.targetX + 18, love.window.getHeight() - font.prototype[20]:getHeight("Bits: ") - 5)
 		love.graphics.print(shop.bits, love.window.getWidth() / 2 - shop.targetX + distanceUntilMainQuad * 3 - font.prototype[20]:getWidth(shop.bits) - 10, love.window.getHeight() - font.prototype[20]:getHeight(shop.bits) - 5)
+		shop:drawMessages()
 	end
 
 	shop:drawFloating()
-	-- shop:drawSelected()
 end
 
 function shop:drawProducts()
@@ -236,6 +240,30 @@ function shop:mousepressed(x, y, key)
 		shop.selected = nil
 		immuneSystem.selected = nil
 	end
+end
+
+function shop:editMessage(text)
+	shop.messages.text = text
+	shop.messages.x = -font.prototype[28]:getWidth(text)
+end
+
+function shop:drawMessages()
+	love.graphics.setColor(0, 255, 255, 150)
+	love.graphics.setLineWidth(4)
+	love.graphics.line(love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad) - 6, love.window.getHeight() - shop.y + 30, love.window.getWidth() / 2 + shop.targetX - math.min(shop.x, distanceUntilMainQuad) + 6, love.window.getHeight() - shop.y + 30)
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.setFont(font.prototype[28])
+
+	local x = love.window.getWidth() / 2 - shop.targetX + math.min(shop.x, distanceUntilMainQuad)
+	local y = love.window.getHeight() - shop.y
+
+	love.graphics.setScissor(x, y, (love.window.getWidth() / 2 - x) * 2, 30)
+	love.graphics.print(self.messages.text, x + shop.messages.x, y)
+	love.graphics.print(self.messages.text, x + shop.messages.x - font.prototype[28]:getWidth(shop.messages.text) - 100, y)
+	love.graphics.print(self.messages.text, x + shop.messages.x - font.prototype[28]:getWidth(shop.messages.text) * 2 - 200, y)
+	love.graphics.setScissor(0, 0, love.window.getWidth(), love.window.getHeight())
+
+	shop.messages.x = shop.messages.x + 2
 end
 
 function rounded_rectangle(x, y, w, h, precision, tl, tr, br, bl)
