@@ -22,7 +22,7 @@ end
 
 amount = 2
 cost = 25
-img = love.graphics.newImage("gfx/units/antivirus/CellHealer.png")
+img = love.graphics.newImage("gfx/units/antivirus/scannertower.png")
 requireText = "1 AntiVirus Client"
 requireFunc = function() return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1 end
 

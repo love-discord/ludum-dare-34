@@ -11,9 +11,12 @@ update = function(self)
 	self.bits = self.bits + 5 + math.floor(time.seconds / 60) / 2
 	self.r = hexMap.radius
 	for _, t in ipairs(self.target) do
-		if self.bits >= virus.unitList[t[1]].cost then
-			if virus:addUnit(t[1], t[2], t[3], t[4]) then
-				self.bits = self.bits - virus.unitList[t[1]].cost
+		if t[10] or 0 <= 3 then	-- max 4 times building the same building
+			if self.bits >= virus.unitList[t[1]].cost then
+				if virus:addUnit(t[1], t[2], t[3], t[4]) then
+					self.bits = self.bits - virus.unitList[t[1]].cost
+					t[10] = t[10] or 0 + 1
+				end
 			end
 		end
 	end

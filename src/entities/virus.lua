@@ -61,6 +61,16 @@ function virus:loadUnits()
 	virus:newUnit("Patch Predicter",	50, 4, 32, 48, troopDamager,	1, 	 25,	love.graphics.newImage("gfx/units/virus/scannertower.png")		,function() return virus.ai.bits >= 25 end)
 end
 
+function virus:getNumber(name)
+	local n = 0
+	for i, unit in pairs(virus.unit) do
+		if unit.name == name then
+			n = n + 1
+		end
+	end
+	return n
+end
+
 -- creates a new unit __TYPE__
 function virus:newUnit(name, hp, range, w, h, effect, amount, cost, img, requireFunc, maxTroops)
 	virus.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, maxTroops = maxTroops, img = img, cost = cost, requireFunc = requireFunc}
