@@ -21,62 +21,6 @@ function spawnLight(self, r, g, b)
 	end
 end
 
-function cellHealer(self, x, y, z, amount)
-	if hexMap:getCell(x, y, z) == nil then return end
-	if hexMap:getCell(x, y, z).team == "immune" then
-		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp + amount
-	end
-	spawnLight(self, 15, 50,100)
-end
-
-function cellDamageBooster(self, x, y, z, amount)
-	if hexMap:getCell(x, y, z) == nil then return end
-	if hexMap:getCell(x, y, z).team == "immune" then
-		hexMap:getCell(x, y, z).dmg = hexMap:getCell(x, y, z).dmg + amount
-	end
-	spawnLight(self, 100, 80, 80)
-end
-
-function cellDamager(self, x, y, z, amount)
-	if hexMap:getCell(x, y, z) == nil then return end
-	if hexMap:getCell(x, y, z).team ~= "immune" then
-		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp - amount
-	end
-	local range = self.range * hexMap.cell_size * 2
-	spawnLight(self, 100, 50, 50)
-end
-
-function memoryReader(self, x, y, z)
-	if hexMap:getCell(x, y, z) == nil then
-		return
-	end	
-	immuneSystem.readable[#immuneSystem.readable + 1] = {x = x, y = y, z = z}
-	spawnLight(self, 100, 100, 100, range)
-end
-
-function troopDamager(self, x, y, z, amount)
-	for k, v in pairs(virus.troop) do
-		local tx, ty, tz = hexMap:pixelToHex(v.x, v.y)
-		if tx == x and ty == y and tz == z then
-			v.hp = v.hp - amount
-		end
-	end
-end
-
-function bugfixerSpawn(self, x, y, z, amount)
-	if hexMap:getCell(x, y, z) == nil then return end
-	if math.random() < amount and self.troopsAlive < self.maxTroops then
-		local hexPixel = {hexMap:hexToPixel(x, y, z)}
-		immuneSystem:addTroop("Scanner", hexPixel[1], hexPixel[2], self.id)
-		self.troopsAlive = self.troopsAlive + 1
-	end
-	spawnLight(self, 50, 50, 50, 2)
-end
-
-function bitFarmer(self, x, y, z, amount)
-	shop.bits = shop.bits + amount
-end
-
 function immuneSystem:loadUnits()
 	self.unitList["Chip Healer"] = require("src.unit.antivirus.chipHealer")
 	self.unitList["Chip Damage Booster"] = require("src.unit.antivirus.chipDmgBooster")
