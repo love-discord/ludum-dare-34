@@ -4,7 +4,7 @@ wlScreen = {
 
 function wlScreen:draw()
 	if self.type ~= nil then
-		local polygon = rounded_rectangle(love.window.getWidth() / 2 - 300, love.window.getHeight() / 2 - 200, 600, 400, 10, 10, 10, 10, 10)
+		local polygon = rounded_rectangle(love.window.getWidth() / 2 - 300, love.window.getHeight() / 2 - 200, 600, 80, 10, 10, 10, 10, 10)
 		love.graphics.setColor(40, 40, 35)
 		love.graphics.polygon("fill", polygon)
 		love.graphics.setColor(255, 255, 255)

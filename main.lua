@@ -179,7 +179,6 @@ function love.draw()
 
 	mewsic:draw()
 	mouse:drawCircle()
-	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
 end
 
 function love.mousepressed(x, y, b)
