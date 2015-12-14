@@ -70,11 +70,11 @@ timeSinceLastTick = 0
 	virus:loadUnits()
 	virus:loadTroops()
 
-	virus:addUnit("Bug Factory", -8, 10, -2)
+	--[[virus:addUnit("Bug Factory", -8, 10, -2)
 	virus:addUnit("Bug Factory", -9, 11, -2)
 	virus:addUnit("Bug Factory", -8, 11, -3)
 	virus:addUnit("Bug Factory", -9, 12, -3)
-
+--]]
 	shop:load()
 
 	love.mouse.setVisible(false)
@@ -94,7 +94,7 @@ end
 
 function love.update(dt)
 	if state.updating then
-		TICK_SPEED = 1 / timeScale -- 1/number
+		TICK_SPEED = 5 / timeScale
 		timeSinceLastTick = timeSinceLastTick + dt * timeScale
 		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
 			shop.bits = shop.bits + 7 + math.floor(time.seconds / 60) / 2 -- every minute this increases by 0.5

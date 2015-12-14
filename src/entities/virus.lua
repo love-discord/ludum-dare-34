@@ -40,7 +40,7 @@ end
 
 function virus:loadUnits()
 	--				NAME 				HP RNG W   H   EFFECT    		AMT  COST 	IMG 															Require 																					MaxTroops
-	virus:newUnit("Bug Factory", 		50, 0, 32, 48, bugSpawn, 		1/3, 75,	love.graphics.newImage("gfx/units/virus/bugSpawn.png"),			,function() return virus.ai.bits >= 75 end,													 10)
+	virus:newUnit("Bug Factory", 		50, 0, 32, 48, bugSpawn, 		1/3, 75,	love.graphics.newImage("gfx/units/virus/bugSpawn.png")			,function() return virus.ai.bits >= 75 end,													 10)
 	virus:newUnit("Bug Activator", 		50, 2, 32, 48, bugActivator, 	1, 	 150, 	love.graphics.newImage("gfx/units/virus/cellDamager.png")		,function() return virus.ai.bits >= 150 and virus:getNumber("Bug Obfuscator") >= 2 end)
 	virus:newUnit("Bug Cascade maker",	50, 2, 32, 48, bugCascadeMaker, 1, 	 75,	love.graphics.newImage("gfx/units/virus/cellDamageBooster.png")	,function() return virus.ai.bits >= 75  and virus:getNumber("Bug Obfuscator") >= 2 end)
 	virus:newUnit("Bug Obfuscator", 	50, 2, 32, 48, bugObfuscator, 	1, 	 50,	love.graphics.newImage("gfx/units/virus/cellHealer.png")		,function() return virus.ai.bits >= 50 end)
@@ -48,7 +48,6 @@ function virus:loadUnits()
 end
 
 -- creates a new unit __TYPE__
-name, hp, range, w, h, effect, amount, cost, img, requireFunc, maxTroops
 function virus:newUnit(name, hp, range, w, h, effect, amount, cost, img, requireFunc, maxTroops)
 	virus.unitList[name] = {name = name, hp = hp, range = range, w = w, h = h, amount = amount, effect = effect, maxTroops = maxTroops, img = img, cost = cost, requireFunc = requireFunc}
 end
@@ -80,7 +79,8 @@ function virus:addUnit(name, x, y, z)
 										amount = self.unitList[name].amount,
 										troopsAlive = 0,
 										maxTroops = self.unitList[name].maxTroops})
-	end
+		return true
+	else return false end
 end
 
 function virus:loadTroops()
