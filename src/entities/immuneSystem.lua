@@ -40,7 +40,7 @@ function memoryReader(self, x, y, z)
 
 	if not self.hasLight then
 		local range = self.range * hexMap.cell_size * 2
-		lightWorld:newLight(x, y, 60, 60, 60, range)
+		lightWorld:newLight(x, y, 100, 100, 100, range)
 		self.hasLight = true
 	end
 end
@@ -189,7 +189,6 @@ function immuneSystem:update(dt)
 	immuneSystem.readable = {}
 	for i, unit in pairs(immuneSystem.unit) do
 		if unit.hp <= 0 then
-			self.selected = nil -- I do this because of the crashes that happed when the last placed object is selected and its id changes because something died
 			immuneSystem:remove(unit.x, unit.y, unit.z)
 		else
 			local inRange = hexMap:inRange(unit.x, unit.y, unit.z, unit.range)
@@ -230,7 +229,7 @@ function immuneSystem:fastUpdate(dt)
 	end
 
 	-- selected info box
-	if immuneSystem.selected ~= nil or immuneSystem.unit[immuneSystem.selected] ~= nil then
+	if immuneSystem.selected ~= nil then
 		local width = font.prototype[32]:getWidth(immuneSystem.unit[immuneSystem.selected].name) + 100
 		if immuneSystem.unitInfo then
 			if immuneSystem.x < width then
@@ -269,7 +268,7 @@ function immuneSystem:draw()
 		love.graphics.draw(t.img, t.x - t.w / 2, t.y - t.h / 2 - 10, math.atan2(velY, velX) + math.pi/2, sX, sY)
 	end
 
-	if immuneSystem.selected ~= nil or immuneSystem.unit[immuneSystem.selected] ~= nil then
+	if immuneSystem.selected ~= nil then
 		hexMap:drawInRange(immuneSystem.unit[immuneSystem.selected].x, immuneSystem.unit[immuneSystem.selected].y, immuneSystem.unit[immuneSystem.selected].z, immuneSystem.unit[immuneSystem.selected].range)
 	end
 	immuneSystem:drawReadables()
@@ -288,7 +287,6 @@ function immuneSystem:drawReadables()
 end
 
 function immuneSystem:drawSelectedUnitInfo()
-	if immuneSystem.selected == nil or immuneSystem.unit[immuneSystem.selected] == nil then return end
 	if immuneSystem.x > 0 then
 		local width = math.max(300, font.prototype[32]:getWidth(immuneSystem.unit[immuneSystem.selected].name) + 150)
 
@@ -310,6 +308,7 @@ function immuneSystem:drawSelectedUnitInfo()
 
 		love.graphics.setFont(font.prototype[20])
 		love.graphics.print("HP: "..immuneSystem.unit[immuneSystem.selected].hp, xcoord + 5, ycoord + 45)
+		love.graphics.print("Test", xcoord + 5, ycoord + 65)
 	end
 end
 
