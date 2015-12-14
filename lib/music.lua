@@ -24,9 +24,14 @@ end
 function music:playPlaylist(playlist)
 	local p = self.playlists[playlist]
 	music.activePlaylist = playlist
-	if p.currentTrack == nil then p.currentTrack = math.floor(math.random() * #p.tracks) end
+	local anotherTrack = math.floor(math.random() * #p.tracks)
+	while not(anotherTrack ~= p.currentTrack and p.tracks[anotherTrack] ~= nil) do
+		anotherTrack = math.floor(math.random() * #p.tracks)
+	end
+
+	p.currentTrack = anotherTrack
 	love.audio.play(p.tracks[p.currentTrack].sound)
-	for _, subscriber in ipairs(p.subscribed) do 
+	for _, subscriber in ipairs(p.subscribed) do
 		subscriber(p.tracks[p.currentTrack])
 	end
 end
@@ -56,15 +61,8 @@ function music:update()
 	if self.activePlaylist then
 		if self.playlists[self.activePlaylist] then
 			local p = self.playlists[self.activePlaylist]
-			local currentTrack = p.tracks[p.currentTrack]
-			if currentTrack.sound:tell() == 0 then -- next track
-				if p.currentTrack == #p.tracks then p.currentTrack = 0 end
-				p.currentTrack = math.floor(math.random() * #p.tracks)
-				currentTrack = p.tracks[p.currentTrack]
-				for _, subscriber in ipairs(p.subscribed) do 
-					subscriber(p.tracks[p.currentTrack])
-				end
-				love.audio.play(p.tracks[p.currentTrack].sound)
+			if p.tracks[p.currentTrack].sound:tell() == 0 then
+				self:playPlaylist(self.activePlaylist)
 			end
 		end
 	end
