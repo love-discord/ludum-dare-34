@@ -214,13 +214,10 @@ function love.keypressed(key)
 		menu:keypressed(key)
 	elseif state.game == "options" then
 		options:keypressed(key)
-<<<<<<< HEAD
-=======
 	elseif state.game == "credits" then
 		if key == " " then
 			state.game = "menu"
 		end
->>>>>>> origin/master
 	end
 end
 
