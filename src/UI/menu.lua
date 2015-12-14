@@ -7,7 +7,7 @@ menu = {
 }
 
 function startGame()
-	hexMap = hex:new(10, 48, 100)
+	hexMap = hex:new(12, 48, 100)
 
 	TICK_SPEED = 3 / timeScale -- 1/number
 

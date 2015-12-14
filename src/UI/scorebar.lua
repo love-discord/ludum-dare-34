@@ -148,4 +148,12 @@ function scorebar:updateStatistics()
 	scorebar.virusPercent = round((scorebar.virusCells / scorebar.totalCells) * 100)
 	scorebar.immunePercent = round((scorebar.immuneCells / scorebar.totalCells) * 100)
 	scorebar.neutralPercent = round((scorebar.neutralCells / scorebar.totalCells) * 100)
+
+	if scorebar.virusPercent == 100 then
+		wlScreen.type = "lost."
+		state.updating = false
+	elseif scorebar.immunePercent == 100 then
+		wlScreen.type = "won!"
+		state.updating = false
+	end
 end

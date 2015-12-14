@@ -25,6 +25,7 @@ require("src.ui.scorebar")
 require("src.ui.menu")
 require("src.ui.options")
 require("src.ui.tutorial")
+require("src.ui.winlosescreen")
 
 timeScale = 1
 
@@ -156,7 +157,13 @@ end
 
 function love.keypressed(key)
 	if state.game == "singleplayer" then
-		input:keypressed(key)
+		if wlScreen.type == nil then
+			input:keypressed(key)
+		else
+			if key == " " then
+				state.game = "menu"
+			end
+		end
 	elseif state.game == "tutorial" then
 		if key == " " then
 			if tut.imgCount < 4 then
