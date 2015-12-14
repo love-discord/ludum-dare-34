@@ -27,6 +27,7 @@ require("src.ui.options")
 require("src.ui.tutorial")
 --require("src.ui.credits")
 require("src.ui.winlosescreen")
+require("src.ui.musicUI")
 
 timeScale = 1
 
@@ -118,6 +119,7 @@ function love.update(dt)
 		options:update(dt)
 	end
 
+	mewsic:update(dt)
 	mouse:update()
 	lovebird.update()
 	music:update()
@@ -170,6 +172,7 @@ function love.draw()
 		options:draw()
 	end
 
+	mewsic:draw()
 	mouse:drawCircle()
 	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
 end
