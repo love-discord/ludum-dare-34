@@ -32,7 +32,7 @@ timeScale = 1
 --[[ variables ]]--
 font = {}
 font.prototype = {}
-for _, i in pairs({15, 20, 26, 28, 32, 36, 48}) do 
+for _, i in pairs({15, 20, 28, 32, 36, 48}) do 
 	font.prototype[i] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", i)
 end
 
@@ -70,6 +70,7 @@ function love.update(dt)
 	if state.game == "loading" then
 		if coroutine.status(load) == "dead" then
 			state.game = "menu"
+			music:playPlaylist("Playlist") -- start playing the songs
 			return 
 		end
 		local a, b = coroutine.resume(load)

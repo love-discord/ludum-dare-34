@@ -102,7 +102,6 @@ end
 
 function menu:keypressed(key)
 	if key == "return" or key == " " then
-		print("hi", menu.current)
 		menu.choice[menu.current].code()
 	end
 end
