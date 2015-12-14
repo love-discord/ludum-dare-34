@@ -73,6 +73,10 @@ function bugfixerSpawn(self, x, y, z, amount)
 	spawnLight(self, 50, 50, 50, 2)
 end
 
+function bitFarmer(self, x, y, z, amount)
+	shop.bits = shop.bits + amount
+end
+
 function immuneSystem:loadUnits()
 	immuneSystem:newUnit("Chip Healer", 50, 2, 32, 48, false, "Heals friendly chips by\n5HP every tick.", cellHealer, 10, 50, love.graphics.newImage("gfx/units/antivirus/CellHealer.png"),
 							"50 Bits", 				
@@ -110,6 +114,11 @@ function immuneSystem:loadUnits()
 								return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1
 							end,
 							"This is what you should\nhave on your PC. Ingame\nAs well as in real life.")
+	immuneSystem:newUnit("Bit Farmer", 50, 0, 32, 48, false, "Farms bits\nfor you", bitFarmer, 1, 25, love.graphics.newImage("gfx/units/antivirus/scannertower.png"), "1 AntiVirus Client\n25 Bits",
+							function ()
+								return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1
+							end,
+							"Does the nasty\nwork for you")
 end
 
 -- creates a new unit __TYPE__
