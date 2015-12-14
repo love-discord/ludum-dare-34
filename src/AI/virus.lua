@@ -2,7 +2,6 @@
 -- This si the virus controller AI
 
 return {
-lane = nil,
 bits = 100,
 step = 1,
 r = 0,
@@ -14,9 +13,6 @@ update = function(self)
 end,
 steps = {
 	[1] = function(self)
-		local lanes = {"mid", "bot", "top"}
-		self.lane = lanes[math.floor(math.random(3))]
-		print("Lane: "..self.lane)
 		self.step = 21
 		local stepFunc = self.steps[self.step]
 		stepFunc(self)
@@ -53,23 +49,28 @@ steps = {
 		-- wait for the chip count to get at least 150
 		if scorebar.virusCells >= 150 then
 			print("150 cells reached. Begginning outpost creation")
-			self.step = 31
+			self.step = 40
 		end
 	end,
-	[31] = function(self)
-	if math.random() < 1/10 and self.bits >= 25 then -- randomly place memory readers (1/10 chance)
-		local battlefront = (scorebar.virusPercent / 100 - 0.5) * self.r -- get the approximate battlefront zone
-		print("battlefront: ",battlefront)
-		local ox = math.floor(battlefront + math.random(self.r/4) - self.r/8)
-		local oy = math.floor(math.random(self.r*2)) - self.r
-		local x, z = ox - (oy + (oy % 2)) / 2, oy
-		virus:addUnit("Memory Reader", x, -x-z, z)
-		self.bits = self.bits - 25
-	end
-	end,
-	[4] = function(self)
-	end,
-	[5] = function(self)
+	[40] = function(self)
+		local virusPercent = scorebar.virusPercent / 100 
+		if math.random() < 1/10 and self.bits >= 25 then -- randomly place memory readers (1/10 chance)
+			local battlefront = (virusPercent - 0.5) * self.r -- get the approximate battlefront zone
+			local ox = math.floor(battlefront + math.random(self.r/4) - self.r/8)
+			local oy = math.floor(math.random(self.r*2)) - self.r
+			local x, z = ox - (oy + (oy % 2)) / 2, oy
+			virus:addUnit("Memory Reader", x, -x-z, z)
+			self.bits = self.bits - 25
+		end
+
+		for _, u in pairs(virus.unit) do
+			if u.name == "Memory Reader" then -- loop through all memory readers
+				local xPercent = u.x / (self.r*2) + 0.5
+				if xPercent < virusPercent * virusPercent then
+					virus:remove(u.x, u.y, u.z)
+				end
+			end
+		end
 	end
 }
 
