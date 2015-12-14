@@ -47,4 +47,5 @@ return function()
 	
 	music:trackChangeSubscribe("Playlist", function(nextTrack) print("Now playing: "..nextTrack.name) end)
 	music:trackChangeSubscribe("Playlist", mewsic.load)
+	music:setVolume(30) -- default
 end
