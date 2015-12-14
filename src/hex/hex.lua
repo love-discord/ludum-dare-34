@@ -37,9 +37,10 @@ end
 
 function hex:draw()
 	for _, col in pairs(self.cells) do
-      for _, cell in pairs(col) do
-        cell:draw('fill')
-      end
+		for _, cell in pairs(col) do
+			cell:draw('fill')
+			cell.color = colors[cell.team]
+		end
 	end
 end
 

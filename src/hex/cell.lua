@@ -7,7 +7,7 @@ function round(num, idp)
   return math.floor(num * mult + 0.5) / mult
 end
 
-local colors = {
+colors = {
 	neutral = {200, 200, 200},
 	immune = {50, 100, 200},
 	virus = {200, 20, 20},
@@ -142,7 +142,7 @@ function cell:update(dt)
 			end
 			scorebar.totalCells = scorebar.totalCells + 1
 
-			cell.color = {colors[cell.team]}
+			cell.color = colors[cell.team]
 		end
 	end
 
