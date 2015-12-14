@@ -7,7 +7,6 @@ function input:load()
 	input:add("state.drawHP = not state.drawHP", "z")
 	input:add("timeScale = timeScale * 1.1", ".")
 	input:add("timeScale = timeScale / 1.1", ",")
-	input:add("state.game = 'menu'", "c")
 end
 
 function input:add(code, key, ctrl)
