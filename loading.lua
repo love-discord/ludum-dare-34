@@ -32,6 +32,8 @@ return function()
 	--------------------------------- MUSIC ---------------------------------------
 	music:loadTrack("Playlist", "gfx/sound/bg/Alan Walker - Fade.mp3", "Alan Walker - Fade")
 	coroutine.yield("Alan Walker - Fade")
+	music:loadTrack("Playlist", "gfx/sound/bg/Waysons - Daydream.mp3", "Waysons - Daydream")
+	coroutine.yield("Waysons - Daydream")
 	music:loadTrack("Playlist", "gfx/sound/bg/Distrion & Alex Skrindo - Entropy.mp3", "Distrion & Alex Skrindo - Entropy")
 	coroutine.yield("Distrion & Alex Skrindo - Entropy")
 	music:loadTrack("Playlist", "gfx/sound/bg/Jim Yosef - Arrow.mp3", "Jim Yosef - Arrow")
@@ -40,5 +42,8 @@ return function()
 	coroutine.yield("Unison - Aperture")
 	music:loadTrack("Playlist", "gfx/sound/bg/Lensko - Circles.mp3", "Lensko - Circles")
 	coroutine.yield("Lensko - Circles")
+	music:loadTrack("Playlist", "gfx/sound/bg/The Void - Lost Language.mp3", "The Void - Lost Language")
+	coroutine.yield("The Void - Lost Language")
+	
 	music:trackChangeSubscribe("Playlist", function(nextTrack) print("Now playing: "..nextTrack.name) end)
 end
