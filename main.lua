@@ -25,7 +25,6 @@ require("src.ui.scorebar")
 require("src.ui.menu")
 require("src.ui.options")
 require("src.ui.tutorial")
---require("src.ui.credits")
 require("src.ui.winlosescreen")
 require("src.ui.musicUI")
 
@@ -46,7 +45,7 @@ font.roboto.italic[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.t
 font.roboto.italic[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 20)
 font.roboto.italic[25] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 25)
 font.roboto.regular[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 13)
-font.roboto.regular[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 20)
+font.roboto.regular[18] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 18)
 font.roboto.regular[28] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 28)
 font.roboto.bold[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 13)
 font.roboto.bold[28] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 28)
@@ -60,7 +59,7 @@ state = {
 	updating = true,
 	debug = false,
 	game = "loading",
-	options = {volume = 30},
+	options = {volume = 100},
 	assetsLoaded = 0, currentAsset = "?"
 }
 
@@ -210,14 +209,6 @@ function love.keypressed(key)
 		menu:keypressed(key)
 	elseif state.game == "options" then
 		options:keypressed(key)
-	elseif state.game == "credits" then
-		if key == " " then
-			if cred.imgCount < 5 then
-				cred.imgCount = cred.imgCount + 1
-			else
-				state.game = "menu"
-			end
-		end
 	end
 end
 
