@@ -39,14 +39,24 @@ end
 function mewsic:update(dt)
 	mewsic.hasbeenout = mewsic.hasbeenout + dt
 
-	if mewsic.hasbeenout < 3 then
+	if mewsic.hasbeenout < 2 then
 		mewsic.nowplaying.x = mewsic.nowplaying.x + ((self.nowplaying.targetX - self.nowplaying.x) * 8) * dt
 		mewsic.title.x = mewsic.title.x + ((mewsic.title.targetX - mewsic.title.x) * 8) * dt
 		mewsic.artist.x = mewsic.artist.x + ((mewsic.artist.targetX - mewsic.artist.x) * 8) * dt
+		if mewsic.nowplaying.x < 0 then
+			mewsic.nowplaying.x = 0
+			mewsic.title.x = 0
+			mewsic.artist.x = 0
+		end
 	else
 		mewsic.nowplaying.x = mewsic.nowplaying.x + ((self.nowplaying.x - self.nowplaying.targetX) * 8) * dt
 		mewsic.title.x = mewsic.title.x - (math.abs(mewsic.title.x - mewsic.title.targetX) * 8) * dt
 		mewsic.artist.x = mewsic.artist.x - (math.abs(mewsic.artist.x - mewsic.artist.targetX) * 8) * dt
+		if mewsic.nowplaying.x < 0 then
+			mewsic.nowplaying.x = 0
+			mewsic.title.x = 0
+			mewsic.artist.x = 0
+		end
 	end
 end
 
