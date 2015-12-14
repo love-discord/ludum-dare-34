@@ -264,7 +264,9 @@ function immuneSystem:fastUpdate(dt)
 			end
 		end
 	end
+end
 
+function immuneSystem:infoboxUpdate(dt)
 	-- selected info box
 	if immuneSystem.selected ~= nil then
 		local width = font.prototype[32]:getWidth(immuneSystem.unit[immuneSystem.selected].name) + 100

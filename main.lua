@@ -112,7 +112,7 @@ function love.update(dt)
 		time:update(dt * timeScale)
 	end
 	camera:update(dt)
-
+	immuneSystem:infoboxUpdate(dt)
 	lightWorld:update(dt)
 	lightWorld:setTranslation(camera.x, camera.y, scale)
 	mouse:update()
