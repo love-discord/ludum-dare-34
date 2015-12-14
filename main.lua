@@ -25,7 +25,7 @@ require("src.ui.scorebar")
 require("src.ui.menu")
 require("src.ui.options")
 require("src.ui.tutorial")
---require("src.ui.credits")
+require("src.ui.credits")
 require("src.ui.winlosescreen")
 require("src.ui.musicUI")
 
@@ -69,13 +69,13 @@ timeSinceLastTick = 0
 --[[ functions ]]--
 local load = coroutine.create(require("loading"))
 
-menu:load()
 love.mouse.setVisible(false)
 
 function love.update(dt)
 	if state.game == "loading" then
 		if coroutine.status(load) == "dead" then
 			state.game = "menu"
+			menu:load()
 			music:playPlaylist("Playlist") -- start playing the songs
 			return 
 		end
@@ -113,7 +113,7 @@ function love.update(dt)
 		lightWorld:setTranslation(camera.x, camera.y, scale)
 		shop:update(dt)
 	--[[ menu ]]--
-	elseif state.game == "menu" then
+	elseif state.game == "menu" or state.game == "credits" then
 		menu:update(dt)
 	elseif state.game == "options" then
 		options:update(dt)
@@ -134,6 +134,7 @@ function love.draw()
 		love.graphics.print(state.currentAsset or "?", 100, 100)
 		return
 	end
+
 	if state.game == "singleplayer" or state.game == "tutorial" then
 		love.graphics.push()
 		love.graphics.scale(scale)
@@ -166,8 +167,11 @@ function love.draw()
 		if state.game == "tutorial" then
 			tut:draw()
 		end
-	elseif state.game == "menu" then
+	elseif state.game == "menu" or state.game == "credits" then
 		menu:draw()
+		if state.game == "credits" then
+			cred:draw()
+		end
 	elseif state.game == "options" then
 		options:draw()
 	end
@@ -212,11 +216,7 @@ function love.keypressed(key)
 		options:keypressed(key)
 	elseif state.game == "credits" then
 		if key == " " then
-			if cred.imgCount < 5 then
-				cred.imgCount = cred.imgCount + 1
-			else
-				state.game = "menu"
-			end
+			state.game = "menu"
 		end
 	end
 end
