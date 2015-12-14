@@ -6,7 +6,7 @@ bits = 100,
 step = 1,
 r = 0,
 update = function(self)
-	self.bits = self.bits + 7 + math.floor(time.seconds / 60) / 2
+	self.bits = self.bits + 5 + math.floor(time.seconds / 60) / 2
 	self.r = hexMap.radius
 	local stepFunc = self.steps[self.step]
 	stepFunc(self)
@@ -67,7 +67,7 @@ steps = {
 			if u.name == "Memory Reader" then -- loop through all memory readers
 				local xPercent = u.x / (self.r*2) + 0.5
 				if xPercent < virusPercent * virusPercent then
-					virus:remove(u.x, u.y, u.z)
+					virus:sell(u.x, u.y, u.z)
 				end
 			end
 		end

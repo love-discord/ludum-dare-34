@@ -143,7 +143,7 @@ function virus:update()
 			dyingTroop:died(troop)
 			self.troop[i] = nil
 
-			shop.bits = shop.bits + 10
+			shop.bits = shop.bits + 1
 		else
 			troop:effect()
 		end
@@ -187,4 +187,10 @@ function virus:draw()
 		end
 		love.graphics.draw(t.img, t.x - t.w / 2, t.y - t.h / 2 - 10, math.atan2(velY, velX) + math.pi/2, sX, sY)
 	end
+end
+
+function virus:sell(x, y, z)
+	oc, id = virus:find(x, y, z)
+	virus.ai.bits = virus.ai.bits + round(self.unitList[virus.unit[id].name].cost / 3)
+	virus:remove(x, y, z)
 end

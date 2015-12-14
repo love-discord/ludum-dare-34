@@ -91,10 +91,10 @@ end
 
 function love.update(dt)
 	if state.updating then
-		TICK_SPEED = 5 / timeScale -- 1/number
+		TICK_SPEED = 3 / timeScale -- 1/number
 		timeSinceLastTick = timeSinceLastTick + dt * timeScale
 		while timeSinceLastTick > TICK_SPEED do -- maybe it's multiple times a frame
-			shop.bits = shop.bits + 7 + math.floor(time.seconds / 60) / 2 -- every minute this increases by 0.5
+			shop.bits = shop.bits + 5 + math.floor(time.seconds / 60) / 2 -- every minute this increases by 0.5
 				cell:update(dt * timeScale)
 
 				lightWorld:clearLights()
@@ -146,6 +146,7 @@ function love.draw()
 	shop:draw()
 	love.graphics.setFont(font.prototype[20])
 	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
+	love.graphics.print("virus bits: "..virus.ai.bits, 10, 30)
 	mouse:drawCircle()
 	scorebar:draw()
 end
