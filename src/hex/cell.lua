@@ -92,19 +92,7 @@ function cell:draw(mode)
 		vertices[#vertices + 1] = x
 		vertices[#vertices + 1] = y
 	end
-  
-      
 	love.graphics.polygon("fill", vertices)
-  
-	love.graphics.setColor(255, 255, 255)
-  
-	if state.drawHP then
-		love.graphics.setFont(font.prototype[20])
-		local x, y = hexMap:hexToPixel(self.x, self.y, self.z)
-		self.hp = round(self.hp)
-		love.graphics.print(self.hp, x, y)
-	end
-
 end
 
 function cell:getCorner(i)
@@ -120,6 +108,7 @@ end
 function cell:update(dt)
 	scorebar.virusCells = 0
 	scorebar.immuneCells = 0
+	scorebar.neutralCells = 0
 	scorebar.totalCells = 0
 	local actions = {}
 	
@@ -140,10 +129,10 @@ function cell:update(dt)
 				scorebar.immuneCells = scorebar.immuneCells + 1
 			elseif cell.team == "virus" then
 				scorebar.virusCells = scorebar.virusCells + 1
+			elseif cell.team == "neutral" then
+				scorebar.neutralCells = scorebar.neutralCells + 1
 			end
 			scorebar.totalCells = scorebar.totalCells + 1
-
-			cell.color = colors[cell.team]
 		end
 	end
 
@@ -168,6 +157,8 @@ function cell:update(dt)
 			hexMap.cells[x][z] = cell:new(hexMap, x, -x-z, z, hexMap.cell_size, math.max(mainCell.hp / 2, default_hp / 2), default_hp, default_dmg, default_regen, default_def, mainCell.team)
 		end
 	end
+
+	scorebar:updateStatistics()
 end
 
 return cell

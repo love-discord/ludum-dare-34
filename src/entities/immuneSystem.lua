@@ -3,7 +3,9 @@ immuneSystem = {
 	unitList = {},
 	unit = {},
 	troop = {},
-	troopList = {}
+	troopList = {},
+	readable = {},
+	x = 0
 }
 
 function cellHealer(self, x, y, z, amount)
@@ -25,6 +27,13 @@ function cellDamager(self, x, y, z, amount)
 	if hexMap:getCell(x, y, z).team ~= "immune" then
 		hexMap:getCell(x, y, z).hp = hexMap:getCell(x, y, z).hp - amount
 	end
+end
+
+function memoryReader(self, x, y, z)
+	if hexMap:getCell(x, y, z) == nil then
+		return
+	end
+	immuneSystem.readable[#immuneSystem.readable + 1] = {x = x, y = y, z = z}
 end
 
 function bugfixerSpawn(self, x, y, z, amount)
@@ -63,6 +72,11 @@ function immuneSystem:loadUnits()
 								return shop.bits >= 75
 							end,
 							"The dream of all\nprogrammers. An\nautomatic debugger.", 10)
+	immuneSystem:newUnit("Memory Reader",		50, 3, 32, 48, false, "Reads data of chips in\nrange.",	memoryReader, 111, 25, love.graphics.newImage("gfx/units/antivirus/memoryreader.png"), "25 Bits", 
+							function() 
+								return shop.bits >= 25
+							end,
+							"I will show you things.\nThings you have never\nimagined to see.")
 end
 
 -- creates a new unit __TYPE__
@@ -140,7 +154,7 @@ function immuneSystem:getNumber(name)
 end
 
 function immuneSystem:loadTroops()
-	self:newTroop("Bugfixer", 5, 0, 20, 20, 2, require("src.AI.antivirus_bugfix"), 50, love.graphics.newImage("res/immuneTroop.png"))
+	self:newTroop("Bugfixer", 5, 0, 20, 20, 2, require("src.AI.antivirus_bugfix"), 50, love.graphics.newImage("gfx/units/immuneTroop.png"))
 end
 
 function immuneSystem:newTroop(name, hp, range, w, h, amount, effect, speed, img)
@@ -163,6 +177,7 @@ end
 
 
 function immuneSystem:update(dt)
+	immuneSystem.readable = {}
 	for i, unit in pairs(immuneSystem.unit) do
 		if unit.hp <= 0 then
 			immuneSystem:remove(unit.x, unit.y, unit.z)
@@ -222,8 +237,41 @@ function immuneSystem:draw()
 		end
 		love.graphics.draw(t.img, t.x - t.w / 2, t.y - t.h / 2 - 10, math.atan2(velY, velX) + math.pi/2, sX, sY)
 	end
+
+	if immuneSystem.selected ~= nil then
+		hexMap:drawInRange(immuneSystem.unit[immuneSystem.selected].x, immuneSystem.unit[immuneSystem.selected].y, immuneSystem.unit[immuneSystem.selected].z, immuneSystem.unit[immuneSystem.selected].range)
+	end
+	immuneSystem:drawReadables()
+end
+
+function immuneSystem:drawReadables()
+	for i = 1, #immuneSystem.readable do
+		if state.drawHP then
+			local cell = hexMap:getCell(immuneSystem.readable[i].x, immuneSystem.readable[i].y, immuneSystem.readable[i].z)
+			local x, y = hexMap:hexToPixel(immuneSystem.readable[i].x, immuneSystem.readable[i].y, immuneSystem.readable[i].z)
+			love.graphics.setFont(font.prototype[20])
+			local hp = round(cell.hp)
+			love.graphics.print(cell.hp, x, y)
+		end
+	end
+end
+
+function immuneSystem:drawSelectedUnitInfo()
+	if immuneSystem.selected ~= nil then
+		local polygon = rounded_rectangle(love.graphics.getWidth() - 200, love.graphics.getHeight() / 2 - 200, 300, 400, 10, 10, 10, 10, 10)
+
+		love.graphics.setColor(40, 40, 35)
+		love.graphics.polygon("fill", polygon)
+	end
 end
 
 function immuneSystem:mousepressed(key)
+	local x, y, z = mouse:getHexCoords()
+	local occupied, id = immuneSystem:find(x, y, z)
 
+	if occupied and key == "l" then
+		immuneSystem.selected = id
+	else
+		immuneSystem.selected = nil
+	end
 end

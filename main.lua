@@ -79,18 +79,17 @@ timeSinceLastTick = 0
 	love.mouse.setVisible(false)
 
 function love.load()
-  lightWorld = lightWorld({
-    ambient = {55,55,55},         --the general ambient light in the environment
-  })
-  lightWorld:newLight(0, 0, 150, 150, 200, love.window.getWidth())
+	lightWorld = lightWorld({
+		ambient = {55,55,55},         --the general ambient light in the environment
+		blur = 0,
+		glowBlur = 0
+	})
+	lightWorld:setGlowStrength(0)
+	cell:update()
+	neutralLight = lightWorld:newLight(0, 0, 200, 200, 200, love.window.getWidth())
 end
 
 function love.update(dt)
-
-  lightWorld:update(dt)
-  lightWorld:setTranslation(camera.x, camera.y, scale)
-  lightWorld:refreshScreenSize()
-  
 	if state.updating then
 		TICK_SPEED = 3 / timeScale -- 1/number
 		timeSinceLastTick = timeSinceLastTick + dt * timeScale
@@ -106,6 +105,10 @@ function love.update(dt)
 		immuneSystem:fastUpdate(dt * timeScale)
 		time:update(dt * timeScale)
 	end
+
+	lightWorld:update(dt)
+	lightWorld:setTranslation(camera.x, camera.y, scale)
+
 	camera:update(dt)
 	mouse:update()
 	shop:update(dt)
@@ -113,23 +116,26 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.push()
-  love.graphics.scale(scale)
-  love.graphics.pop()
+	love.graphics.push()
+	love.graphics.scale(scale)
+	love.graphics.pop()
 	love.graphics.push()
 	love.graphics.translate(camera.x, camera.y)
 
-  lightWorld:draw(function()
-	hexMap:draw()
-  end)
-  lightWorld.post_shader:addEffect("contrast")
-	mouse:drawHex()
-	immuneSystem:draw()
+
+	lightWorld:draw(function()
+		hexMap:draw()
+		immuneSystem:draw()
+		shop:drawSelected()
+	end)
+
 	virus:draw()
 	dyingTroop:draw()
+	mouse:drawHex()
 	love.graphics.pop()
 
 	-- UI BEGGINS HERE
+	immuneSystem:drawSelectedUnitInfo()
 	shop:draw()
 	love.graphics.setFont(font.prototype[20])
 	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
@@ -139,6 +145,7 @@ end
 
 function love.mousepressed(x, y, b)
 	camera:mousepressed(x, y, b)
+	immuneSystem:mousepressed(b)
 	shop:mousepressed(x, y, b)
 end
 
@@ -148,4 +155,5 @@ end
 
 function love.resize(x, y)
 	shop:resize(x, y)
+	lightWorld:refreshScreenSize()
 end

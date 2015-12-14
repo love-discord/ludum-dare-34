@@ -80,7 +80,7 @@ function virus:addUnit(name, x, y, z)
 end
 
 function virus:loadTroops()
-	self:newTroop("Fighter", 5, 0, 20, 20, 2, require("src.AI.virus_fighter"), 50, love.graphics.newImage("res/virusTroop.png"))
+	self:newTroop("Fighter", 5, 0, 20, 20, 2, require("src.AI.virus_fighter"), 50, love.graphics.newImage("gfx/units/virusTroop.png"))
 end
 
 function virus:newTroop(name, hp, range, w, h, amount, effect, speed, img)

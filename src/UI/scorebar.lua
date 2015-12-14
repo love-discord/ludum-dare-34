@@ -1,7 +1,11 @@
 scorebar = {
 	virusCells = 0,
 	immuneCells = 0,
-	totalCells = 0
+	neutralCells = 0,
+	totalCells = 0,
+	virusPercent = 0,
+	immunePercent = 0,
+	neutralPercent = 0
 }
 
 function scorebar:load()
@@ -98,14 +102,17 @@ function scorebar:drawStatistics()
 	love.graphics.print(scorebar.virusCells, x + 50 + 50, 5)
 	love.graphics.setColor(50, 100, 200)
 	love.graphics.print(scorebar.immuneCells, love.window.getWidth() - (x + 50 + 50) - font.prototype[32]:getWidth(scorebar.immuneCells), 5)
-	
-	-- percentage
-	local virusPercent = round((scorebar.virusCells / scorebar.totalCells) * 100).."%"
-	local immunePercent = round((scorebar.immuneCells / scorebar.totalCells) * 100).."%"
 
 	love.graphics.setFont(font.prototype[20])
 	love.graphics.setColor(200, 20, 20)
-	love.graphics.print(virusPercent, x + 50 - font.prototype[20]:getWidth(virusPercent) / 2, 0)
+	love.graphics.print(scorebar.virusPercent.."%", x + 50 - font.prototype[20]:getWidth(scorebar.virusPercent) / 2, 0)
 	love.graphics.setColor(50, 100, 200)
-	love.graphics.print(immunePercent, love.window.getWidth() - (x + 50) - font.prototype[20]:getWidth(immunePercent) / 2, 0)
+	love.graphics.print(scorebar.immunePercent.."%", love.window.getWidth() - (x + 50 + 25), 0)
+end
+
+function scorebar:updateStatistics()
+	-- percentage
+	scorebar.virusPercent = round((scorebar.virusCells / scorebar.totalCells) * 100)
+	scorebar.immunePercent = round((scorebar.immuneCells / scorebar.totalCells) * 100)
+	scorebar.neutralPercent = round((scorebar.neutralCells / scorebar.totalCells) * 100)
 end

@@ -149,7 +149,7 @@ function shop:draw()
 	end
 
 	shop:drawFloating()
-	shop:drawSelected()
+	-- shop:drawSelected()
 end
 
 function shop:drawProducts()
@@ -234,10 +234,11 @@ function shop:mousepressed(x, y, key)
 			shop.bits = shop.bits + immuneSystem.unitList[shop.selected].cost
 		end
 		shop.selected = nil
+		immuneSystem.selected = nil
 	end
 end
 
-local function rounded_rectangle(x, y, w, h, precision, tl, tr, br, bl)
+function rounded_rectangle(x, y, w, h, precision, tl, tr, br, bl)
 	local corners = { tl, tr, br, bl }
 	local polygon = {}
 
@@ -332,7 +333,7 @@ function shop:drawSelected()
 		else
 			love.graphics.setColor(0, 255, 0, 150)
 		end
-		love.graphics.draw(img, x + camera.x - (img:getWidth() * sX) / 2, y + camera.y - (img:getHeight() * sY) / 2 - 10, 0, sX, sY)
+		love.graphics.draw(img, x - (img:getWidth() * sX) / 2, y - (img:getHeight() * sY) / 2 - 10, 0, sX, sY)
 
 		local x, y, z = mouse:getHexCoords()
 		hexMap:drawInRange(x, y, z, immuneSystem.unitList[shop.selected].range)
