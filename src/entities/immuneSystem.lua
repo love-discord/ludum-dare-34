@@ -218,6 +218,7 @@ function immuneSystem:update(dt)
 			end
 			dyingTroop:died(troop)
 			self.troop[i] = nil
+			virus.ai.bits = virus.ai.bits + 10
 		else
 			troop:effect()
 		end
