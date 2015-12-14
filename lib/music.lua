@@ -5,10 +5,13 @@ music.playlists = {}
 music.tracks = {}
 music.activePlaylist = ""
 
-function music:loadTrack(playlist, path)
+function music:loadTrack(playlist, path, name)
+	name = name or path
 	if not music.tracks[path] then
 		music.tracks[path] = love.audio.newSource(path)
 		music.tracks[path].duration = love.sound.newSoundData(path):getDuration()
+		music.tracks[path].path = path
+		music.tracks[path].name = name
 	end
 	if music.playlists[playlist] == nil then
 		music.playlists[playlist] = {subscribed = {}, tracks = {}}
