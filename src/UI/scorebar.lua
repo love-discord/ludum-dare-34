@@ -25,6 +25,7 @@ function scorebar:draw()
 	scorebar:drawMainPoly()
 	scorebar:drawTickBar()
 	scorebar:drawStatistics()
+	scorebar:drawPercentage()
 end
 
 function scorebar:drawMainPoly()
@@ -88,9 +89,36 @@ function scorebar:drawTickBar()
 	end
 end
 
-
 function scorebar:drawPercentage()
+	local x = love.window.getWidth() / 2 - 290
+	local totalLen = 290 * 2 - 5
 
+	local virusPercent = scorebar.virusPercent / 100
+	local immunePercent = scorebar.immunePercent / 100
+
+	love.graphics.setColor(200, 200, 200)
+	love.graphics.polygon("fill",
+		x, 0,
+		x + 5, 3,
+		x + totalLen, 3,
+		x + totalLen + 5, 0
+	)
+
+	love.graphics.setColor(200, 20, 20)
+	love.graphics.polygon("fill",
+		x, 0,
+		x + 5, 3,
+		x + totalLen * virusPercent, 3,
+		x + totalLen * virusPercent + 5, 0
+	)
+
+	love.graphics.setColor(50, 100, 200)
+	love.graphics.polygon("fill",
+		x + totalLen, 3,
+		x + totalLen + 5, 0,
+		x + totalLen - totalLen * immunePercent + 5, 0,
+		x + totalLen - totalLen * immunePercent, 3
+	)
 end
 
 function scorebar:drawStatistics()
@@ -99,7 +127,7 @@ function scorebar:drawStatistics()
 	-- time
 	love.graphics.setColor(255, 255, 255)
 	love.graphics.setFont(font.ethnocentric.regular[36])
-	love.graphics.print(time:getTimeinString(), love.window.getWidth() / 2 - font.ethnocentric.regular[36]:getWidth(time:getTimeinString()) / 2)
+	love.graphics.print(time:getTimeinString(), love.window.getWidth() / 2 - font.ethnocentric.regular[36]:getWidth(time:getTimeinString()) / 2, 2)
 
 	-- raw number
 	love.graphics.setFont(font.prototype[32])
