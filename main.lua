@@ -42,6 +42,7 @@ font.roboto = {italic = {}, regular = {}, bold = {}}
 font.roboto.italic[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 12)
 font.roboto.italic[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 13)
 font.roboto.italic[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 20)
+font.roboto.italic[25] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 25)
 font.roboto.regular[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 13)
 font.roboto.regular[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 20)
 font.roboto.regular[28] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 28)

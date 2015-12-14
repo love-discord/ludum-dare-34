@@ -46,4 +46,5 @@ return function()
 	coroutine.yield("The Void - Lost Language")
 	
 	music:trackChangeSubscribe("Playlist", function(nextTrack) print("Now playing: "..nextTrack.name) end)
+	-- music:trackChangeSubscribe("Playlist", function(nextTrack) mewsic.newSong = nextTrack.name end)
 end
