@@ -82,9 +82,11 @@ function love.load()
   lightWorld = lightWorld({
     ambient = {55,55,55},         --the general ambient light in the environment
   })
+  lightWorld:newLight(0, 0, 200, 200, 200, love.window.getWidth())
 end
 
 function love.update(dt)
+
   lightWorld:update(dt)
   lightWorld:setTranslation(camera.x, camera.y, scale)
   lightWorld:refreshScreenSize()
