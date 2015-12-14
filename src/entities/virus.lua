@@ -41,6 +41,14 @@ end
 function bitFarmer(self, x, y, z, amount)
 	virus.ai.bits = virus.ai.bits + amount
 end
+function troopDamager(self, x, y, z, amount)
+	for k, v in pairs(immuneSystem.troop) do
+		local tx, ty, tz = hexMap:pixelToHex(v.x, v.y)
+		if tx == x and ty == y and tz == z then
+			v.hp = v.hp - amount
+		end
+	end
+end
 
 function virus:loadUnits()
 	--				NAME 				HP RNG W   H   EFFECT    		AMT  COST 	IMG 															Require 																					MaxTroops
@@ -50,6 +58,7 @@ function virus:loadUnits()
 	virus:newUnit("Bug Obfuscator", 	50, 2, 32, 48, bugObfuscator, 	1, 	 50,	love.graphics.newImage("gfx/units/virus/cellHealer.png")		,function() return virus.ai.bits >= 50 end)
 	virus:newUnit("Memory Reader",	 	50, 2, 32, 48, bugObfuscator, 	1, 	 25,	love.graphics.newImage("gfx/units/virus/memoryReader.png")		,function() return virus.ai.bits >= 25 end)
 	virus:newUnit("Bit Farmer",	 		50, 2, 32, 48, bitFarmer, 		1, 	 25,	love.graphics.newImage("gfx/units/virus/bitFarmer.png")			,function() return virus.ai.bits >= 25 end)
+	virus:newUnit("Patch Predicter",	50, 4, 32, 48, troopDamager,	1, 	 25,	love.graphics.newImage("gfx/units/virus/scannertower.png")		,function() return virus.ai.bits >= 25 end)
 end
 
 -- creates a new unit __TYPE__

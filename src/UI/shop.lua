@@ -226,7 +226,7 @@ function shop:mousepressed(x, y, key)
 	if shop.selected == nil then
 		for i = 1, #shop.items do
 			if shop.items[i].float and key == "l" then
-				if shop.bits >= shop.items[i].cost and shop.items[i].requireFunc() then
+				if (shop.bits >= shop.items[i].cost and shop.items[i].requireFunc()) or state.debug then
 					shop.selected = shop.items[i].name
 					shop.bits = shop.bits - shop.items[i].cost
 				else

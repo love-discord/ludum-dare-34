@@ -55,7 +55,8 @@ font = {
 
 state = {
 	drawHP = false,
-	updating = true
+	updating = true,
+	debug = false
 }
 
 timeSinceLastTick = 0
@@ -76,6 +77,8 @@ timeSinceLastTick = 0
 	shop:load()
 
 	love.mouse.setVisible(false)
+
+	require("src.AI.virusSetup")
 
 function love.load()
 	lightWorld = lightWorld({
@@ -147,7 +150,7 @@ function love.draw()
 	shop:draw()
 	love.graphics.setFont(font.prototype[20])
 	love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
-	love.graphics.print("virus bits: "..virus.ai.bits, 10, 30)
+	love.graphics.print("Virus bits: "..virus.ai.bits, 10, 30)
 	mouse:drawCircle()
 	scorebar:draw()
 end

@@ -1,14 +1,24 @@
 -- src/AI/virus.lua
--- This si the virus controller AI
+-- This is the virus controller AI
+-- It basically tries to recreate the setup described by virusSetup.lua
 
 return {
 bits = 100,
 step = 1,
 r = 0,
+target = require("src.AI.virusSetup"),
 update = function(self)
 	self.bits = self.bits + 5 + math.floor(time.seconds / 60) / 2
 	self.r = hexMap.radius
-	local stepFunc = self.steps[self.step]
+	for _, t in ipairs(self.target) do
+		if self.bits >= virus.unitList[t[1]].cost then
+			if virus:addUnit(t[1], t[2], t[3], t[4]) then
+				self.bits = self.bits - virus.unitList[t[1]].cost
+			end
+		end
+	end
+end
+	--[[local stepFunc = self.steps[self.step]
 	stepFunc(self)
 end,
 steps = {
@@ -73,5 +83,5 @@ steps = {
 		end
 	end
 }
-
+--]]
 }
