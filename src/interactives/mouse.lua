@@ -63,6 +63,6 @@ end
 function mouse:drawCircle()
     love.graphics.setColor(mouse.color)
     love.graphics.setLineWidth(4)
-    love.graphics.circle("line", self:scaledX(), self:scaledY(), 5, 10)
+    love.graphics.circle("line", self:scaledX() or 0, self:scaledY() or 0, 5, 10)
 end
 

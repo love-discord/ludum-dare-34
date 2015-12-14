@@ -30,7 +30,24 @@ require("src.ui.winlosescreen")
 timeScale = 1
 
 --[[ variables ]]--
-font = {} -- moved this to loading.lua
+font = {}
+font.prototype = {}
+for _, i in pairs({15, 20, 26, 32, 36, 48}) do 
+	font.prototype[i] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", i)
+end
+
+font.roboto = {italic = {}, regular = {}, bold = {}}
+font.roboto.italic[12] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 12)
+font.roboto.italic[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-italic.ttf", 20)
+font.roboto.regular[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 13)
+font.roboto.regular[20] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 20)
+font.roboto.regular[28] = love.graphics.newFont("gfx/fonts/roboto/roboto-regular.ttf", 28)
+font.roboto.bold[13] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 13)
+font.roboto.bold[28] = love.graphics.newFont("gfx/fonts/roboto/roboto-bold.ttf", 28)
+
+font.ethnocentric = {regular = {}}
+font.ethnocentric.regular[36] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 36)
+font.ethnocentric.regular[80] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 80)
 
 state = {
 	drawHP = false,
@@ -50,8 +67,11 @@ menu:load()
 love.mouse.setVisible(false)
 
 function love.update(dt)
-	if coroutine.status(load) == "dead" then state.game = "menu" end
 	if state.game == "loading" then
+		if coroutine.status(load) == "dead" then
+			state.game = "menu"
+			return 
+		end
 		local a, b = coroutine.resume(load)
 		if a then state.currentAsset = b end
 		state.assetsLoaded = state.assetsLoaded + 1
@@ -101,7 +121,10 @@ function love.draw()
 	if state.game == "loading" then
 		local faces = {"._.", ":/", ":|", ":\\", ".-.", "/:", "|:", "\\:"}
 		local face = state.assetsLoaded % #faces + 1
-		love.graphics.print(faces[face].."\n"..(state.currentAsset or ""), 100, 100)
+		love.graphics.setFont(font.ethnocentric.regular[80])
+		love.graphics.print(faces[face], love.graphics.getWidth() - 200, love.graphics.getHeight() - 200)
+		love.graphics.setFont(font.ethnocentric.regular[36])
+		love.graphics.print(state.currentAsset or "?", 100, 100)
 		return
 	end
 	if state.game == "singleplayer" or state.game == "tutorial" then
@@ -130,7 +153,7 @@ function love.draw()
 		immuneSystem:drawSelectedUnitInfo()
 		shop:draw()
 		love.graphics.setFont(font.prototype[20])
-		love.graphics.print("Virus bits: "..virus.ai.bits, 10, 30)
+		--love.graphics.print("Virus bits: "..virus.ai.bits, 10, 30)
 		scorebar:draw()
 		if state.game == "tutorial" then
 			tut:draw()

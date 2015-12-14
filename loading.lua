@@ -1,6 +1,6 @@
 return function()
 	----------------------------------- FONTS --------------------------
-	font.prototype = {}
+	--[[font.prototype = {}
 	for _, i in pairs({15, 20, 26, 32, 36, 48}) do 
 		font.prototype[i] = love.graphics.newFont("gfx/fonts/prototype/prototype.ttf", i)
 		coroutine.yield("prototype "..i)
@@ -26,7 +26,7 @@ return function()
 	font.ethnocentric.regular[36] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 36)
 	coroutine.yield("ethnocentric 36")
 	font.ethnocentric.regular[80] = love.graphics.newFont("gfx/fonts/ethnocentric/ethnocentric rg.ttf", 80)
-	coroutine.yield("ethnocentric 80")
+	coroutine.yield("ethnocentric 80")--]]
     
 
 	--------------------------------- MUSIC ---------------------------------------
