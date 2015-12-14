@@ -54,13 +54,23 @@ function memoryReader(self, x, y, z)
 	spawnLight(self, 100, 100, 100, range)
 end
 
+function troopDamager(self, x, y, z, amount)
+	for k, v in pairs(virus.troop) do
+		local tx, ty, tz = hexMap:pixelToHex(v.x, v.y)
+		if tx == x and ty == y and tz == z then
+			v.hp = v.hp - amount
+		end
+	end
+end
+
 function bugfixerSpawn(self, x, y, z, amount)
 	if hexMap:getCell(x, y, z) == nil then return end
 	if math.random() < amount and self.troopsAlive < self.maxTroops then
 		local hexPixel = {hexMap:hexToPixel(x, y, z)}
-		immuneSystem:addTroop("Bugfixer", hexPixel[1], hexPixel[2], self.id)
+		immuneSystem:addTroop("Scanner", hexPixel[1], hexPixel[2], self.id)
 		self.troopsAlive = self.troopsAlive + 1
 	end
+	spawnLight(self, 50, 50, 50, 2)
 end
 
 function immuneSystem:loadUnits()
@@ -78,23 +88,28 @@ function immuneSystem:loadUnits()
 							end,
 							"Warning:// malware\ndetected.\nUpgrading hardware..")
 
-	immuneSystem:newUnit("Bug Fixing Tower", 50, 1, 32, 48, false, "Damages enemy chips.", cellDamager, 10, 150, love.graphics.newImage("gfx/units/antivirus/cellDamager.png"),
+	immuneSystem:newUnit("Debugging Tower", 50, 1, 32, 48, false, "Damages enemy chips.", cellDamager, 10, 150, love.graphics.newImage("gfx/units/antivirus/cellDamager.png"),
 							"2 Chip Healers\n150 Bits",
 							function()
 								return immuneSystem:getNumber("Chip Healer") > 1 and shop.bits >= 150
 							end,
-							"Full-on offensive")
+							"The dream of all\nprogrammers. An\nautomatic debugger.")
 
-	immuneSystem:newUnit("Debugger Spawn", 		50, 0, 32, 48, false, "Spawns a debugger.", bugfixerSpawn, 1/3, 75, love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png"), "75 Bits",
+	immuneSystem:newUnit("AntiVirus Client", 		50, 0, 32, 48, false, "Spawns a scanner.", bugfixerSpawn, 1/3, 75, love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png"), "75 Bits",
 							function()
 								return shop.bits >= 75
 							end,
-							"The dream of all\nprogrammers. An\nautomatic debugger.", 10)
+							"Let's be serious.\nIf your PC is under\nattack, you use\nan antivirus client.", 10)
 	immuneSystem:newUnit("Memory Reader",		50, 3, 32, 48, false, "Reads data of chips in\nrange.",	memoryReader, 111, 25, love.graphics.newImage("gfx/units/antivirus/memoryreader.png"), "25 Bits", 
 							function() 
 								return shop.bits >= 25
 							end,
 							"I will show you things.\nThings you have never\nimagined to see.")
+	immuneSystem:newUnit("Real Time Protector", 50, 4, 32, 48, false, "Damages enemy\nmalwares with\n2 damage per tick.", troopDamager, 1, 25, love.graphics.newImage("gfx/units/antivirus/scannertower.png"), "1 AntiVirus Client\n75 Bits",
+							function ()
+								return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1
+							end,
+							"This is what you should\nhave on your PC. Ingame\nAs well as in real life.")
 end
 
 -- creates a new unit __TYPE__
@@ -145,7 +160,7 @@ end
 
 function immuneSystem:remove(x, y, z)
 	cellSound:play()
-  
+
 	local occupied, id = immuneSystem:find(x, y, z)
 	local tempUnit = {}
 
@@ -175,7 +190,7 @@ function immuneSystem:getNumber(name)
 end
 
 function immuneSystem:loadTroops()
-	self:newTroop("Bugfixer", 5, 0, 20, 20, 2, require("src.AI.antivirus_bugfix"), 50, love.graphics.newImage("gfx/units/immuneTroop.png"))
+	self:newTroop("Scanner", 5, 0, 20, 20, 2, require("src.AI.antivirus_bugfix"), 50, love.graphics.newImage("gfx/units/immuneTroop.png"))
 end
 
 function immuneSystem:newTroop(name, hp, range, w, h, amount, effect, speed, img)
