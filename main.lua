@@ -58,7 +58,7 @@ state = {
 	updating = true,
 	debug = false,
 	game = "loading",
-	options = {volume = 100},
+	options = {volume = 30},
 	assetsLoaded = 0, currentAsset = "?"
 }
 

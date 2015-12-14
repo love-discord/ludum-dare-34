@@ -5,7 +5,7 @@ function options:addChoice(name, codeRight, codeLeft, code) -- code (enter of " 
 	options.choice[#options.choice + 1] = {name = name, codeLeft = codeLeft, codeRight = codeRight, code = code}
 end
 
-options:addChoice("< Volume: 100 >", function(dt)
+options:addChoice("< Volume: 30 >", function(dt)
 	state.options.volume = state.options.volume + 1000 * dt
 	if state.options.volume > 100 then state.options.volume = 100 end
 	options.choice[1].name = "< Volume: "..tostring(state.options.volume):sub(1,4).." >"
