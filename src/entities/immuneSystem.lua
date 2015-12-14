@@ -1,3 +1,4 @@
+require("lib.sound")
 immuneSystem = {
 	unitList = {},
 	unit = {},
@@ -102,6 +103,8 @@ function immuneSystem:addUnit(name, x, y, z)
 end
 
 function immuneSystem:remove(x, y, z)
+  cellSound:play()
+  
 	local occupied, id = immuneSystem:find(x, y, z)
 	local tempUnit = {}
 

@@ -1,3 +1,4 @@
+require("lib.sound")
 virus = {
 	unitList = {},
 	unit = {},
@@ -101,6 +102,8 @@ function virus:addTroop(name, x, y, unit)
 end
 
 function virus:remove(x, y)
+  virusSound:play()
+  
 	local occupied, id = self:find(x, y)
 	local tempUnit = {}
 
