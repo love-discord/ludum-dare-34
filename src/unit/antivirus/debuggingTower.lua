@@ -2,7 +2,7 @@
 
 local name, hp, range, w, h, effectText, effect, amount, cost, img, requireText, requireFunc, info, maxTroops
 name = "Debugging Tower"
-hp = 50
+hp = 55
 range = 4
 w = 32
 h = 48
@@ -18,11 +18,11 @@ effect = function(self, x, y, z, amt)
 	spawnLight(self, 100, 50, 50)
 end
 
-amount = 10
-cost = 150
+amount = 1
+cost = 90
 img = love.graphics.newImage("gfx/units/antivirus/cellDamager.png")
 requireText = "1 Chip Damage Booster"
-requireFunc = function() return shop.bits >= 150 and virus:getNumber("Chip Damage Booster") >= 1 end
+requireFunc = function() return shop.bits >= 90 and virus:getNumber("Chip Damage Booster") >= 1 end
 
 info = "The dream of all\n"..
 		"programmers. An\n"..

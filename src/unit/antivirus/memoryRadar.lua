@@ -2,7 +2,7 @@
 
 local name, hp, range, w, h, effectText, effect, amount, cost, img, requireText, requireFunc, info, maxTroops
 name = "Memory Reader"
-hp = 50
+hp = 55
 range = 3
 w = 32
 h = 48
@@ -18,10 +18,10 @@ effect = function(self, x, y, z)
 	spawnLight(self, 100, 100, 100, range)
 end
 
-cost = 25
+cost = 30
 img = love.graphics.newImage("gfx/units/antivirus/memoryreader.png")
-requireText = "25 Bits"
-requireFunc = function() return shop.bits >= 25 end
+requireText = "30 Bits"
+requireFunc = function() return shop.bits >= 30 end
 
 info = "I will show you things.\n"..
 		"Things you have never\n"..

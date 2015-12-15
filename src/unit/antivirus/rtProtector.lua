@@ -20,11 +20,11 @@ effect = function(self, x, y, z, amt)
 	end
 end
 
-amount = 2
-cost = 25
+amount = 5
+cost = 30
 img = love.graphics.newImage("gfx/units/antivirus/scannertower.png")
 requireText = "1 AntiVirus Client"
-requireFunc = function() return shop.bits >= 25 and immuneSystem:getNumber("AntiVirus Client") >= 1 end
+requireFunc = function() return shop.bits >= 30 and immuneSystem:getNumber("AntiVirus Client") >= 1 end
 
 info = "This is what you should\n"..
 		"have on your PC. Ingame\n"..

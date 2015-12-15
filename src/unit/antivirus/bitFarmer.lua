@@ -2,7 +2,7 @@
 
 local name, hp, range, w, h, effectText, effect, amount, cost, img, requireText, requireFunc, info, maxTroops
 name = "Bit Farmer"
-hp = 50
+hp = 45
 range = 0
 w = 32
 h = 48
@@ -14,7 +14,7 @@ effect = function(self, x, y, z, amt)
 	spawnLight(self, 80, 80, 0, 2)
 end
 
-amount = 3
+amount = 5
 cost = 75
 img = love.graphics.newImage("gfx/units/antivirus/bitFarmer.png")
 requireText = "75 Bits"

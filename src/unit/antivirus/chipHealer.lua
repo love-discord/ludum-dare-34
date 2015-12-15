@@ -2,7 +2,7 @@
 
 local name, hp, range, w, h, effectText, effect, amount, cost, img, requireText, requireFunc, info, maxTroops
 name = "Chip Healer"
-hp = 50
+hp = 45
 range = 2
 w = 32
 h = 48
@@ -18,11 +18,11 @@ effect = function(self, x, y, z, amt)
 	spawnLight(self, 15, 50, 100)
 end
 
-amount = 10
+amount = 6
 cost = 50
 img = love.graphics.newImage("gfx/units/antivirus/CellHealer.png")
-requireText = "50 Bits"
-requireFunc = function() return shop.bits >= 50 end
+requireText = "45 Bits"
+requireFunc = function() return shop.bits >= 45 end
 
 info = "Those under my\n"..
 		"protection will live.\n"..

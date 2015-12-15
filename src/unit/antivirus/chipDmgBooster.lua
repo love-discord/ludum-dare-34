@@ -19,10 +19,10 @@ effect = function(self, x, y, z, amt)
 end
 
 amount = 2
-cost = 75
+cost = 60
 img = love.graphics.newImage("gfx/units/antivirus/cellDamageBooster.png")
 requireText = "2 Chip Healers"
-requireFunc = function() return immuneSystem:getNumber("Chip Healer") > 1 and shop.bits >= 75 end
+requireFunc = function() return immuneSystem:getNumber("Chip Healer") >= 2 and shop.bits >= 60 end
 
 info = "Warning:// malware\n"..
 		"detected.\n"..

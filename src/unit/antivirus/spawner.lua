@@ -2,7 +2,7 @@
 
 local name, hp, range, w, h, effectText, effect, amount, cost, img, requireText, requireFunc, info, maxTroops
 name = "AntiVirus Client"
-hp = 50
+hp = 45
 range = 0
 w = 32
 h = 48
@@ -20,9 +20,9 @@ effect = function(self, x, y, z, amt)
 end
 
 amount = 1/3
-cost = 75
+cost = 65
 img = love.graphics.newImage("gfx/units/antivirus/bugfixerSpawn.png")
-requireText = "75 Bits"
+requireText = "65 Bits"
 requireFunc = function() return shop.bits >= 75 end
 
 info = "Let's be serious.\n"..
